@@ -1,5 +1,6 @@
 .svn/
-/Web/
+Web/
+
 # Compiled class file
 *.class
 
