@@ -1,0 +1,105 @@
+@import "font";
+
+/**
+ * ## Reset
+ */
+
+html,
+body {
+  @extend .f;
+  font-family: "Source Han Sans", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 15px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+
+/**
+ * ## Position & Box
+ */
+
+.absolute {
+  position: absolute;
+}
+
+.w {
+  position: relative;
+  width: 100%;
+}
+
+.h {
+  position: relative;
+  height: 100%;
+}
+
+.f {
+  @extend .w;
+  @extend .h;
+}
+
+.full {
+  @extend .f;
+  margin: 0;
+  padding: 0;
+}
+
+.auto-w {
+  width: auto !important;
+}
+
+.auto-h {
+  width: auto !important;
+}
+
+
+/**
+ * ## align & float
+ */
+
+.align-center {
+  text-align: center;
+}
+
+.align-left {
+  text-align: left;
+}
+
+.align-right {
+  text-align: right;
+}
+
+.left {
+  float: left;
+}
+
+.right {
+  float: right;
+}
+
+.invisible {
+  visibility: hidden;
+}
+
+.hide {
+  display: none; // 替换bs
+}
+
+.hidden {
+  display: none !important; // 替换bs
+}
+
+.hoverable {
+  transition: box-shadow .25s;
+  box-shadow: 0;
+}
+
+.hoverable:hover {
+  transition: box-shadow .25s;
+  box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}

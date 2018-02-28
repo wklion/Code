@@ -1,0 +1,27 @@
+var host = "http://" + window.location.host;
+var webRoot = "gs";
+//var hostname = "http://" + window.location.hostname;
+var HOSTNAME = "http://101.200.12.178";
+var CTX = HOSTNAME + ":3080/" + webRoot + "/";
+var flashFloodServiceUrl = HOSTNAME + ":3081/GSFlashFlood/services/";
+var wmDataServiceUrl = HOSTNAME + ":3081/WMDataService/services/";
+var productDic = "E:/GS/Tom_GS/webapps/products/archive/";
+var liveGridPath = "E:/GS/Data/CMISS/ANALYSIS/CMPA/0P05/";
+var flashFloodFtp = {
+  url: "127.0.0.1",
+  port: 21,
+  userName: "wklion",
+  password: "wklion"
+};
+var defaultCenter = [103, 38, 9];
+var userServiceUrl = HOSTNAME + ":3080/WMUser/";
+var gridServiceUrl = HOSTNAME + ":3080/WMGridService/";
+var dataSericeUrl = HOSTNAME + ":3081/WMDataService/";
+var archiveService = HOSTNAME + ":3080/SPDArchiveService/";
+var gsDataService = HOSTNAME + ":3081/GSDataService/";
+var gsGraphicService = HOSTNAME + ":3081/GSGraphicService/";
+var imgCacheUrl = HOSTNAME + ":3080/imgs/";
+var imgCachePath = "D:/Tomcats/apache-tomcat-7.0.69-gdyb/webapps/cache/";
+// 格点数据监控地址
+var GMSUrl = "http://localhost:3080/gms/service/monitor";
+var WAPDServiceUrl = "http://localhost:3080/WAPDService/services/AlertSignalService/"

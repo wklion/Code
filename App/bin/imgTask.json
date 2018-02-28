@@ -1,0 +1,24 @@
+[
+	{
+		"name":"H08_B13_R020_(date).*?.AWX",
+		"isUTC":"true",
+		"timeFormat":"yyyyMMdd_HHmm",
+		"sourceDir":"X:/mp/Satellite/Himawari-8/IR1/",
+		"type":"AWX",
+		"outputFile":"C:/Users/lenovo/Desktop/temp/output.png",
+		"tolerant":2,
+		"datePattern":"\\d{8}_\\d{4}",
+		"isEnable":"false"
+	},
+	{
+		"name":"date.tif",
+		"isUTC":"true",
+		"timeFormat":"yyyyMMddHHmm",
+		"sourceDir":"E:/GS/Data/Output/MCR/",
+		"type":"GTiff",
+		"outputFile":"C:/Users/lenovo/Desktop/temp/radar.png",
+		"tolerant":2,
+		"datePattern":"\\d{12}",
+		"isEnable":"true"
+	}
+]

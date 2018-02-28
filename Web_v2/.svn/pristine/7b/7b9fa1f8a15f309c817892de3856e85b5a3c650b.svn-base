@@ -1,0 +1,12 @@
+var host = "http://"+window.location.host;
+var hostname = "http://"+window.location.hostname;
+var flashFloodServiceUrl =  hostname+":8081/GSFlashFlood/services/";
+var wmDataServiceUrl = hostname+":8081/WMDataService/services/";
+var productDic = "E:/GS/Tom_GS/webapps/products/archive/";
+var liveGridPath = "E:/GS/Data/CMISS/ANALYSIS/CMPA/0P05/";
+var flashFloodFtp = {
+    url:"127.0.0.1",
+    port:21,
+    userName:"wklion",
+    password:"wklion"
+};

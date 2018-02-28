@@ -1,0 +1,16 @@
+function BackgroundFieldMenu() {
+  this._init_();
+}
+BackgroundFieldMenu.prototype = {
+  constructor: BackgroundFieldMenu,
+  _init_: function () {
+    this.name = "融合监测菜单";
+  },
+  renderMenu:function () {
+    let html = ``;
+    $("#menu_bd").html(html);
+  },
+  initEvent:function () {
+
+  }
+}

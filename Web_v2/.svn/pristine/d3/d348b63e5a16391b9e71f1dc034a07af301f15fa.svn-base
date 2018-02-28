@@ -1,0 +1,453 @@
+@mixin triangle {
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 5px 5px 0 5px;
+  border-color: #007bff transparent transparent transparent;
+}
+
+$text-color: #33caff;
+$bg-color: rgba(26, 34, 39, 0.95);
+
+#znzsPage {
+  width: 100%;
+  //height: 100%;
+  z-index: 99999;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-origin: 0 0;
+  //transform: scale(0.9);
+  .topPanel {
+    position: absolute;
+    padding-top: 6px;
+    color: #fbffff;
+    width: 1843px;
+    height: 40px;
+    //background-color: rgba(26, 34, 39, 0.95);
+    background-color: rgba(26, 34, 39, 1);
+    //background: #4a57ff;
+    top: 4px;
+    left: 27px;
+    .currentDate {
+      margin: 0 25px 0 13px;
+    }
+
+    select {
+      /*Chrome和Firefox里面的边框是不一样的，所以复写了一下*/
+      border: none;
+      /*很关键：将默认的select选择框样式清除*/
+      appearance: none;
+      -moz-appearance: none;
+      -webkit-appearance: none;
+      /*为下拉小箭头留出一点位置，避免被文字覆盖*/
+      padding-right: 14px;
+    }
+
+    /*清除ie的默认选择框样式清除，隐藏下拉箭头*/
+    select::-ms-expand {
+      display: none;
+    }
+    select {
+      margin-right: 20px;
+      &:nth-of-type(1) {
+        background: url("../imgs/triangle.jpg") no-repeat 50px 8px;
+        background-color: rgba(26, 34, 39, 0.95);
+      }
+      &:nth-of-type(2) {
+        background: url("../imgs/triangle.jpg") no-repeat 33px 8px;
+        background-color: rgba(26, 34, 39, 0.95);
+      }
+    }
+
+    .footstep {
+      display: inline-block;
+      span {
+        margin-right: 10px;
+      }
+    }
+    .play {
+      width: 20px;
+      height: 20px;
+      display: inline-block;
+      border-style: solid;
+      border-width: 10px 0 10px 20px;
+      border-color: transparent transparent transparent #007bff;
+      position: relative;
+      top: 4px;
+      cursor: pointer;
+    }
+    .progress {
+      width: 1515px;
+      position: absolute;
+      right: 15px;
+      top: 19px;
+      height: 3px;
+      .progress-bar {
+        //background: #20cdff;
+        height: 3px;
+      }
+    }
+  }
+
+  .sunMsg {
+    width: 480px;
+    height: 196px;
+    //background: #ff82b4;
+    background-color: rgba(26, 34, 39, 0.95);
+
+    position: absolute;
+    left: 27px;
+    top: 52px;
+    .reason {
+      margin: 16px 44px 0 34px;
+      float: left;
+      img {
+
+      }
+      .date {
+        color: #fbffff;
+        font-size: 15px;
+        text-align: center;
+        margin-top: 10px;
+      }
+    }
+
+    .sunRun {
+      margin-top: 16px;
+      & > p {
+        color: #3ac7ff;
+        font-size: 16px;
+        margin-bottom: 20px;
+      }
+      & > div {
+        margin-top: 10px;
+      }
+      .iconfont {
+        width: 40px;
+        height: 40px;
+        font-size: 40px;
+        color: #2fc7f9;
+      }
+      span {
+        color: #fbffff;
+        font-size: 14px;
+        position: relative;
+        top: -8px;
+      }
+    }
+  }
+
+  .actualWeather {
+    width: 480px;
+    height: 362px;
+    position: absolute;
+    background-color: rgba(26, 34, 39, 0.95);
+    top: 255px;
+    left: 27px;
+    .weatherInfo {
+      height: 95%;
+      min-height: 292px;
+      margin: 2%;
+      //background-color: rgb(40, 40, 40);
+      padding: 2%;
+      .location {
+
+        color: #C69C6C;
+      }
+      .head {
+        display: flex;
+        justify-content: space-between;
+        .dataFrom {
+          color: #C69C6C;
+          text-align: center;
+          line-height: 32px;
+        }
+      }
+      .live {
+        display: flex;
+        height: 130px;
+        justify-content: space-between;
+        margin-bottom: 19px;
+        .curWeather {
+          width: 48%;
+          border: 1px solid #797979;
+          background-color: #1d282e;
+          .live_temp {
+            color: #C69C6C;
+            height: 60%;
+            text-align: center;
+            i {
+              font-size: 3rem;
+            }
+            span {
+              font-size: 2rem;
+            }
+          }
+          .liveOther {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            padding: 1%;
+            color: gainsboro;
+            div {
+              width: 50%;
+              span {
+                font-size: 0.8rem;
+              }
+            }
+          }
+        }
+        .dayAndNight {
+          width: 23%;
+          border: 1px solid #797979;
+          background-color: #1d282e;
+          padding: 1px;
+          div {
+            text-align: center;
+          }
+          .p16 {
+            height: 16%;
+            font-size: 0.9rem;
+          }
+          .p36 {
+            height: 36%;
+          }
+          i {
+            font-size: 2.5rem;
+            color: #f8931d;
+          }
+        }
+      }
+      .cur_live {
+        height: 130px;
+        .normal_row {
+          display: flex;
+          justify-content: space-between;
+          height: 15%;
+          span {
+            text-align: center;
+            font-size: 0.9rem;
+          }
+        }
+        .live_chart {
+          height: 40%;
+          background-color: red;
+        }
+      }
+    }
+  }
+
+  .todayLiveNum {
+    width: 480px;
+    height: 265px;
+    position: absolute;
+    background: $bg-color;
+    top: 624px;
+    left: 27px;
+    & > span {
+      margin-left: 21px;
+      margin-top: 9px;
+      font-size: 14px;
+      color: #38ccff;
+      float: left;
+    }
+    .liveNumInfo {
+      float: left;
+      li {
+        width: 150px;
+        height: 67px;
+        //border-width: 1px;
+        //border-style: solid;
+        //border-color: #4b5459 #798287;
+        float: left;
+        margin: 8px 0 0 8px;
+        background: url("../imgs/znzs/穿衣指数.png") no-repeat;
+        //background-size: cover;
+        span {
+          float: left;
+          margin-top: 18px;
+          font-size: 24px;
+          margin-left: 82px;
+        }
+        &:nth-of-type(1) {
+          background: url("../imgs/znzs/穿衣指数.png") no-repeat;
+          background-size: cover;
+        }
+        &:nth-of-type(2) {
+          background: url("../imgs/znzs/旅游指数.png") no-repeat;
+          background-size: cover;
+        }
+        &:nth-of-type(3) {
+          background: url("../imgs/znzs/运动指数.png") no-repeat;
+          background-size: cover;
+        }
+        &:nth-of-type(4) {
+          background: url("../imgs/znzs/洗车指数.png") no-repeat;
+          background-size: cover;
+        }
+        &:nth-of-type(5) {
+          background: url("../imgs/znzs/化妆指数.png") no-repeat;
+          background-size: cover;
+        }
+        &:nth-of-type(6) {
+          background: url("../imgs/znzs/戴帽指数.png") no-repeat;
+          background-size: cover;
+        }
+        &:nth-of-type(7) {
+          background: url("../imgs/znzs/紫外线指数.png") no-repeat;
+          background-size: cover;
+        }
+        &:nth-of-type(8) {
+          background: url("../imgs/znzs/空气污染指数.png") no-repeat;
+          background-size: cover;
+        }
+        &:nth-of-type(9) {
+          background: url("../imgs/znzs/过敏指数.png") no-repeat;
+          background-size: cover;
+        }
+      }
+    }
+  }
+
+  .forewarning {
+    width: 566px;
+    height: 208px;
+    position: absolute;
+    background: $bg-color;
+    top: 46px;
+    //right: 50px;
+    right: 50px;
+    padding-top: 14px;
+    .tit {
+      font-size: 22px;
+      color: #27d1ff;
+      margin-left: 11px;
+    }
+    .warningTime {
+      float: right;
+      color: $text-color;
+      margin-right: 28px;
+      margin-top: 8px;
+
+    }
+    .forewarningInfo {
+      width: 551px;
+      border: 1px solid #7e8188;
+      overflow: hidden;
+      margin-left: 8px;
+      margin-top: 7px;
+      li {
+        width: 100%;
+        float: left;
+        &:nth-last-of-type(1) {
+          margin-bottom: 20px;
+        }
+        img {
+          margin: 14px 20px 0 14px;
+          width: 31px;
+          height: 26px;
+          float: left;
+        }
+        span {
+          float: left;
+          margin-top: 16px;
+          &:nth-of-type(2) {
+            float: right;
+            margin-right: 80px;
+          }
+        }
+
+      }
+    }
+
+  }
+
+  .detailForecast {
+    width: 566px;
+    height: 378px;
+    background: $bg-color;
+    position: absolute;
+    top: 259px;
+    right: 50px;
+    p:nth-of-type(1) {
+      font-size: 22px;
+      color: #27d1ff;
+      margin-left: 11px
+    }
+    .forecast_tb {
+      width: 551px;
+      margin-left: 8px;
+      margin-top: 147px;
+      tr {
+        td {
+          width: 158px;
+          height: 22px;
+          text-align: center;
+          border: 1px solid #5f686d;
+          font-size: 8px;
+        }
+      }
+    }
+    .forecast_text {
+      font-size: 12px;
+      margin-left: 8px;
+      margin-top: 14px;
+      padding-top: 8px;
+
+      &:nth-of-type(2) {
+        border-top: 1px solid #FFF;
+        //color: #000;
+      }
+
+    }
+  }
+  .riskForecast {
+    width: 566px;
+    height: 247px;
+    background: $bg-color;
+    position: absolute;
+    right: 50px;
+    top: 642px;
+    img {
+      border: 2px solid #444b51;
+      margin: 6px 0 0 6px;
+      width: 557px;
+    }
+  }
+  .znzsPanelCrl {
+    width: 50px;
+    height: 653px;
+    background: #0f0f0f;
+    position: absolute;
+    top: 10px;
+    right: 0px;
+    li {
+      float: left;
+      width: 50px;
+      height: 50px;
+      //background-color: #35c7ff;
+      //border: 1px solid #000;
+      &:hover i {
+        color: #31d0ff;
+        background: #1d282e;
+      }
+      &.borderBottom {
+        //border-bottom: 1px solid #b3b3b3;
+      }
+      i {
+        color: #b5b5b5;
+        font-size: 22px;
+        text-align: center;
+        width: 50px;
+        height: 50px;
+        line-height: 50px;
+        float: left;
+        //&:hover {
+        //  color: #31d0ff;
+        //  background: #1d282e;
+        //}
+      }
+    }
+  }
+}

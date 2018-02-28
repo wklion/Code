@@ -1,0 +1,48 @@
+$font-color:white;
+$theme-color:rgb(22,89,131);
+.alarmProductListWindow{
+    position: absolute;
+    height: 80%;
+    width: 60%;
+    left: 50%;
+    top: 40px;
+    transform: translateX(-50%);
+    color: $font-color;
+    background-color: $theme-color;
+    .thisTitle{
+        height: 4%;
+        line-height: 26px;
+        padding: 3px;
+        text-align: center;
+        font-weight: bold;
+        font-size: 18px;
+    }
+    .close{
+        color: red;
+        width: 30px;
+        height: 30px;
+        font-size: 30px;
+    }
+    iframe{
+        width: 98%;
+        height: 100%;
+        margin: 0px auto;
+        display: block;
+    }
+    .productControl{
+        height: 5%;
+        margin-bottom: 0.5%;
+        text-align: center;
+        button{
+            height: 100%;
+            width: 80px;
+            background-color: transparent;
+            margin-right: 0.5%;
+        }
+    }
+    .productShow{
+        width: 100%;
+        height: 90%;
+        margin:0 auto;
+    }
+}

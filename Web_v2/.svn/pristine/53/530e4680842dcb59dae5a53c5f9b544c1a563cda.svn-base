@@ -1,0 +1,20 @@
+//CIMISS查询
+function CimissUtil() {
+  this._init_();
+}
+CimissUtil.prototype = {
+  constructor: StrongWeatherMenu,
+  _init_:function(){
+
+  },
+  /**
+   * @author:wangkun
+   * @date:2017-12-18
+   * @modifyDate:
+   * @return:
+   * @description:根据站号查询5分钟资料
+   */
+  get5MDataByStationNum:function(){
+    
+  }
+}

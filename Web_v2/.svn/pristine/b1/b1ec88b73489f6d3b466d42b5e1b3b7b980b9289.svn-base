@@ -1,0 +1,46 @@
+var GDYB = {};
+GDYB.Page = {
+    curPage:null,
+    curModuleID:"home",
+    curModule:null,//当前模块
+    initEvent:function(){
+        var t = this;
+        $(".nav-item").on("click",function(){
+            $(this).siblings().removeClass("active");
+            $(this).addClass("active");
+            t.curModuleID = $(this)[0].id;
+            t.main();
+        });
+    },
+    main:function(){
+        if(this.curModuleID === "home"){
+            console.log("首页!");
+            var home = new Home();
+        }
+        else if(this.curModuleID === "zhgc"){
+            console.log("综合观测!");
+            var mapUtil = new MapUtil();
+        }
+        else if(this.curModuleID === "qdl"){
+            console.log("强对流!");
+            var mapUtil = new MapUtil();
+        }
+        else if(this.curModuleID === "qxyj"){
+            console.log("气象预警!");
+            var mapUtil = new MapUtil();
+        }
+        else if(this.curModuleID === "ybzz"){
+            console.log("预报制作!");
+        }
+        else if(this.curModuleID === "yqkb"){
+            console.log("雨情快报!");
+        }
+        else if(this.curModuleID === "jypg"){
+            console.log("检验评估!");
+        }
+        else if(this.curModuleID === "znzs"){
+            console.log("智能展示!");
+            var mapUtil = new MapUtil();
+        }
+    }
+}

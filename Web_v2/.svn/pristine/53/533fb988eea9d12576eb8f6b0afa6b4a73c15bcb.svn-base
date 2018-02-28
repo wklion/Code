@@ -1,0 +1,58 @@
+/**
+ * 格点数据监控样式
+ */
+
+$dash-height: 120px;
+$table-height: calc(100% - #{$dash-height});
+$box-size: 15px;
+$table-border: 1px solid #ccc;
+.gms-monitor_container {
+  padding: $box-size;
+}
+
+.gms-monitor_dash {
+  width: 100%;
+  height: $dash-height
+}
+
+.gms-monitor_table {
+  position: relative;
+  width: 100%;
+  height: $table-height;
+  table {
+    table-layout: fixed;
+    max-width: none;
+    max-height: none;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    box-sizing: content-box;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-top: $table-border;
+    border-left: $table-border;
+    outline-width: 0;
+    tr {}
+    th,
+    td {
+      border-top-width: 0;
+      border-left-width: 0;
+      border-right: $table-border;
+      border-bottom: $table-border;
+      height: 22px;
+      empty-cells: show;
+      line-height: 21px;
+      padding: 0 4px 0 4px;
+      overflow: hidden;
+      outline-width: 0;
+      white-space: pre-line;
+      text-align: center;
+      vertical-align: middle;
+    }
+    td {
+      &.warning {
+        background-color: color("danger");
+      }
+    }
+  }
+}

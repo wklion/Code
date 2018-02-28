@@ -1,0 +1,390 @@
+/*!
+ * 灾害预警制作与发布
+ */
+
+@mixin btn {
+  display: inline-block;
+  margin: 0 2px 4px;
+  font-weight: normal;
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+  background-image: none;
+  border: 1px solid transparent;
+  white-space: nowrap;
+  padding: 6px 12px;
+  font-size: 14px;
+  border-radius: 2px;
+  color: #f1f1f1;
+}
+
+.yjxh-container {
+  $primary-color: color("primary");
+  $fn-color: color("secondary");
+  $gray-color: color("gray");
+  $dark-color: #1c272d;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 400px;
+  height: 100%;
+  background-color: rgba(26, 34, 39, 0.95);
+  z-index: 9999;
+  .title1 {
+    padding: 4px 0;
+    font-size: 16px;
+  }
+  .title2 {
+    padding: 2px 0;
+  }
+  .btn_line3 button {
+    width: 86px;
+  }
+  .btn_line3 {
+    padding: 0px 10px 10px 10px;
+  }
+  section {
+    button {
+      @include btn;
+      background-color: $dark-color;
+      &:hover {
+        border-color: $fn-color;
+      }
+      &:active,
+      &.active {
+        color: #000;
+        background-color: $fn-color;
+      }
+    }
+  }
+  *,
+  *:focus,
+  *:active,
+  *:hover {
+    outline: none;
+  }
+  .menu_changeDiv {
+    display: flex;
+    width: 100%;
+    .menu_change {
+      flex: 1;
+      padding: 2px 6px;
+      background-color: $primary-color;
+      border-left: none;
+      border-right: none;
+      border-top: 2px solid $gray-color;
+      border-bottom: 2px solid $gray-color;
+      color: brighten($gray-color, .3);
+      &.active,
+      &:hover {
+        background-color: $fn-color;
+        color: #000;
+      }
+    }
+  }
+}
+
+
+/*! layer自定义主题 */
+
+.layui-layer-custom {
+  background-color: rgba(62, 62, 62, 0.5) !important;
+  .layui-layer-title {
+    padding-bottom: 30px;
+    color: #fff;
+    border: none;
+    background-color: #1c272d
+  }
+}
+
+
+/*! other */
+
+
+/*! handsontable */
+
+.alert-grid.handsontable .changeType {
+  background-color: #02425e;
+  color: #30c9fd
+}
+
+.alert-grid.handsontable .htDimmed {
+  color: #333
+}
+
+.alert-grid.handsontable th {
+  color: #fff;
+  background-color: #02425e
+}
+
+.alert-grid.handsontable th.highlightRow,
+.alert-grid.handsontable th.currentRow,
+.alert-grid.handsontable th.currentCol {
+  background-color: #ddd
+}
+
+.alert-grid.handsontable td {
+  -webkit-filter: brightness(0.5);
+  filter: brightness(0.5)
+}
+
+.alert-grid.handsontable td {
+  cursor: pointer
+}
+
+.alert-grid.handsontable td.highlightRow,
+.alert-grid.handsontable td.current.highlight {
+  -webkit-filter: brightness(1);
+  filter: brightness(1)
+}
+
+.alert-grid.handsontable td.highlightRow {
+  border-top: 1px solid #5292f7;
+  border-bottom: 1px solid #5292f7
+}
+
+
+/*! 预警制作页面 */
+
+.produce-wrapper {
+  padding: 10px;
+  color: #fff;
+}
+
+.produce-wrapper .main {
+  height: calc(100% - 84px)
+}
+
+.produce-wrapper .main .left {
+  width: 200px
+}
+
+.produce-wrapper .main .right {
+  width: calc(100% - 200px)
+}
+
+.produce-wrapper .main .left,
+.produce-wrapper .main .right {
+  float: left;
+  overflow: auto
+}
+
+.produce-wrapper .main .left>.row>.column,
+.produce-wrapper .main .left>form>.row>.column,
+.produce-wrapper .main .right>.row>.column,
+.produce-wrapper .main .right>form>.row>.column {
+  padding-bottom: 10px
+}
+
+.produce-wrapper .main .left>.row:last-child>.column,
+.produce-wrapper .main .left>form>.row:last-child>.column,
+.produce-wrapper .main .right>.row:last-child>.column,
+.produce-wrapper .main .right>form>.row:last-child>.column {
+  padding-bottom: 0
+}
+
+.produce-wrapper .footer {
+  height: 84px;
+  text-align: center;
+  background-color: transparent;
+}
+
+.produce-wrapper .footer .progress-btn {
+  margin: 15px auto;
+  padding: 6px 42px;
+  background-color: #000;
+}
+
+.produce-wrapper .footer .progress {
+  margin: 0
+}
+
+.produce-wrapper .container {
+  padding-right: 5px;
+  padding-left: 5px
+}
+
+.produce-wrapper .row {
+  margin-right: -5px;
+  margin-left: -5px
+}
+
+.produce-wrapper .column {
+  padding-right: 5px;
+  padding-left: 5px
+}
+
+.produce-wrapper .panel {
+  background-color: #1c272d;
+  border-color: transparent;
+}
+
+.produce-wrapper .panel-heading,
+.produce-wrapper .panel-footer {
+  padding: 4px 15px
+}
+
+.produce-wrapper .panel-heading {
+  background-color: #212e34;
+  border: none;
+}
+
+.produce-wrapper .panel,
+.produce-wrapper .layui-form-item {
+  margin-bottom: 0;
+  border: none;
+}
+
+.produce-wrapper .layui-form-item {
+  margin-bottom: 0;
+  .layui-inline {
+    height: 35px;
+    background-color: transparent;
+    .layui-form-label {
+      background-color: #2b3c44;
+      height: 35px;
+    }
+  }
+}
+
+
+/**
+ * 输入框
+ */
+
+.produce-wrapper {
+  .layui-input,
+  .layui-select {
+    background: transparent;
+    height: 35px;
+  }
+  .layui-form-label,
+  .layui-input,
+  .layui-select {
+    border: 1px solid #d2d2d2;
+  }
+  .layui-form-select dl {
+    background-color: #1c272d;
+  }
+}
+
+.produce-wrapper textarea {
+  background: transparent;
+  border: none;
+  color: #fff;
+}
+
+.produce-wrapper .ztree * {
+  font-family: inherit;
+  font-size: inherit
+}
+
+.tree-wrapper .panel-body {
+  height: calc(100% - 46px);
+  padding: 0
+}
+
+.tree-wrapper .ztree {
+  overflow-y: auto;
+  width: 100%;
+  height: 100%
+}
+
+
+/*! Step 1 Style */
+
+#form-step-1 {
+  min-height: 721px
+}
+
+#warn-type-img {
+  max-width: 150px
+}
+
+.form-section-info {
+  float: left;
+  width: calc(100% - 150px)
+}
+
+.form-section-info .layui-inline {
+  width: calc(33.3333% - 15px)
+}
+
+.form-section-info .layui-form-item:nth-child(2) .layui-inline {
+  width: calc(50% - 15px)
+}
+
+.form-section-words .layui-inline {
+  width: calc(33.3333% - 15px)
+}
+
+.form-section-weather,
+.form-section-time {
+  height: 120px;
+  overflow: auto
+}
+
+.produce-preview.pdf-wrapper {
+  display: block;
+  width: 100%;
+  height: calc(100% - 55px)
+}
+
+.produce-preview.download-btn {
+  display: inline-block;
+  width: 100%;
+  height: 55px;
+  padding: 10px 0;
+  text-align: center
+}
+
+.produce-preview.download-btn .btn {
+  margin: 0 10px
+}
+
+#alarmCountTable {
+  position: absolute;
+  left: 50%;
+  bottom: 40px;
+  z-index: 99999;
+  padding: 10px 20px;
+  margin-left: -569.5px;
+  background: rgba(0, 96, 100, 0.1);
+  color: white;
+  border: 1px solid #30cafe;
+}
+
+#alarmCountTable td {
+  width: 60px;
+  height: 28px;
+  line-height: 28px;
+  vertical-align: middle;
+  text-align: center
+}
+
+.popup-btn {
+  @include btn;
+}
+
+.popup-btn,
+.popup-btn:hover,
+.popup-btn:active {
+  text-decoration: none;
+  color: #fff;
+}
+
+.popup-btn.primary,
+.popup-btn.primary:active {
+  background-color: $fn-color;
+  border-color: $fn-color;
+}
+
+.popup-btn.primary:hover {
+  background-color: color("light");
+}
+
+.popup-btn[disabled],
+.popup-btn:disabled {
+  filter: grayscale(1);
+  pointer-events: none;
+}

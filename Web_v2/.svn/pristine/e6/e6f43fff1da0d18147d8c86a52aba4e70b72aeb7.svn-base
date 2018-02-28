@@ -1,0 +1,260 @@
+/**
+ * @author: wangkun
+ * @date:2017-12-07
+ * @description 首页
+ */
+function Home() {
+    this._init_();
+}
+Home.prototype = {
+    constructor: Home,
+    liveChart:null,
+    _init_: function () {
+        this.name = "首页";
+        $("#content").html(`
+            <div class="home">
+                <div id="left_div" class="left_div">
+                    <div id="weatherInfo" class="weatherInfo">
+                        <div class="head">
+                            <div class="curPos">
+                                <span class="headCaption">兰州市</span>
+                                <span class="location"></span>
+                                <span>18:11</span>
+                                <span>实况</span>
+                            </div>
+                            <div class="dataFrom">
+                                <span>18:00更新</span>
+                                <span>数据来源 兰州中心台</span>
+                            </div>
+                        </div>
+                        <div class="live">
+                            <div class="curWeather">
+                                <div class="live_temp"><i class="tempIcon"></i><span>15℃</span></div>
+                                <div class="liveOther">
+                                    <div id="live_humidity"><i class="humidityIcon"></i><span>相对湿度</span><span>51%</span></div>
+                                    <div id="live_wind"><i class="windIcon"></i><span>东北风</span><span>2级</span></div>
+                                    <div id="live_AQI"><i class="airIcon"></i><span>94</span><span>良</span></div>
+                                    <div id="live_car"><i class="carIcon"></i><span>限行</span><span>5和0</span></div>
+                                </div>
+                            </div>
+                            <div class="dayAndNight">
+                                <div class="p16">20日白天</div>
+                                <div class="p36"><i class="dayPhenomena"></i></div>
+                                <div class="p16">晴</div>
+                                <div class="p16">26℃</div>
+                                <div class="p16">微风</div>
+                            </div>
+                            <div class="dayAndNight">
+                                <div class="p16">20日夜间</div>
+                                <div class="p36"><i class="nightPhenomena"></i></div>
+                                <div class="p16">晴</div>
+                                <div class="p16">11℃</div>
+                                <div class="p16">微风</div>
+                            </div>
+                        </div>
+                        <div class="cur_live">
+                            <div class="normal_row"><span>08时</span><span>11时</span><span>14时</span><span>17时</span><span>20时</span><span>23时</span><span>02时</span><span>05时</span></div>
+                            <div class="normal_row"><span class="dayPhenomena"></span><span class="dayPhenomena"></span><span class="dayPhenomena"></span><span class="dayPhenomena"></span><span class="dayPhenomena"></span><span class="dayPhenomena"></span><span class="dayPhenomena"></span><span class="dayPhenomena"></span></div>
+                            <div id="live_chart" class="live_chart"></div>
+                            <div class="normal_row"><span>微风</span><span>微风</span><span>微风</span><span>微风</span><span>微风</span><span>微风</span><span>微风</span><span>微风</span></div>
+                            <div class="normal_row"><span><3级</span><span><3级</span><span><3级</span><span><3级</span><span><3级</span><span><3级</span><span><3级</span><span><3级</span></div>
+                        </div>
+                    </div>
+                    <div id="dutyInfo" class="dutyInfo">
+                        <div class="headInfo">
+                            <span class="headCaption">值班人员</span>
+                            <span class="title_right">2017/12/06 星期三 15:30</span>
+                        </div>
+                        <div class="duty-detail">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr><th>姓名</th><th>岗位</th><th>电话</th><th>科室</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>王某某</td><td>值班岗</td><td>1300000000000</td><td>短临科</td></tr>
+                                    <tr><td>李某某</td><td>首席岗</td><td>1310000000000</td><td>短临科</td></tr>
+                                    <tr><td>张某某</td><td>值班岗</td><td>1320000000000</td><td>短临科</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div id="strongWeather" class="strongWeather">
+                        <div class="headInfo">
+                            <span class="headCaption">实况统计分析</span>
+                        </div>
+                        <div class="statHourspan">2017年12月7日14时至2017年12月8日14时</div>
+                        <div id="sw_stat">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr><th>类型</th><th>站次</th><th>最强</th><th>出现时间</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>大风</td><td>2</td><td>瓜州榆林千佛洞</td><td>6月12日</td></tr>
+                                    <tr><td>短时强降水</td><td>5</td><td>华家岭(35.2)</td><td>6月12日</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div id="sw_detail">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr><th>类型</th><th>站次</th><th>出现时间</th><th>站名</th><th>值</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>大风</td><td>2</td><td>瓜州榆林千佛洞</td><td>6月12日</td><td>18.3</td></tr>
+                                    <tr><td>短时强降水</td><td>5</td><td>华家岭(35.2)</td><td>6月12日</td><td>18.3</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div id="right_div" class="right_div">
+                    <div class="imgProduct" id="imgProduct">
+                    </div>
+                    <div class="chartProduct" id="chartProduct">
+                    </div>
+                </div>
+            </div>
+        `);
+        var config = this.getConfig();
+        var html = "";
+        config.imgProduct.forEach(item=>{
+            var imgSrc = host+"/"+webRoot+item.url;
+            html+='<div class="item"><image src='+imgSrc+'></image><button class="imgMax"></button><span class="title">'+item.name+'</span></div>';
+        });
+        $("#imgProduct").html(html);
+        html = "";
+        config.chartProduct.forEach(item=>{
+            html+='<div class="item" id="'+item.id+'"><div class="chartHead"><span class="headCaption">'+item.name+'</span><span class="headRight">'+item.updateTime+'</span></div><div class="chartBody"></div></div>';
+        });
+        $("#chartProduct").html(html);
+        initLiveChart();//初始化表格
+        this.updateAlertSingal();
+        function initLiveChart(){
+            this.liveChart = echarts.init(document.getElementById('live_chart'));
+            var option = {
+                title: {
+                    text: ''
+                },
+                tooltip: {
+                    trigger: 'axis'
+                },
+                xAxis:  {
+                    type: 'category',
+                    boundaryGap: false,
+                    data: ['08','11','14','17','20','23','02','05']
+                },
+                yAxis: {
+                    show:true,
+                    min:function(value){
+                        return value.min;
+                    },
+                    type: 'value',
+                    axisLabel: {
+                        formatter: '{value} °C'
+                    }
+                },
+                series: [
+                    {
+                        name:'气温',
+                        type:'line',
+                        data:[11, 11, 15, 13, 12, 13, 10,8],
+                    }
+                ]
+            }
+            this.liveChart.setOption(option);
+        }
+    },
+    getConfig:function(){
+        var module = {
+            imgProduct:[{
+                name:"强天气实况",
+                id:"live",
+                url:"/img/live.png"
+            },{
+                name:"葵花红外云图",
+                id:"sat",
+                url:"/img/sat.png"
+            },{
+                name:"全省雷达拼图",
+                id:"radar",
+                url:"/img/radar.png"
+            },{
+                name:"降水分布图",
+                id:"livePrec",
+                url:"/img/prec.png"
+            },{
+                name:"预警监控",
+                id:"earlyWarning",
+                url:"/img/earlyWarning.png"
+            },{
+                name:"临近预警",
+                id:"nearWarning",
+                url:"/img/earlyWarning.png"
+            }],
+            chartProduct:[{
+                name:"预警信号",
+                id:"alertSignal",
+                updateTime:"更新日期：17-12-07 15:36"
+            },{
+                name:"5分钟实况",
+                id:"live5m",
+                updateTime:"更新日期：17-12-07 15:36"
+            },{
+                name:"检验评估",
+                id:"exam",
+                updateTime:""
+            }]
+        };
+        return module;
+    },
+    /**
+     * @author:wangkun
+     * @date:2017-12-08
+     * @modifyDate:
+     * @return:
+     * @description:获取预警信号
+     */
+    getAlertSingal:function(){
+        var testData = [
+            {
+                type:"大风",
+                level:"蓝色",
+                departName:"兰州",
+                datetime:"2017-09-01"
+            },
+            {
+                type:"强降水",
+                level:"黄色",
+                departName:"庆阳",
+                datetime:"2017-09-02"
+            },
+            {
+                type:"雷电",
+                level:"蓝色",
+                departName:"天水",
+                datetime:"2017-09-03"
+            }
+        ];
+        return testData;
+    },
+    /**
+     * @author:wangkun
+     * @date:2017-12-08
+     * @modifyDate:
+     * @return:
+     * @description:更新预警信号
+     */
+    updateAlertSingal:function(){
+        var data = this.getAlertSingal();
+        var html = "<ul>";
+        data.forEach(item=>{
+            let title = item.departName+"发布"+item.type+item.level+"预警";
+            html+="<li>";
+            html+='<span><span></span><span>'+title+'</span></span>';
+            html+='<span>'+item.datetime+'</span>';
+            html+="</li>";
+        });
+        html+="</ul>";
+        $("#alertSignal .chartBody").html(html);
+    }
+}

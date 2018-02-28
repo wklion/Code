@@ -1,0 +1,57 @@
+function BackgroundFieldMenu() {
+  this._init_();
+}
+
+BackgroundFieldMenu.prototype = {
+  constructor: BackgroundFieldMenu,
+  _init_: function () {
+    this.name = "背景场";
+  },
+  renderMenu: function () {
+    let html = `<div class="BackgroundFiled"> 
+                  <p>物理量:</p>
+                  <dl>  
+                    <dt>模式选择:</dt>
+                    <dd> 
+                      <button>NECP</button><button>GRAPES</button><button>WARMS</button>
+                    </dd>
+                    <dt>模式选择:</dt>
+                    <dd> 
+                      <button>Q</button><button>RH</button><button>FH</button><button>IFVQ</button><button>PW</button>
+                    </dd>
+                    <dt>能量:</dt>
+                    <dd> 
+                      <button>A</button><button>K</button><button>LI</button><button>CIN</button><button>T700-300</button><button>T700-500</button><button>CAPE</button><button>THETSE</button>
+                    </dd>
+                    <dt>动力:</dt>
+                    <dd> 
+                      <button>VOR</button><button>DIV</button>
+                    </dd>
+                    <dt>特殊层:</dt>
+                    <dd> 
+                      <button>-20℃</button><button>0℃</button>
+                    </dd>
+                    <dt>层次:</dt>
+                    <dd> 
+                      <button>850</button><button>700</button><button>500</button><button>200</button>
+                    </dd>
+                  </dl>
+                  <dl> 
+                   <dt>GRAPES:</dt>
+                    <dd> 
+                      <button>1h降水</button><button>3h降水</button><button>雷达反射率预报</button>
+                    </dd>
+                    <dt>概率预报:</dt>
+                    <dd><button>短时强降水</button><button>雷暴大风或冰雹</button></dd>
+                    <dt>客观预报:</dt>
+                    <dd><button>短时强降水</button><button>雷暴大风或冰雹</button></dd>
+                    <dt>时间:</dt>
+                    <dd><input type="datetime-local"></dd>
+                  </dl>
+                </div>`;
+    $("#menu_bd").html(html);
+  },
+  initEvent: function () {
+
+  }
+}

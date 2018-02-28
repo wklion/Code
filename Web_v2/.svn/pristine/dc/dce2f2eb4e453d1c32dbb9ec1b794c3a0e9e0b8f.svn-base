@@ -1,0 +1,320 @@
+function ZNZSPageClas() {
+  this._init_();
+}
+
+ZNZSPageClas.prototype = {
+  constructor: ZNZSPageClas,
+
+  _init_() {
+    let _this = this;
+    let lmu = new LayerManagerUtil();
+    _this.gridLayer = lmu.addLayer("格点展示", "grid");
+    _this.gridLayer.items = heatMap_TempStyles;
+
+
+    _this.param = {
+      // element: '2t',
+      type: 'prvn',
+      level: '1000',
+      hourspan: 24,
+      maketime: '2017-07-04 05:00:00',
+      version: 'p',
+      datetime: '2017-07-04 08:00:00'
+    }
+  },
+  renderMenu() {
+    let html = `
+      <div id="znzsPage">
+        <div class="topPanel">
+          <span class="currentDate">2017/8/31</span>
+          <select name="" id="timeSelect" class="timeSelect">
+            <option value="05小时">05小时</option>
+            <option value="16小时">16小时</option>
+          </select>
+          <select name="" id="">
+            <option value="省台">省台</option>
+          </select>
+         <!-- <div class="footstep"> 
+           <span>1</span>
+           <span>2</span>
+           <span>3</span>
+          </div>-->
+        
+          <span class="play" id="playGrid"> 
+            
+          </span>
+          <div id="progress_out" class="progress progress-striped active">
+            <div id="progress_in" class="progress-bar progress-bar-info">
+              <span class="sr-only">40% 完成</span>
+            </div>
+          </div>
+        </div>
+        <div class="leftPanel">
+          <div class="sunMsg znzsPanel"> 
+            <div class="reason"> 
+              <img src="imgs/节气.jpg" alt="">
+              <div class="date">10月7-9日</div>
+            </div>
+            <div class="sunRun">  
+              <p>该地日出日落时间、季节提醒</p>
+              <div>
+                <i class="iconfont icon-baitian"></i>
+                <span>日出时间: 06:19</span>
+              </div>
+              <div> 
+                <i class="iconfont icon-wanshang"></i>
+                <span>日落时间: 18:19</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="actualWeather  znzsPanel"> 
+            <div id="weatherInfo" class="weatherInfo">
+              <div class="head">
+                  <div class="curPos">
+                      <span class="headCaption">兰州市</span>
+                      <span class="location icon-dingwei iconfont"></span>
+                      <span id="curTime">18:11</span>
+                      <span>实况</span>
+                  </div>
+                  <div class="dataFrom">
+                      <span>08:00更新</span>
+                      <span>数据来源 兰州中心台</span>
+                  </div>
+              </div>
+              <div class="live">
+                  <div class="curWeather">
+                      <div class="live_temp"><i class="tempIcon"></i><span>?</span></div>
+                      <div class="liveOther">
+                          <div id="live_humidity"><i class="humidityIcon"></i><span>相对湿度</span><span>?</span></div>
+                          <div id="live_wind"><i class="windIcon"></i><span>东北风</span><span>2级</span></div>
+                          <div id="live_AQI"><i class="airIcon"></i><span>94</span><span>良</span></div>
+                          <div id="live_car"><i class="carIcon"></i><span>限行</span><span>5和0</span></div>
+                      </div>
+                  </div>
+                  <div class="dayAndNight">
+                      <div class="p16">20日白天</div>
+                      <div class="p36"><i class="dayPhenomena"></i></div>
+                      <div class="p16">晴</div>
+                      <div class="p16" id="dayTemp">26℃</div>
+                      <div class="p16">微风</div>
+                  </div>
+                  <div class="dayAndNight">
+                      <div class="p16">20日夜间</div>
+                      <div class="p36"><i class="nightPhenomena"></i></div>
+                      <div class="p16">晴</div>
+                      <div class="p16" id="nightTemp">11℃</div>
+                      <div class="p16">微风</div>
+                  </div>
+              </div>
+              <div class="cur_live">
+                  <div class="normal_row"><span>08时</span><span>11时</span><span>14时</span><span>17时</span><span>20时</span><span>23时</span><span>02时</span><span>05时</span></div>
+                  <div class="normal_row"><span class="dayPhenomena"></span><span class="dayPhenomena"></span><span class="dayPhenomena"></span><span class="dayPhenomena"></span><span class="dayPhenomena"></span><span class="dayPhenomena"></span><span class="dayPhenomena"></span><span class="dayPhenomena"></span></div>
+                  <div id="live_chart" class="live_chart"></div>
+                  <div class="normal_row"><span>微风</span><span>微风</span><span>微风</span><span>微风</span><span>微风</span><span>微风</span><span>微风</span><span>微风</span></div>
+                  <div class="normal_row"><span><3级</span><span><3级</span><span><3级</span><span><3级</span><span><3级</span><span><3级</span><span><3级</span><span><3级</span></div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="todayLiveNum znzsPanel"> 
+            <span>今日生活指数</span><span>( 2017-10-16 08:00发布 )</span>
+            <ul class="liveNumInfo"> 
+              <li><span>舒适</span></li>
+              <li><span>舒适</span></li>
+              <li><span>舒适</span></li>                 
+              <li><span>舒适</span></li>
+              <li><span>舒适</span></li>
+              <li><span>舒适</span></li>           
+              <li><span>舒适</span></li>
+              <li><span>舒适</span></li>
+              <li><span>舒适</span></li> 
+            </ul>
+          </div>
+        </div>
+        <div class="rightPanel">
+          <div class="forewarning znzsPanel"> 
+            <p><span class="tit">预警信号</span><span class="warningTime">观测时间: <span>8-26 10:00</span></span></p>
+            <ul class="forewarningInfo"> 
+              <li><img src="imgs/WarningIcon/大风蓝色.jpg" alt=""><span>甘肃省发布大风蓝色预警</span><span>09月20日16时</span></li>       
+              <li><img src="imgs/WarningIcon/大风黄色.jpg" alt=""><span>甘肃省发布强对流黄色预警</span><span>09月20日16时</span></li>        
+              <li><img src="imgs/WarningIcon/霜冻蓝色.jpg" alt=""><span>甘肃省发布霜冻蓝色预警</span><span>09月20日16时</span></li>
+            </ul>
+          </div>
+          
+          <div class="detailForecast znzsPanel"> 
+            <p>精细化预报</p>
+            <table class="forecast_tb"> 
+              <tr>
+                <td rowspan="2">预报要素</td>
+                <td>2017-08-30</td>
+                <td>2017-08-31</td>
+                <td>2017-09-01</td>
+              </tr>
+              <tr>
+              
+                <td>20:00 20:00 20:00 20:00</td>
+                <td>20:00 20:00 20:00 20:00</td>
+                <td>20:00 20:00 20:00 20:00</td>
+              </tr>
+              <tr>
+                <td>3小时降水(mm)</td>
+                <td>00 00 00 0.1 0.1</td>
+                <td>00 00 00 0.1 0.1</td>
+                <td>00 00 00 0.1 0.1</td>
+              </tr>
+               <tr>
+                <td>3小时降水(mm)</td>
+                <td>00 00 00 0.1 0.1</td>
+                <td>00 00 00 0.1 0.1</td>
+                <td>00 00 00 0.1 0.1</td>
+              </tr>
+               <tr>
+                <td>3小时降水(mm)</td>
+                <td>00 00 00 0.1 0.1</td>
+                <td>00 00 00 0.1 0.1</td>
+                <td>00 00 00 0.1 0.1</td>
+              </tr>
+               <tr>
+                <td>3小时降水(mm)</td>
+                <td>00 00 00 0.1 0.1</td>
+                <td>00 00 00 0.1 0.1</td>
+                <td>00 00 00 0.1 0.1</td>
+              </tr>
+               <tr>
+                <td>3小时降水(mm)</td>
+                <td>00 00 00 0.1 0.1</td>
+                <td>00 00 00 0.1 0.1</td>
+                <td>00 00 00 0.1 0.1</td>
+              </tr>
+            </table>
+            <p class="forecast_text">未来3小时气温4.6摄氏度,降水0mm,南风小鱼3级,相对湿度20%,雨量0%</p>
+          </div> 
+          
+          <div class="riskForecast znzsPanel"> 
+            <img src="imgs/znzs/气象风险预警.jpg" alt="">
+          </div>
+        </div>
+        <ul class="znzsPanelCrl"> 
+         <li><i class="iconfont icon-gs-right-01"></i></li>
+         <li><i class="iconfont icon-gs-right-02"></i></li>
+         <li><i class="iconfont icon-gs-right-03"></i></li>
+         <li class="borderBottom"></li>
+         <li class="gridEleName" data="r3"><i class="iconfont icon-gs-right-04"></i></li>
+         <li class="gridEleName" data="2t"><i class="iconfont icon-gs-right-05"></i></li>
+         <li class="gridEleName"><i class="iconfont icon-gs-right-06"></i></li>
+         <li class="gridEleName"><i class="iconfont icon-gs-right-07"></i></li>
+         <li class="gridEleName"><i class="iconfont icon-gs-right-08"></i></li>
+         <li class="borderBottom"></li>
+         <li><i class="iconfont icon-gs-right-09"></i></li>
+         <li><i class="iconfont icon-gs-right-10"></i></li>
+         <li><i class="iconfont icon-gs-right-11"></i></li>
+        </ul>
+      </div>`;
+    $("#content").append(html);
+
+
+  },
+  initEvent() {
+    let _this = this;
+
+    /*let height = [];
+    $(".znzsPanel").each(function (index, item) {
+      height[index] = $(item).css("height");
+    });
+    console.log($(".znzsPanelCrl .isShow"));
+    $(".znzsPanelCrl .isShow").click(function () {
+      $(".znzsPanel").stop(false, true);
+      let index = $(this).index('.isShow');
+      let _this = this;
+      console.log(index);
+      if ($(".znzsPanel").eq(index).css("display") == "none") {
+        $(".znzsPanel").eq(index).show().animate({"height": height[index]}, 1000);
+        $(_this).parent().addClass("active");
+      }
+      else {
+        $(".znzsPanel").eq(index).animate({"height": "0px"}, 1000, function () {
+          $(this).hide();
+        });
+        $(_this).parent().removeClass("active");
+      }
+    })*/
+
+    // 获取格点数据
+    //http://172.23.2.237:8080/WMGridService/services/GridService/getGrid
+    // {element:'tmax',type:'prvn',level:'1000',hourspan:24,maketime:'2018-01-12 05:00:00',version:'p',datetime:'2018-01-12 08:00:00'}
+    $(".znzsPanelCrl .gridEleName").on("click", function () {
+      _this.param.element = $(this).attr("data");
+      $.ajax({
+        type: "POST",
+        url: "http://101.200.12.178:3080/WMGridService/services/GridService/getGrid",
+        data: {"para": JSON.stringify(_this.param)},
+        success(data) {
+          let com = new Common();
+          let result = com.converGridToDatasetGrid(data, "r3");
+          console.log(result);
+          _this.gridLayer.setDatasetGrid(result);
+          _this.gridLayer.isShowGridline = false;
+          // _this.gridLayer.isShowLabel = false;
+          _this.gridLayer.refresh();
+
+        }
+      })
+    });
+
+
+    //播放格点展示
+    $("#playGrid").on("click", function () {
+      if (!_this.param.element) {
+        alert("请先选择要素!");
+        return;
+      }
+
+      let playSet = dataConfig[_this.param.element];
+      let count = playSet.totalHour / playSet.hourSpan;
+      let i = 0;
+
+      //进度条参数
+      let progress = 0;
+      let progressTotalWidth = parseInt($('#progress_out').css('width'));
+
+      // console.log(progressTotalWidth);
+
+      function progressRun(id) {
+        progress += progressTotalWidth / count;
+        $('#' + id).css({
+          width: progress
+        })
+      }
+
+      //播放计时器
+      let toPlay = setInterval(function () {
+        i++;
+        if (i > count) {
+          i = 0;
+          progress = 0;
+        }
+
+        _this.param.hourspan = playSet.hourSpan * i;
+        $.ajax({
+          type: "POST",
+          url: "http://101.200.12.178:3080/WMGridService/services/GridService/getGrid",
+          data: {"para": JSON.stringify(_this.param)},
+          success(data) {
+            progressRun("progress_in");
+            let com = new Common();
+            let result = com.converGridToDatasetGrid(data, "r3");
+            console.log(result);
+            _this.gridLayer.setDatasetGrid(result);
+            _this.gridLayer.isShowGridline = false;
+            // _this.gridLayer.isShowLabel = false;
+            _this.gridLayer.refresh();
+
+          }
+        })
+      }, 2000);
+
+    })
+  }
+}
+

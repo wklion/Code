@@ -1,0 +1,50 @@
+/**
+ * @author: wangkun
+ * @date:2017-12-20
+ * @description 格点检验评估
+ */
+function GDJYPageCLass() {
+  this._init_();
+}
+GDJYPageCLass.prototype = {
+  constructor: GDJYPageCLass,
+  dateSelect1:null,
+  dateSelect2:null,
+  _init_:function(){
+    this.name = "检点检验";
+  },
+  renderMenu:function(){
+    var me = this;
+    $("#map_div").hide();
+    $("#content").append(`
+      <div id="jyChart_div">
+        <div id="JY_Condition">
+          <span>条件：</span><div id="dateSelect1"></div><span>到</span><div id="dateSelect2"></div><span>时次</span>
+          <select id="jyTimePar"><option value="08">08</option><option value="20">20</option></select>
+          <span>地区</span><select id="jyArea"><option value="all">全省</option></select>
+          <span>站点</span><select id="jyStation"><option value="all">全部</option></select>
+          <span>图表时效</span><select id="jyHours"><option value="72">72</option><option value="168">168</option><option value="240">240</option></select>
+          <span>地图时效</span><select id="jyHourSpan"><option value="24">24</option><option value="48">48</option><option value="72">72</option><option value="96">96</option><option value="120">120</option><option value="144">144</option><option value="168">168</option></select>
+        </div>
+        <div>
+          <div><span>显示：</span><span>图表</span><span>地图</span></div>
+          <div><span>要素：</span><span>日降水</span><span>风</span><span>气温</span><span>日最高温度</span><span>日最低温度</span></div>
+          <div><span>方法：</span><span>绝对平均误差</span><span>均方根误差</span><span>均方根误差</span><span>均方根误差</span><span>≤1℃准确率</span><span>≤2℃准确率</span></div>
+        </div>
+      </div>
+    `);
+    me.dateSelect1 = new DateSelecter(2,2);
+    me.dateSelect1.intervalMinutes = 60*24; //24小时
+    me.dateSelect1.changeHours(-11*24*60);
+    $("#dateSelect1").html(me.dateSelect1.div);
+    $("#dateSelect1").find("input").css({"width":"95px", border: "1px solid #e8e9eb", height: "28px","padding-left":"5px"});
+    $("#dateSelect1").find("img").css("display","none");
+
+    me.dateSelect2 = new DateSelecter(2,2);
+    me.dateSelect2.intervalMinutes = 60*24; //24小时
+    me.dateSelect2.changeHours(-1*24*60);
+    $("#dateSelect2").html(me.dateSelect2.div);
+    $("#dateSelect2").find("input").css({"width":"95px", border: "1px solid #e8e9eb", height: "28px","padding-left":"5px"});
+    $("#dateSelect2").find("img").css("display","none");
+  }
+}

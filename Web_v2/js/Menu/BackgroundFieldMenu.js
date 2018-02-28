@@ -1,0 +1,355 @@
+function BackgroundFieldMenu() {
+    this._init_();
+}
+
+BackgroundFieldMenu.prototype = {
+    constructor: BackgroundFieldMenu,
+    gridLayer: null,//格点图层
+    contourLayer: null,//等值线图层
+    _init_: function () {
+        this.name = "背景场";
+        // this.urlXX = "192.168.2.114:8081/WMDataService/services/MicapsService/getContour";
+    },
+    renderMenu: function () {
+        let html = `<div class="BackgroundFiled"> 
+                  <p>物理量:</p>
+                  <dl id="physics">  
+                    <dt>模式选择:</dt>
+                    <dd id="model"> 
+                      <button class="active">NECP</button><button>GRAPES</button><button>WARMS</button>
+                    </dd>
+                    <dt>水汽:</dt>
+                    <dd id="moisture" class="element"> 
+                      <button>Q</button><button>RH</button><button>FH</button><button>IFVQ</button><button>PW</button>
+                    </dd>
+                    <dt>能量:</dt>
+                    <dd id="energy" class="element gridD"> 
+                      <button>A</button><button>K</button><button>LI</button><button>CIN</button><button>T700-300</button><button>T700-500</button><button>CAPE</button><button>THETSE</button>
+                    </dd>
+                    <dt>动力:</dt>
+                    <dd id="power" class="element gridD" > 
+                      <button>VOR</button><button>DIV</button>
+                    </dd>
+                    <dt>特殊层:</dt>
+                    <dd id="specialLayer" class="element gridD"> 
+                      <button>-20℃</button><button>0℃</button>
+                    </dd>
+                    <dt>层次:</dt>
+                    <dd id="level"> 
+                      <button class="active">850</button><button>700</button><button>500</button><button>200</button>
+                    </dd>
+                  </dl>
+                  <dl> 
+                   <dt>GRAPES:</dt>
+                    <dd> 
+                      <button class="active">1h降水</button><button>3h降水</button><button>反射率预报</button>
+                    </dd>
+                    <dt>概率预报:</dt>
+                    <dd><button class="active">短时强降水</button><button>雷暴大风或冰雹</button></dd>
+                    <dt>客观预报:</dt>
+                    <dd><button class="active">短时强降水</button><button>雷暴大风或冰雹</button></dd>
+                    <dt>时间:</dt>
+                    <dd><input id="dateTime" type="datetime-local" value="2018-01-28T20:00:00" ></dd>
+                  </dl>
+                  <div id="hourSpan" class="hourSpan"> 
+                       
+                  </div>
+                </div>`;
+        $("#menu_bd").html(html);
+    },
+    initEvent: function () {
+        let me = this;
+
+        $("#model button").click(function () {
+            $(this).addClass("active").siblings().removeClass("active");
+            me.disabledFilter();
+        });
+        //点击水汽要素
+        $("#moisture button").click(function () {
+            if ($(this).hasClass("active")) {
+                $(this).removeClass("active");
+                me.clearDisplayData("physic_" + $(this).html());
+                GDYB.Legend.clear();
+            }
+            else {
+                $(this).addClass("active").siblings().removeClass("active");
+                me.requestSingleData(this);
+            }
+
+        });
+        //点击其他要素
+        $(".gridD button").click(function () {
+            if ($(this).hasClass("active")) {
+                $(this).removeClass("active");
+                me.clearDisplayData("physic_" + $(this).html());
+            } else {
+                $(".gridD button").removeClass("active");
+                $(this).addClass("active");
+                me.requestSingleData(this);
+            }
+
+        });
+        let html = ``;
+        for (let i = 0; i <= 24; i++) {
+            html += `<button>${i * 3}</button>`
+        }
+        $("#hourSpan").html(html);
+        $("#hourSpan").find("button").first().addClass("active");
+
+
+        //标识有层次的元素
+        let buttonHasLevel = $("#moisture button,#power button,#energy button:last-of-type");
+
+        //点击层次
+        $("#level button").on("click", function () {
+            $(this).addClass("active").siblings().removeClass("active");
+            buttonHasLevel.each(function () {
+                if ($(this).hasClass("active")) {
+                    console.log(this);
+                    me.requestSingleData(this);
+                }
+
+            })
+
+        });
+        //点击间隔
+        $("#hourSpan button").on("click", function () {
+
+            $(this).addClass("active").siblings().removeClass("active");
+            me.requestAllData();
+        });
+        /*    $(".element button").click(function () {
+
+
+            })*/
+
+        //$("#level button").first().click();
+
+    },
+    initRes: function () {
+        var me = this;
+        var lmu = new LayerManagerUtil();
+        me.contourLayer = lmu.addLayer("等值线图层", "vector", null, null, "Contour");
+        me.gridLayer = lmu.addLayer("格点图层", "grid", null, null, null);
+        var newItem = heatMap_TempStyles.filter(function (ele, index) {
+            return index % 2;
+        });
+        me.gridLayer.items = newItem;
+        me.gridLayer.isShowLabel = false;
+        me.gridLayer.isShowGridline = false;
+        me.contourLayer.renderer.labelField = "值";
+    },
+    requestAllData() {
+        let me = this;
+        // GDYB.Page.alertInfo.show("正在查询!");
+        $(".element").find("button.active").each(function () {
+            let param = {
+                element: "physic_" + $(this).html(),
+                level: $("#level .active").html(),
+                hourspan: $("#hourSpan .active").html() - 0,
+                datetime: $("#dateTime")[0].value.replace("T", " "),
+            };
+            GDYB.Page.alertInfo.show("正在查询" + param.element);
+            let functionName = me.getFunctionName(param.element);
+            var url = wmDataService + "services/MicapsService/" + functionName;
+            request("POST", url, param).then(function (data) {
+                if (data == undefined) {
+                    GDYB.Page.alertInfo.hide(param.element + "查询成功,但数据为空!");
+                    return;
+                }
+                else {
+                    GDYB.Page.alertInfo.hide(param.element + "查询成功!");
+                }
+                if (functionName == "getData") {
+                    me.displayGrid(data, param.element);
+                }
+                else {
+                    me.displayVector(data, param.element);
+                }
+            });
+        });
+    },
+    requestSingleData(element) {
+        let me = this;
+
+        var elementID = "physic_" + $(element).html();
+        GDYB.Page.alertInfo.show("正在查询" + elementID);
+        if (!$(element).hasClass("active")) {
+            me.clearDisplayData(elementID);
+            return;
+        }
+        let param = {
+            element: elementID,
+            level: $("#level .active").html(),
+            hourspan: $("#hourSpan .active").html() - 0,
+            datetime: $("#dateTime")[0].value.replace("T", " "),
+        };
+        let functionName = me.getFunctionName(elementID);
+        var url = wmDataService + "services/MicapsService/" + functionName;
+        request("POST", url, param).then(function (data) {
+            GDYB.Title.add(`${$("#model .active").html()}--${param.element}--${param.level}--${param.hourspan}`,`${param.datetime}`,true);
+            if (data == undefined) {
+                GDYB.Page.alertInfo.hide(param.element + "查询成功,但数据为空!");
+                return;
+            }
+            else {
+                GDYB.Page.alertInfo.hide(param.element + "查询成功!");
+            }
+            if (functionName == "getData") {
+                me.displayGrid(data, elementID);
+            }
+            else {
+                me.displayVector(data, elementID);
+            }
+        });
+    },
+    /**
+     * @author:wangkun
+     * @date:2017-2-4
+     * @modifyDate:
+     * @return:
+     * @description:获取接口名称
+     */
+    getFunctionName: function (elementID) {
+        var functionName = "getContour";
+        if (elementID == "physic_Q" || elementID == "physic_RH" || elementID == "physic_FH" || elementID == "physic_IFVQ" || elementID == "physic_PW") {
+            functionName = "getData";
+        }
+        return functionName;
+    },
+    /**
+     * @author:wangkun
+     * @date:2017-2-4
+     * @modifyDate:
+     * @return:
+     * @description:显示格点
+     */
+    displayGrid: function (data, elementID) {
+        var me = this;
+        let com = new Common();
+        let dg = com.converGridToDatasetGrid(data, "");
+        var dMin = Math.floor(dg.dMin * 10) / 10;
+        var dMax = Math.floor(dg.dMax * 10 + 1.0) / 10; //向上取十分位整
+        var items = me.gridLayer.items;
+        var dStep = (dMax - dMin) / items.length;
+        for (var i = 0; i < items.length; i++) {
+            items[i].start = dMin + dStep * i;
+            items[i].end = dMin + dStep * (i + 1);
+        }
+        me.gridLayer.setDatasetGrid(dg);
+        me.gridLayer.refresh();
+        GDYB.Legend.clear();
+        GDYB.Legend.add(elementID, items);
+    },
+    /**
+     * @author:wangkun
+     * @date:2017-2-4
+     * @modifyDate:
+     * @return:
+     * @description:显示失量
+     */
+    displayVector: function (data, elementID) {
+        var me = this;
+        if (typeof(data) == "undefined") {
+            return;
+        }
+        var featureUtilityClass = new FeatureUtilityClass();
+        var result = featureUtilityClass.getRecordsetFromJson(data);
+        features = result.features;
+        if (features == null || features.length == 0) {
+            return;
+        }
+        if (elementID == "physic_A" || elementID == "physic_K" || elementID == "physic_LI" || elementID == "physic_CIN" || elementID == "physic_T700-300"
+            || elementID == "physic_T700-500" || elementID == "physic_CAPE" || elementID == "physic_THESE") {
+            me.contourLayer.style = {
+                strokeColor: "red",
+                strokeWidth: "1"
+            }
+        }
+        else if (elementID == "physic_VOR" || elementID == "physic_DIV") {
+            me.contourLayer.style = {
+                strokeColor: "black",
+                strokeWidth: "1"
+            }
+        }
+        else if (elementID == "physic_H-20" || elementID == "physic_H0") {
+            me.contourLayer.style = {
+                strokeColor: "rgb(238,157,9)",
+                strokeWidth: "1"
+            }
+        }
+        me.contourLayer.removeAllFeatures();
+        me.contourLayer.addFeatures(features);
+        me.contourLayer.redraw();
+    },
+    /**
+     * @author:wangkun
+     * @date:2017-2-4
+     * @modifyDate:
+     * @return:
+     * @description:清除显示数据
+     */
+    clearDisplayData: function (elementID) {
+        var me = this;
+        let functionName = me.getFunctionName(elementID);
+        if (functionName == "getData") {
+            me.gridLayer.setDatasetGrid(null);
+            me.gridLayer.refresh();
+        }
+        else {
+            me.contourLayer.removeAllFeatures();
+            me.contourLayer.redraw();
+        }
+    }
+    ,
+    //禁用要素筛选
+    disabledFilter() {
+        $("#physics").find("button").attr({disabled: false});
+        if ($("#model .active").html() === "GRAPES") {
+            $("#moisture").find("button").each(function (index, item) {
+                if ([2, 3, 4].indexOf(index) !== -1) {
+                    $(item).attr({disabled: true});
+                }
+            });
+            $("#energy").find("button").each(function (index, item) {
+                if ([0, 4, 5].indexOf(index) !== -1) {
+                    $(item).attr({disabled: true});
+                }
+            });
+            $("#power").find("button").each(function (index, item) {
+                if ([0].indexOf(index) !== -1) {
+                    $(item).attr({disabled: true});
+                }
+            });
+            $("#specialLayer").find("button").each(function (index, item) {
+                if ([0, 1].indexOf(index) !== -1) {
+                    $(item).attr({disabled: true});
+                }
+            });
+
+        }
+        else if ($("#model .active").html() === "WARMS") {
+            $("#moisture").find("button").each(function (index, item) {
+                if ([0, 1, 2, 3, 4].indexOf(index) !== -1) {
+                    $(item).attr({disabled: true});
+                }
+            });
+            $("#energy").find("button").each(function (index, item) {
+                if ([0, 1, 2, 4, 5, 7].indexOf(index) !== -1) {
+                    $(item).attr({disabled: true});
+                }
+            });
+            $("#power").find("button").each(function (index, item) {
+                if ([0, 1].indexOf(index) !== -1) {
+                    $(item).attr({disabled: true});
+                }
+            });
+            $("#specialLayer").find("button").each(function (index, item) {
+                if ([0, 1].indexOf(index) !== -1) {
+                    $(item).attr({disabled: true});
+                }
+            });
+
+        }
+    }
+}

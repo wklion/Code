@@ -1,0 +1,160 @@
+/**
+ * @author: wangkun
+ * @date:2017-12-17
+ * @description 强天气菜单
+ */
+function StrongWeatherMenu() {
+  this._init_();
+}
+
+StrongWeatherMenu.prototype = {
+  constructor: StrongWeatherMenu,
+  _init_: function () {
+    this.name = "强天气菜单";
+  },
+  renderMenu: function () {
+    let html = `<div id="qtq_tab" class="tab-pane">
+          <div class="sk-alerm-title">
+            <i class=""></i>综合填图
+          </div>
+          <div id="stationType">
+            <div id="quyz" class="option_btn">区域站</div>
+            <div id="benz" class="option_btn">本站</div>
+          </div>
+          <div id="timeType">
+            <div id="time5min" class="option_btn">5分钟</div>
+            <div id="timeHour" class="option_btn">小时</div>
+          </div>
+          <div id="ysElement">
+            <div id="ys_jiangs" class="option_btn">降水</div>
+            <div id="ys_qiw" class="option_btn">气温</div>
+            <div id="ys_gaow" class="option_btn">高温</div>
+            <div id="ys_diw" class="option_btn">低温</div>
+            <div id="ys_feng" class="option_btn">风</div>
+            <div id="ys_jdfeng" class="option_btn">极大风</div>
+            <div id="ys_shid" class="option_btn">湿度</div>
+            <div id="ys_qiy" class="option_btn">气压</div>
+          </div>
+          <div id="skElement_copy">
+            <div>
+              <div class="option_btn">
+                <img src="imgs/zhjc/wu.png">雾
+              </div>
+              <div id="rhjc_shuangd" class="option_btn ">
+                <img src="imgs/zhjc/shuangd.png">霜冻
+              </div>
+              <div id="rhjc_yangs" class="option_btn ">
+                <img src="imgs/zhjc/yangs.png">扬沙
+              </div>
+              <div id="rhjc_fuc" class="option_btn ">
+                <img src="imgs/zhjc/fuc.png">浮尘
+              </div>
+            </div>
+            <div>
+              <div id="rhjc_hanc" class="option_btn">
+                <img src="imgs/zhjc/hanc.png">寒潮
+              </div>
+              <div id="rhjc_baox" class="option_btn ">
+                <img src="imgs/zhjc/baox.png">暴雪
+              </div>
+              <div id="rhjc_wum" class="option_btn ">
+                <img src="imgs/zhjc/mai.png">霾
+              </div>
+              <div id="rhjc_gaow" class="option_btn ">
+                <img src="imgs/zhjc/gaow.png">高温
+              </div>
+            </div>
+            <div>
+              <div id="rhjc_shacb" class="option_btn"> 沙尘暴</div>
+            </div>
+          </div>
+
+          <div id="skElement">
+            <div class="sk-alerm-title">
+              <i></i>灾害报警
+            </div>
+            <div class="rhjc_df">
+              <button>大风</button>
+              <img src="imgs/dafeng1.png" alt="" />
+              <span>17-25</span>
+              <img src="imgs/dafeng2.png" alt="" />
+              <span>25-30</span>
+              <img src="imgs/dafeng3.png" alt="" />
+              <span>&gt;30</span>
+            </div>
+            <div class="rhjc_dq">
+              <button>短强</button>
+              <img src="imgs/dafeng1.png" alt="" />
+              <span>17-25</span>
+              <img src="imgs/dafeng2.png" alt="" />
+              <span>25-30</span>
+              <img src="imgs/dafeng3.png" alt="" />
+              <span>&gt;30</span>
+            </div>
+            <div class="rhjc_yl">
+              <button>雨量</button>
+              <img src="imgs/dafeng1.png" alt="" />
+              <span>17-25</span>
+              <img src="imgs/dafeng2.png" alt="" />
+              <span>25-30</span>
+              <img src="imgs/dafeng3.png" alt="" />
+              <span>&gt;30</span>
+            </div>
+            <div class="rhjc_bb">
+              <button>冰雹</button>
+              <img src="imgs/dafeng1.png" alt="" />
+              <span>17-25</span>
+              <img src="imgs/dafeng2.png" alt="" />
+              <span>25-30</span>
+              <img src="imgs/dafeng3.png" alt="" />
+              <span>&gt;30</span>
+            </div>
+          </div>
+
+          <div class="timeChoose">
+            <div>
+              <input class="timeRadio" type="radio"  checked="true" name="rhjcQueryRadio">
+              <label for="timeRadio">实时</label>
+            </div>
+            <div>
+              <input class="hourRadio" type="radio"name="rhjcQueryRadio">
+              <label for="hourRadio">时段</label>
+              <div class='option_btn'>20min</div>
+              <div class='option_btn'>40min</div>
+              <div class='option_btn'>3H</div>
+              <div class='option_btn'>6H</div>
+            </div>
+
+            <div class="startTime">
+              <span>从:</span>
+              <input type="text" value="2017-12-08 10:00:00" />
+            </div>
+            <div class="endTime">
+              <span>到:</span>
+              <input type="text" value="2017-12-08 10:00:00" />
+            </div>
+          </div>
+
+          <div class="query_action">
+            <button class="option_btn">查询</button>
+            <button class="option_btn">动画</button>
+            <button class="option_btn">累加</button>
+            <select class="animationSelect">
+              <option value="">1</option>
+              <option value="">2</option>
+              <option value="">3</option>
+              <option value="">4</option>
+              <option value="">5</option>
+            </select>
+          </div>
+          <div class="timeListDiv">
+
+          </div>
+        </div>`;
+    $("#menu_bd").html(html);
+
+  },
+  initEvent:function () {
+
+  }
+}

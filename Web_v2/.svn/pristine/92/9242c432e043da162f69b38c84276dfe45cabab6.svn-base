@@ -1,0 +1,16 @@
+function ShortForecastingMenu() {
+  this._init_();
+}
+ShortForecastingMenu.prototype = {
+  constructor: ShortForecastingMenu,
+  _init_: function () {
+    this.name = "融合监测菜单";
+  },
+  renderMenu:function () {
+    let html = ``;
+    $("#menu_bd").html(html);
+  },
+  initEvent:function () {
+
+  }
+}

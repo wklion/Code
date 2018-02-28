@@ -1,0 +1,195 @@
+/**
+ * @author: wangkun
+ * @date:2017-12-17
+ * @description 雷达菜单
+ */
+function RadarMenu() {
+  this._init_();
+}
+
+RadarMenu.prototype = {
+  constructor: RadarMenu,
+  _init_: function () {
+    this.name = "雷达菜单";
+  },
+  renderMenu: function () {
+    let html = `
+       <div id="leida_tab">
+          <div class="puzzle" id="puzzle">
+            <div class="title1">拼图</div>
+            <div class="pup">
+              <span>PUP:</span>
+              <div id="pup">
+                <button>CR</button>
+                <button>ET</button>
+                <button>VIL</button>
+                <button>OHP</button>
+              </div>
+            </div>
+            
+            <div class="swan">
+              <span>SWAN:</span>
+              <div id="swan">
+                <button>TITAN</button>
+                <button>TREC</button>
+              </div>
+            </div>
+            
+            <div class="cappi">
+              <span>CAPPI:</span>
+              <div id="cappi">
+                <button>0.5</button>
+                <button>1.0</button>
+                <button>1.5</button>
+                <button>2.0</button>
+                <button>2.5</button>
+                <button>3.0</button>
+                <button>3.5</button>
+              </div>
+            </div>
+          </div>
+          <div class="station" id="station">
+            <div class="station_ld">
+              <span>雷达站</span>
+              <div id="station_ld">
+                <button>兰州</button>
+                <button>天水</button>
+                <button>嘉峪关</button>
+                <button>固原</button>
+                <button>甘南</button>
+                <button>张掖</button>
+                <button>汉中</button>
+                <button>延安</button>
+                <button>武都</button>
+                <button>西峰</button>
+                <button>西宁</button>
+              </div>
+            </div>
+            <div class="station_cp">
+              <span>产品</span>
+              <div id="station_cp">
+                <button>基本反射率</button>
+                <button>径向速度</button>
+              </div>
+            </div>
+            <div class="station_yj">
+              <span>仰角</span>
+              <div id="station_yj">
+                <button>0.5</button>
+                <button>1.5</button>
+                <button>2.4</button>
+              </div>
+            </div>
+          </div>
+          <div class="timeChoose">
+            <div>
+              <input class="timeRadio" type="radio" checked="true" name="rhjcQueryRadio">
+              <label for="timeRadio">实时</label>
+            </div>
+            <div>
+              <input class="hourRadio" type="radio" checked="true" name="rhjcQueryRadio">
+              <label for="hourRadio">时段</label>
+              <div class='option_btn'>20min</div>
+              <div class='option_btn'>40min</div>
+              <div class='option_btn'>3H</div>
+              <div class='option_btn'>6H</div>
+            </div>
+            <div class="startTime">
+              <span>从:</span>
+              <input type="text" value="2017-12-08 10:00:00" />
+            </div>
+            <div class="endTime">
+              <span>到:</span>
+              <input type="text" value="2017-12-08 10:00:00" />
+            </div>
+          </div>
+
+          <div class="query_action">
+            <button class="option_btn">查询</button>
+            <button class="option_btn">动画</button>
+            <button class="option_btn">累加</button>
+            <select class="animationSelect">
+              <option>1</option>
+              <option>2</option>
+              <option>3</option>
+              <option>4</option>
+              <option>5</option>
+            </select>
+          </div>
+          <div class="timeListDiv">
+          </div>
+        </div>
+      `;
+    $("#menu_bd").html(html);
+
+
+  },
+  initEvent: function () {
+//拼图
+    $("#puzzle").find("button").click(function () {
+      $("#puzzle").find("button").removeClass("active");
+      $(this).addClass("active");
+      // console.log(this);
+      if ($(this).parent()[0].id == "pup") {
+        console.log("the id is pup");
+      }
+      else if ($(this).parent()[0].id == "swan") {
+        console.log("the id is swan");
+      }
+      else if ($(this).parent()[0].id == "cappi") {
+        console.log("the id is cappi");
+      }
+    });
+
+    let param = {};
+    param.station_ld = "";
+    param.station_cp = "默认参数1";
+    param.station_yj = "默认参数2";
+    $("#station").find("button").click(function () {
+      if ($(this).parent()[0].id == "station_ld") {//点击雷达站
+        $("#station_ld").find("button").removeClass("active");
+        $(this).addClass("active");
+        console.log("the id is 雷达站");
+        param.station_ld = $(this).html();
+        if (!$("#station_cp").find("button").is(".active"))
+          $("#station_cp").children().first().addClass("active");
+        if (!$("#station_yj").find("button").is(".active"))
+          $("#station_yj").children().first().addClass("active");
+      }
+
+
+      else if ($(this).parent()[0].id == "station_cp") {//点击产品
+        if (!$("#station_ld").find("button").is(".active")) {
+          console.log("请先选择站点-----------------");
+        }
+        else {
+          console.log("有站点了");
+          $(this).siblings().removeClass("active");
+          $(this).addClass("active");
+          param.station_cp = $(this).html();
+        }
+      }
+      else if ($(this).parent()[0].id == "station_yj") {//点击仰角
+        if (!$("#station_ld").find("button").is(".active")) {
+          console.log("请先选择站点");
+        }
+        else {
+          $(this).siblings().removeClass("active");
+          $(this).addClass("active");
+          param.station_yj = $(this).html();
+        }
+      }
+      if ($("#station_ld").find("button").is(".active")) {
+        /*$.post({
+        url: "",
+        data: param,
+        success: function (data) {
+          console.log(data);
+        }
+      })*/
+        console.log("发送请求,参数为:")
+        console.log(param);
+      }
+    })
+  }
+}

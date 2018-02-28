@@ -1,0 +1,412 @@
+//CIMISS查询
+function CimissUtil() {
+    this._init_();
+    this.param = {
+        userId: "BCLZ_ZXT_zxtybs",
+        pwd: "yubaoshi",
+        interfaceId: "getSurfEleInRegionByTime",//按时间地区查询的接口
+        dataFormat: "jsonp",//采用jsonp跨域
+        callbackName: "callbackName"//默认返回的jsonp的函数名
+    };
+    this.defaultParam = "Station_Name,Province,City,Cnty,Station_Id_C,Lat,Lon,Station_levl,"//一些默认选中的参数
+    /* http://10.158.89.55/cimiss-web/api?
+       userId=BENN_QXT_GDCSC&pwd=5840232&interfaceId=getSurfEleInRegionByTime&dataCode=SURF_CHN_MUL_HOR
+       &times=20171225000000&adminCodes=620000&elements=Station_Name,Province,City,Cnty,Station_Id_C,Lat,Lon,Station_levl,PRS
+       &dataFormat=jsonp&callbackName=callbackName*/
+}
+
+CimissUtil.prototype = {
+    constructor: CimissUtil,
+    _init_: function () {
+    },
+    /**
+     * @author:zhonghao
+     * @date:2017-12-22
+     * @modifyDate:
+     * @return:
+     * @description:按地区时间查询中国地面小时要素资料
+     */
+    SURF_CHN_MUL_HOR_Region_Times(recall, times = "20171219000000", adminCodes = "620000") {
+        let _this = this;
+        let tempParam = _this.param;
+        tempParam.times = times;
+        tempParam.adminCodes = adminCodes;
+        tempParam.staLevels = $("#stationType .active").attr("flag");
+        tempParam.callbackName = "callback" + Math.random().toString(36).substr(2);//传入随机函数名
+
+        $("#ys_feng").attr("flag", "WIN_S_Avg_10mi");//此处小时数据的风速采用的10分钟平均风速
+        tempParam.dataCode = "SURF_CHN_MUL_HOR";//
+        let elements = [];
+        $("#ysElement .active").each(function () {
+            elements.push($(this).attr("flag"));
+        });
+
+        tempParam.elements = _this.defaultParam + elements.join(",");
+        //模拟数据
+        /* $.ajax({
+             url: "./mock/all_element_hour.js",
+             dataType: "jsonp",
+             data: tempParam,
+             jsonpCallback: "callbackName1",
+             success: function (data) {
+               console.log(tempParam);
+               window.SURF_CHN_MUL_HOR_Region_TimesShowData = function (data) {
+                 var result = data.DS;
+                 delete window.SURF_CHN_MUL_HOR_Region_TimesShowData;
+                 recall(result);
+               };
+               SURF_CHN_MUL_HOR_Region_TimesShowData(data);
+             }
+           }
+         );*/
+        //内网接口
+        /* $.ajax({
+              url: "http://10.166.89.55/cimiss-web/api",
+              data: tempParam,
+              dataType: "jsonp",
+              jsonpCallback: tempParam.callbackName,
+              success: function (data) {
+              window.SURF_CHN_OTHER_MIN_Region_TimesShowData = function (data) {
+                 var result = data.DS;
+                 delete window.SURF_CHN_OTHER_MIN_Region_TimesShowData;
+                 recall(result);
+               };
+               SURF_CHN_OTHER_MIN_Region_TimesShowData(data);
+                console.log(data.DS);
+              }
+            }
+          );*/
+        //mock.js
+        $.ajax({
+                url: "http://10.166.89.55/cimiss-web/api",
+                success: function (data) {
+                    data = JSON.parse(data);
+                    window.SURF_CHN_OTHER_MIN_Region_TimesShowData = function (data) {
+                        var result = data.DS;
+                        delete window.SURF_CHN_OTHER_MIN_Region_TimesShowData;
+                        recall(result);
+                    };
+                    SURF_CHN_OTHER_MIN_Region_TimesShowData(data);
+                    console.log(data.DS);
+
+                }
+            }
+        );
+
+    },
+    /**
+     * @author:zhonghao
+     * @date:2017-12-22
+     * @modifyDate:
+     * @return:
+     * @description:按时间地区查询中国地面分钟降水资料
+     */
+
+    SURF_CHN_PRE_MIN_Region_Times(recall, times = "20171219000000", adminCodes = "620000") {
+        let _this = this;
+        let tempParam = _this.param;
+        tempParam.times = times;
+        tempParam.adminCodes = adminCodes;
+        tempParam.staLevels = $("#stationType .active").attr("flag");
+        tempParam.dataCode = "SURF_CHN_PRE_MIN";
+        tempParam.elements = _this.elements + "PRE";
+        tempParam.callbackName = "callback" + Math.random().toString(36).substr(2);//传入随机函数名
+
+
+        /* $.ajax({
+             url: "http://10.166.89.55/cimiss-web/api",
+             data: tempParam,
+             dataType: "jsonp",
+             jsonpCallback: tempParam.callbackName,
+             success: function (data) {
+             window.SURF_CHN_OTHER_MIN_Region_TimesShowData = function (data) {
+                var result = data.DS;
+                delete window.SURF_CHN_OTHER_MIN_Region_TimesShowData;
+                recall(result);
+              };
+              SURF_CHN_OTHER_MIN_Region_TimesShowData(data);
+               console.log(data.DS);
+             }
+           }
+         );*/
+        $.ajax({
+                url: "./mock/pre_min.js",
+                dataType: "jsonp",
+                jsonpCallback: "callbackName2",
+                success: function (data) {
+                    window.SURF_CHN_PRE_MIN_Region_TimesShowData = function (data) {
+                        var result = data.DS;
+                        delete window.SURF_CHN_PRE_MIN_Region_TimesShowData;
+                        recall(result);
+                    };
+                    SURF_CHN_PRE_MIN_Region_TimesShowData(data);
+                    // console.log(data);
+                }
+            }
+        );
+    }
+    ,
+    /**
+     * @author:zhonghao
+     * @date:2017-12-22
+     * @modifyDate:
+     * @return:
+     * @description:按地区时间查询中国地面分钟主要要素资料,包括{气温,气压,湿度,风速}
+     */
+    SURF_CHN_MAIN_MIN_Region_Times(recall, times = "20171219000000", adminCodes = "620000") {
+        let _this = this;
+        let tempParam = _this.param;
+        tempParam.times = times;
+        tempParam.adminCodes = adminCodes;
+        tempParam.staLevels = $("#stationType .active").attr("flag");
+        tempParam.dataCode = "SURF_CHN_MAIN_MIN";
+        tempParam.callbackName = "callback" + Math.random().toString(36).substr(2);//传入随机函数名
+
+        let elements2 = [];
+        $(".minuteData2").filter(".active").each(function () {
+            elements2.push($(this).attr("flag"));
+        });
+
+        tempParam.elements = _this.defaultParam + elements2.join(",");
+        /* $.ajax({
+             url: "http://10.166.89.55/cimiss-web/api",
+             data: tempParam,
+             dataType: "jsonp",
+             jsonpCallback: tempParam.callbackName,
+             success: function (data) {
+             window.SURF_CHN_OTHER_MIN_Region_TimesShowData = function (data) {
+                var result = data.DS;
+                delete window.SURF_CHN_OTHER_MIN_Region_TimesShowData;
+                recall(result);
+              };
+              SURF_CHN_OTHER_MIN_Region_TimesShowData(data);
+               console.log(data.DS);
+             }
+           }
+         );*/
+        $.ajax({
+                url: "./mock/main_min.js",
+                dataType: "jsonp",
+                jsonpCallback: "callbackName3",
+                success: function (data) {
+                    window.SURF_CHN_MAIN_MIN_Region_TimesShowData = function (data) {
+                        var result = data.DS;
+                        delete window.SURF_CHN_MAIN_MIN_Region_TimesShowData;
+                        recall(result);
+                    };
+                    SURF_CHN_MAIN_MIN_Region_TimesShowData(data);
+                    // console.log(data);
+                }
+            }
+        );
+    }
+    ,
+    /**
+     * @author:zhonghao
+     * @date:2017-12-22
+     * @modifyDate:
+     * @return:
+     * @description:按时间地区查询中国地面分钟其他要素资料,包括{最高温度,最低温度,极大风速}
+     */
+    SURF_CHN_OTHER_MIN_Region_Times(recall, times = "20171219000000", adminCodes = "620000") {
+        let _this = this;
+        let tempParam = _this.param;
+        tempParam.times = times;
+        tempParam.adminCodes = adminCodes;
+        tempParam.staLevels = $("#stationType .active").attr("flag");
+        tempParam.dataCode = "SURF_CHN_OTHER_MIN";
+        tempParam.callbackName = "callback" + Math.random().toString(36).substr(2);//传入随机函数名
+
+        let elements3 = [];
+        $(".minuteData3").filter(".active").each(function () {
+            elements3.push($(this).attr("flag"));
+        });
+
+        tempParam.elements = _this.defaultParam + elements3.join(",");
+        /* $.ajax({
+             url: "http://10.166.89.55/cimiss-web/api",
+             data: tempParam,
+             dataType: "jsonp",
+             jsonpCallback: tempParam.callbackName,
+             success: function (data) {
+             window.SURF_CHN_OTHER_MIN_Region_TimesShowData = function (data) {
+                var result = data.DS;
+                delete window.SURF_CHN_OTHER_MIN_Region_TimesShowData;
+                recall(result);
+              };
+              SURF_CHN_OTHER_MIN_Region_TimesShowData(data);
+               console.log(data.DS);
+             }
+           }
+         );*/
+
+        $.ajax({
+                url: "./mock/other_min.js",
+                dataType: "jsonp",
+                jsonpCallback: "callbackName4",
+                success: function (data) {
+                    window.SURF_CHN_OTHER_MIN_Region_TimesShowData = function (data) {
+                        var result = data.DS;
+                        delete window.SURF_CHN_OTHER_MIN_Region_TimesShowData;
+                        recall(result);
+                    };
+                    SURF_CHN_OTHER_MIN_Region_TimesShowData(data);
+                    // console.log(data);
+                }
+            }
+        );
+
+    }
+    ,
+    /**
+     * @author:zhonghao
+     * @date:2017-12-28
+     * @modifyDate:
+     * @return:
+     * @description:按时间地区要素查询中国地面单一要素资料
+     */
+    SURF_CHN_ELEMENT_Region_Times(element, recall, times = "20171219000000", adminCodes = "620000") {
+
+    },
+    SURF_CHN_MUL_HOR_Region_TimesRange(recall, startTime, endTime, adminCodes = "620000") {
+        let _this = this;
+        let tempParam = _this.param;
+        tempParam.adminCodes = adminCodes;
+        tempParam.staLevels = $("#stationType .active").attr("flag");
+        tempParam.dataCode = "SURF_CHN_MUL_HOR";
+        tempParam.interfaceId = "getSurfEleInRegionByTimeRange";
+        tempParam.callbackName = "callback" + Math.random().toString(36).substr(2);//传入随机函数名
+        tempParam.timeRange = "[" + startTime + "," + endTime + "]";
+        $("#ys_feng").attr("flag", "WIN_S_Avg_10mi");//此处小时数据的风速采用的10分钟平均风速
+
+
+        tempParam.dataCode = "SURF_CHN_MUL_HOR";//
+        let elements = [];
+        $("#ysElement .active").each(function () {
+            elements.push($(this).attr("flag"));
+        });
+
+        tempParam.elements = _this.defaultParam + elements.join(",");//默认要素+选中的要素
+        //模拟数据
+        $.ajax({
+                url: "./mock/all_element_timeRange.js",
+                dataType: "jsonp",
+                data: tempParam,
+                jsonpCallback: "callbackName5",
+                success: function (data) {
+                    window.SURF_CHN_MUL_HOR_Region_TimesRange = function (data) {
+                        var result = data.DS;
+                        delete window.SURF_CHN_MUL_HOR_Region_TimesRange;
+                        recall(result);
+                    };
+                    SURF_CHN_MUL_HOR_Region_TimesRange(data);
+                }
+            }
+        );
+        //内网接口
+        /* $.ajax({
+             url: "http://10.166.89.55/cimiss-web/api",
+             data: tempParam,
+             dataType: "jsonp",
+             jsonpCallback: tempParam.callbackName,
+             success: function (data) {
+              window.SURF_CHN_MUL_HOR_Region_TimesRange = function (data) {
+                var result = data.DS;
+                delete window.SURF_CHN_MUL_HOR_Region_TimesRange;
+                recall(result);
+              };
+              SURF_CHN_MUL_HOR_Region_TimesRange(data);
+            }
+           }
+         );*/
+
+    },
+    /**
+     * @author:wangkun
+     * @date:2017-12-20
+     * @modifyDate:
+     * @return:
+     * @description:中国地面分钟其它要素资料
+     */
+    SURF_CHN_OTHER_MIN__StationNum_Time(stationNum, strDateTime, recall) {
+        if (strDateTime.length != 14) {
+            console.log("时间格式不对,应为14位");
+            return;
+        }
+        window.SURF_CHN_OTHER_MINShowData = function (data) {
+            var result = data.DS;
+            delete window.SURF_CHN_OTHER_MINShowData;
+            recall(result);
+        };
+        var url = CIMISSConfig.HOST + "userId=" + CIMISSConfig.USERID + "&pwd=" + CIMISSConfig.PWD + "&interfaceId=getSurfEleByTimeAndStaID&dataCode=SURF_CHN_MAIN_MIN&elements="
+            + "Station_Name,Province,City,Cnty,Station_Id_C,Lat,Lon,Alti,TEM,RHU&times=" + strDateTime + "&staIds=" + stationNum + "&dataFormat=jsonp&callbackName=SURF_CHN_OTHER_MINShowData";
+        $.ajax({
+            url: url,
+            type: "GET",
+            dataType: "jsonp",
+            success: function (data) {
+                console.log(data);
+            },
+        });
+    }
+    ,
+    /**
+     * @author:wangkun
+     * @date:2017-12-20
+     * @modifyDate:
+     * @return:
+     * @description:按站号和时间段查询数据(PRS-气压,TEM-温度,RHU-相对湿度,WIN_D_Avg_1mi-1分钟平均风向,WIN_S_Avg_1mi-1分钟平均风速,GST-地面温度)
+     */
+    SURF_CHN_MAIN_MIN__StationNum_Times: function (stationNum, strStartDateTime, strEndDateTime, recall) {
+        if (strStartDateTime.length != 14 || strEndDateTime.length != 14) {
+            console.log("时间格式不对,应为14位");
+            return;
+        }
+        window.SURF_CHN_MAIN_MIN__StationNum_TimesShowData = function (data) {
+            var result = data.DS;
+            delete window.SURF_CHN_MAIN_MIN__StationNum_TimesShowData;
+            recall(result);
+        }
+        var url = CIMISSConfig.HOST + "userId=" + CIMISSConfig.USERID + "&pwd=" + CIMISSConfig.PWD + "&interfaceId=getSurfEleByTimeRangeAndStaID&dataCode=SURF_CHN_MAIN_MIN&elements="
+            + "Station_Name,Province,City,Cnty,Station_Id_C,Lat,Lon,Alti,PRS,TEM,RHU,WIN_D_Avg_1mi,WIN_S_Avg_1mi,GST&timeRange=[" + strStartDateTime + "," + strEndDateTime + "]&staIds=" + stationNum + "&dataFormat=jsonp&callbackName=SURF_CHN_MAIN_MIN__StationNum_TimesShowData";
+        $.ajax({
+            url: url,
+            type: "GET",
+            dataType: "jsonp",
+            success: function (data) {
+                console.log(data);
+            },
+        });
+    }
+    ,
+    /**
+     * @author:wangkun
+     * @date:2017-12-20
+     * @modifyDate:
+     * @return:
+     * @description:按站号和时间段查询数据(PRE-降水)
+     */
+    SURF_CHN_PRE_MIN__StationNum_Times: function (stationNum, strStartDateTime, strEndDateTime, recall) {
+        if (strStartDateTime.length != 14 || strEndDateTime.length != 14) {
+            console.log("时间格式不对,应为14位");
+            return;
+        }
+        window.SURF_CHN_PRE_MIN__StationNum_TimesShowData = function (data) {
+            var result = data.DS;
+            delete window.SURF_CHN_PRE_MIN__StationNum_TimesShowData;
+            recall(result);
+        }
+        var url = CIMISSConfig.HOST + "userId=" + CIMISSConfig.USERID + "&pwd=" + CIMISSConfig.PWD + "&interfaceId=getSurfEleByTimeRangeAndStaID&dataCode=SURF_CHN_PRE_MIN&elements="
+            + "Station_Name,Province,City,Cnty,Station_Id_C,Lat,Lon,Alti,PRE&timeRange=[" + strStartDateTime + "," + strEndDateTime + "]&staIds=" + stationNum + "&dataFormat=jsonp&callbackName=SURF_CHN_PRE_MIN__StationNum_TimesShowData";
+        $.ajax({
+            url: url,
+            type: "GET",
+            dataType: "jsonp",
+            success: function (data) {
+                console.log(data);
+            },
+        });
+    }
+
+
+}

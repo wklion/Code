@@ -1,0 +1,377 @@
+/**
+ * @author: wangkun
+ * @date:2017-12-17
+ * @description 雷达菜单
+ */
+function RadarMenu() {
+  this._init_();
+}
+
+RadarMenu.prototype = {
+  constructor: RadarMenu,
+  _init_: function () {
+    this.name = "雷达菜单";
+  },
+  renderMenu: function () {
+    let html = `
+       <div id="leida_tab">
+          <div class="puzzle" >
+            <div class="title1">拼图</div>
+            <div id="puzzle">
+              <div class="pup">
+                <span>PUP:</span>
+                <div id="pup">
+                  <button id="radar_mcr">CR</button>
+                  <button id="radar_mtop">ET</button>
+                  <button id="radar_mvil">VIL</button>
+                  <button id="radar_ohp">OHP</button>
+                </div>
+              </div>
+              
+              <div class="swan">
+                <span>SWAN:</span>
+                <div id="swan">
+                  <button id="swan_titan">TITAN</button>
+                  <button id="swan_trec">TREC</button>
+                </div>
+              </div>
+              
+              <div class="cappi">
+                <span id="cappi">CAPPI:</span>
+                <div id="cappiDiv">
+                  <button>0.5</button>
+                  <button>1.0</button>
+                  <button>1.5</button>
+                  <button>2.0</button>
+                  <button>2.5</button>
+                  <button>3.0</button>
+                  <button>3.5</button>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+          
+          <div class="station" >
+            <div class="title1">单站</div>
+            <div id="station">
+              <div class="station_ld" id="">
+                  <span>雷达站</span>
+                  <div id="radarArea">
+                    <button id="radar_lanzhou">兰州</button>
+                    <button id="radar_tianshui">天水</button>
+                    <button id="radar_jiayuguan">嘉峪关</button>
+                    <button id="radar_guyuan">固原</button>
+                    <button id="radar_gannan">甘南</button>
+                    <button id="radar_zhangye">张掖</button>
+                    <button id="radar_hanzhong">汉中</button>
+                    <button id="radar_yanan">延安</button>
+                    <button id="radar_wudu">武都</button>
+                    <button id="radar_xifeng">西峰</button>
+                    <button id="radar_xining">西宁</button>
+                  </div>
+                </div>
+              <div class="station_cp" id="product">
+                  <span>产品</span>
+                  <div id="station_cp">
+                    <button id="radar_r" flag="R">基本反射率</button>
+                    <button id="radar_v" flag="V">径向速度</button>
+                  </div>
+                </div>
+              <div class="station_yj" id="elevation">
+                  <span>仰角</span>
+                  <div id="station_yj">
+                    <button flag="1">0.5</button>
+                    <button flag="2">1.5</button>
+                    <button flag="3">2.4</button>
+                  </div>
+                </div>
+            </div>
+           
+          </div>
+          <div class="timeChoose">
+            <div>
+              <input class="timeRadio" type="radio" checked="true" name="rhjcQueryRadio">
+              <label for="timeRadio">实时</label>
+              <span id="live_date"></span>
+            </div>
+            <div>
+              <input class="hourRadio" type="radio" name="rhjcQueryRadio">
+              <label for="hourRadio">时段</label>
+              <div class='option_btn'>20min</div>
+              <div class='option_btn'>40min</div>
+              <div class='option_btn'>3H</div>
+              <div class='option_btn'>6H</div>
+            </div>
+            <div class="startTime">
+              <span>从:</span>
+              <input type="text" value="2017-12-08 10:00:00" />
+            </div>
+            <div class="endTime">
+              <span>到:</span>
+              <input type="text" value="2017-12-08 10:00:00" />
+            </div>
+          </div>
+
+          <div class="query_action">
+            <button class="option_btn">查询</button>
+            <button class="option_btn">动画</button>
+            <select class="animationSelect">
+              <option>1</option>
+              <option>2</option>
+              <option>3</option>
+              <option>4</option>
+              <option>5</option>
+            </select>
+          </div>
+          <div class="timeListDiv">
+          </div>
+        </div>
+      `;
+    $("#menu_bd").html(html);
+
+
+  },
+  initEvent: function () {
+    var me = this;
+    //拼图
+    $("#puzzle").find("button").click(function () {
+      $("#station button").removeClass("active");
+      $("#puzzle button").removeClass("active");
+      $(this).addClass("active");
+      // console.log(this);
+      var id = $(this).parent()[0].id;
+      var eleID = $(this)[0].id;//要素ID
+      if (id == "pup") {
+        me.getImgProduct(eleID);
+      }
+      else if (id == "swan") {
+        me.getImgProduct(eleID);
+        console.log("the id is swan");
+      }
+      else if (id == "cappiDiv") {
+        var cappiP = $(this).text();
+        me.getImgProduct("cappi", cappiP);
+      }
+      $("#station button").removeClass("active");
+
+    });
+
+    $("#station button").click(function () {
+      $("#puzzle button").removeClass("active");
+      var eleID, eleProduct, elevation;
+      if ($(this).parent()[0].id == "radarArea") {//点击雷达站
+        $("#radarArea button").removeClass("active");
+        $(this).addClass("active");
+        if (!$("#station_cp button").is(".active")) {
+          $("#station_cp").children().first().addClass("active");
+        }
+        if (!$("#station_yj button").is(".active")) {
+          $("#station_yj button").first().addClass("active");
+          elevation = "V1_";
+        }
+      }
+      else if ($(this).parent()[0].id == "station_cp") {//点击产品
+        if (!$("#radarArea button").is(".active")) {
+          console.log("请先选择站点");
+        }
+        else {
+          console.log("有站点了");
+          $(this).siblings().removeClass("active");
+          $(this).addClass("active");
+        }
+      }
+      else if ($(this).parent()[0].id == "station_yj") {//点击仰角
+        if (!$("#radarArea button").is(".active")) {
+          console.log("请先选择站点");
+        }
+        else {
+          $(this).siblings().removeClass("active");
+          $(this).addClass("active");
+        }
+      }
+      if ($("#radarArea button").is(".active")) {
+        eleID = $("#radarArea .active")[0].id;
+        eleProduct = eleID + "_" + $("#station_cp .active").attr("flag");
+        elevation = "V" + $("#station_yj .active").attr("flag");
+        console.log({eleID, eleProduct, elevation});
+        me.getSingleImgProduct(eleID, eleProduct, elevation);
+      }
+    })
+  },
+  /**
+   * @author:wangkun
+   * @date:2017-12-17
+   * @modifyDate:
+   * @return:
+   * @description:获取雷达图片产品
+   */
+  getImgProduct: async function (id, cappiP) {
+    var me = this;
+    var result = await me.getLastDate(id, cappiP);
+    if (result.isFind) {
+      me.displayImgProduct(result.url, result.bounds);
+      $("#live_date").html(result.dateTime);
+    }
+    else {
+      GDYB.Page.alertInfo.hide("资料为空!");
+    }
+  },
+  /**
+   * @author:wangkun
+   * @date:2017-12-17
+   * @modifyDate:
+   * @return:
+   * @description:获取单站雷达图片产品
+   */
+  getSingleImgProduct: async function (id, product, elevation) {
+    var me = this;
+    var result = await me.getSingleLastDate(id, product, elevation);
+    if (result.isFind) {
+      me.displayImgProduct(result.url, result.bounds);
+    }
+  },
+  /**
+   * @author:wangkun
+   * @date:2017-12-17
+   * @modifyDate:
+   * @return:
+   * @description:获取雷达图片最新时间
+   */
+  getLastDate: async function (id, cappiP) {
+    var me = this;
+    var now = new MyDate();
+    if (IsDEBUG) {
+      now.setFullYear(2017);
+      now.setMonth(6);
+      now.setDate(10);
+      now.setHours(12);
+      now.setMinutes(0);
+    }
+    now = now.addHours(-8);
+    times = now.getTime();
+    var boundsList = RADARConfig.BOUNDS[id];
+    bounds = new WeatherMap.Bounds(boundsList[0], boundsList[1], boundsList[2], boundsList[3]);
+    var strBounds = boundsList[0] + "_" + boundsList[1] + "_" + boundsList[2] + "_" + boundsList[3];
+    var url = IMGCacheUrl;
+    url += RADARConfig.URL[id];
+    url = url.replace("bounds", strBounds);
+    if (cappiP != undefined) {
+      url = url.replace("elevation", cappiP);
+    }
+    var count = 120;
+    var newURL = "";
+    var isFind = false;
+    while (count > 0) {
+      var strDateTime = now.format("yyyyMMddhhmm00");
+      newURL = url.replace(/time/g, strDateTime);
+      var result = request.ping(newURL);
+      if (result) {
+        isFind = true;
+        break;
+      }
+      now = now.addMinutes(-1);
+      count--;
+    }
+    now.addHours(8);
+    var strDateTime = now.format("yyyy-MM-dd hh:mm");
+    return {
+      isFind: isFind,
+      url: newURL,
+      bounds: bounds,
+      dateTime: strDateTime
+    };
+    // request("GET",url).then(function(data){
+    //   if(data == undefined||data == null){
+
+    //   }
+    // });
+  },
+  /**
+   * @author:wangkun
+   * @date:2017-12-17
+   * @modifyDate:
+   * @return:
+   * @description:获取单站雷达图片最新时间
+   */
+  getSingleLastDate: async function (id, product, elevation) {
+    var me = this;
+    var now = new MyDate();
+    if (IsDEBUG) {
+      now.setFullYear(2017);
+      now.setMonth(8);
+      now.setDate(10);
+      now.setHours(12);
+      now.setMinutes(2);
+    }
+    now = now.addHours(-8);
+    times = now.getTime();
+    var boundsList = RADARConfig.BOUNDS[product];
+    bounds = new WeatherMap.Bounds(boundsList[0], boundsList[1], boundsList[2], boundsList[3]);
+    var strBounds = boundsList[0] + "_" + boundsList[1] + "_" + boundsList[2] + "_" + boundsList[3];
+    var url = IMGCacheUrl;
+    url += RADARConfig.URL[id];
+    url = url.replace("bounds", strBounds);
+    url = url.replace("product", elevation);
+    var count = 10;
+    var newURL = "";
+    var isFind = false;
+    while (count > 0) {
+      var strDateTime = now.format("yyyyMMddhhmm00");
+      newURL = url.replace("time", strDateTime);
+      var result = request.ping(newURL);
+      if (result) {
+        isFind = true;
+        break;
+      }
+      now = now.addMinutes(-6);
+      count--;
+      console.log({isFind: isFind, url: newURL, bounds: bounds});
+    }
+    return {
+      isFind: isFind,
+      url: newURL,
+      bounds: bounds
+    };
+    // request("GET",url).then(function(data){
+    //   if(data == undefined||data == null){
+
+    //   }
+    // });
+  },
+  /**
+   * @author:wangkun
+   * @date:2017-12-17
+   * @modifyDate:
+   * @return:
+   * @description:获取雷达图片产品
+   */
+  displayImgProduct: function (url, bounds) {
+    var lmu = new LayerManagerUtil();
+    var layer = null;
+    let layername = "雷达";
+    var layer = lmu.getLayer(layername);
+    if (layer == null) {
+      layer = lmu.addLayer(layername, "image", url, bounds);
+    }
+    else {
+      layer.url = url;
+      layer.name = layername;
+      layer.extent = bounds;
+      layer.maxExtent = bounds;
+      layer.orgImageData = null;
+      layer.memoryImg = null;
+      layer.redraw();
+    }
+    layer.setOpacity(0.7);
+  },
+  /**
+   * @author:wangkun
+   * @date:2017-12-17
+   * @modifyDate:
+   * @return:
+   * @description:获取雷达矢量产品
+   */
+  displayVectorProduct: function () {
+  },
+}

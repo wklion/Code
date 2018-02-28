@@ -1,0 +1,617 @@
+﻿/*
+ * 页面基类
+ * by zouwei, 2015-05-10
+ * */
+function PageBase() { }
+//地图对象
+PageBase.prototype.map = null;
+PageBase.prototype.map1 = null;
+PageBase.prototype.map2 = null;
+PageBase.prototype.map3 = null;
+PageBase.prototype.map4 = null;
+PageBase.prototype.baseLayer = null;
+PageBase.prototype.baseLayerLabel = null;
+
+//PageBase.prototype.nTickCount = 0;
+//当前地图模式，四分屏还是单地图
+PageBase.prototype.is4Screen = false;
+//当前页面是否全屏模式
+PageBase.prototype.isFullScreen = false;
+//渲染左侧菜单区域里的按钮
+PageBase.prototype.renderMenu = function () { };
+//创建地图
+PageBase.prototype.initMap = function (options) {
+    if (!options) options = {};
+    $("#map_div").css("display", "");
+
+    var navigatnion = new WeatherMap.Control.Navigation();
+    var layerSwitcher = new WeatherMap.Control.LayerSwitcher();
+    navigatnion.handleRightClicks = true; //响应右键双击缩小
+    var map = new WeatherMap.Map(options.id || "map", {
+        controls: [
+            navigatnion,
+            layerSwitcher,
+            new WeatherMap.Control.Zoom()], projection: "EPSG:4326"
+    });
+    map.addControl(new WeatherMap.Control.MousePosition());
+    $(".smControlZoom").css("display", "none");
+    //var layer = new WeatherMap.Layer.CloudLayer();
+
+    //    //本地缓存地图
+    //    var layer = new WeatherMap.Layer.LocalTiledCacheLayer();
+    //    //layer.name = "BaseLayer";
+    //    map.addLayers([layer]);
+    //    this.baseLayer = layer;
+    if (this == GDYB.DisplayPage) {
+        var layer = new WeatherMap.Layer.TianDiTuLayer();
+        layer.setFormat("img");
+        layer.setName("tianDiTuLayer_img");
+        var layerLabel = new WeatherMap.Layer.TianDiTuLayer();
+        layerLabel.setFormat("cia");
+        layerLabel.setName("tianDiTuLayer_cia");
+        layerLabel.setIsBaseLayer(false);
+        map.addLayers([layerLabel, layer]);
+        this.baseLayer = layer;
+    }
+    else {
+//        //    //白板图
+//        var layer = new WeatherMap.Layer.LocalTiledCacheLayerWhiteMap();
+//        layer.setIsBaseLayer(true);
+//        map.addLayers([layer]);
+//        this.baseLayer = layer;
+
+        var layer = new WeatherMap.Layer.TianDiTuLayer();
+        layer.setFormat("ter");
+        layer.setName("tianDiTuLayer_ter");
+        var layerLabel = new WeatherMap.Layer.TianDiTuLayer();
+        layerLabel.setFormat("cta");
+        layerLabel.setName("tianDiTuLayer_cta");
+        layerLabel.setIsBaseLayer(false);
+        map.addLayers([layerLabel, layer]);
+        this.baseLayer = layer;
+    }
+
+
+
+
+    //    var layerLabel = new WeatherMap.Layer.LocalTiledCacheLayer();
+    //    map.addLayers([layerLabel]);
+    //    layerLabel.dir = "tianditu/map/label/";
+
+    //    //天地图-地图
+    //    var layer = new WeatherMap.Layer.TianDiTuLayer();
+    //    layer.setFormat("vec");
+    //    layer.setName("tianDiTuLayer_vec");
+    //    var layerLabel = new WeatherMap.Layer.TianDiTuLayer();
+    //    layerLabel.setFormat("cva");
+    //    layerLabel.setName("tianDiTuLayer_cva");
+    //    //只能有一个为baseLayer
+    //    layerLabel.setIsBaseLayer(false);
+    //    map.addLayers([layer,layerLabel]);
+
+    //    天地图-地形
+    /*var layer = new WeatherMap.Layer.TianDiTuLayer();
+    layer.setFormat("ter");
+    layer.setName("tianDiTuLayer_ter");
+	this.baseLayer = layer;
+    var layerLabel = new WeatherMap.Layer.TianDiTuLayer();
+    layerLabel.setFormat("cta");
+    layerLabel.setName("tianDiTuLayer_cta");
+	this.baseLayerLabel = layerLabel;
+    //只能有一个为baseLayer
+    layerLabel.setIsBaseLayer(false);
+    map.addLayers([layer,layerLabel]);*/
+
+    //map.setCenter(new WeatherMap.LonLat(options.x||11339634.286396, options.y||4588716.5813769), options.z||4);
+
+    //魔术棒工具
+    GDYB.MagicTool.init(map);
+
+    //查看栅格值
+    var bDrag = false;
+    // map.events.register("mousemove", map, function (event) {
+    //     if (!bDrag) {
+    //         if (GDYB.RadarDataClass.datasetGrid != null) {
+    //             var datasetGrid = GDYB.RadarDataClass.datasetGrid;
+    //             $("#div_showGridValue").css("display", "block");
+    //             $("#div_showGridValue").css("left", event.xy.x + 20);
+    //             $("#div_showGridValue").css("top", event.xy.y + 20);
+    //             var lonlat = this.getLonLatFromPixel(event.xy);
+    //             if(lonlat==null){
+    //                 return;
+    //             }
+    //             var dValue = "-";
+    //             var str = "无";
+    //             var pt = datasetGrid.xyToGrid(lonlat.lon, lonlat.lat);
+    //             if (pt != null) {
+    //                 dValue = datasetGrid.getValue(0, pt.x, pt.y);
+    //                 if (dValue < 15)
+    //                     str = "无";
+    //                 else if (dValue < 25)
+    //                     str = "可能有毛毛雨或强降雨边缘区域";
+    //                 else if (dValue < 35)
+    //                     str = "雨有些急，需要带伞";
+    //                 else if (dValue < 50)
+    //                     str = "雨很急，雨伞不一定撑得住";
+    //                 else if (dValue < 70)
+    //                     str = "降水强度很大，雨伞都不能打";
+    //                 $("#div_showGridValue").html("经度：" + Math.floor(lonlat.lon * 10000) / 10000 + "<br/>" +
+    //                     "纬度：" + Math.floor(lonlat.lat * 10000) / 10000 + "<br/>" +
+    //                     "回波：" + dValue + " dBZ" + "<br/>" +
+    //                     "降水：" + str);
+    //             }
+    //         }
+    //         else if (GDYB.GridProductClass.datasetGrid != null) {
+    //         }
+    //     }
+    //     else {
+    //         $("#div_showGridValue").css("display", "none");
+    //     }
+    // });
+
+    map.events.register("movestart", map, function (event) {
+        bDrag = true;
+        $("#div_showGridValue").css("display", "none");
+    });
+
+    map.events.register("moveend", map, function (event) {
+        bDrag = false;
+    });
+
+    map.events.register("keydown", map, function (event) {
+        alertModal(event);
+    });
+
+    //    //图层被添加，将标签显示到最上面。这样也不好看
+    //    map.events.register("addlayer", map, function(event){
+    //        //var layerLabel = this.getBy("layers","name","tianDiTuLayer_cva");
+    //        this.setLayerIndex(layerLabel, 999);
+    //    });
+    var zoomInt = 6;
+    var userName = $.cookie("userName");
+    var password = $.cookie("password");
+    var departCode = $.cookie("departCode");
+    if($("#map_div").length>0){
+        var mapDivWidth = ($("#map_div").css("width").split("p"))[0];
+        var mapDivHeight = ($("#map_div").css("height").split("p"))[0];
+        var mapWidth;
+        var mapHeight;
+        var scales = map.baseLayer.scales;
+        var dpi = getDPI()[0];
+        for(var i=12;i>1;i--){
+            mapWidth = parseInt((111*(108.7-92.3)*1000*100/2.54*dpi)/(1/scales[i]));
+            mapHeight = parseInt((108*(42.8-32.6)*1000*100/2.54*dpi)/(1/scales[i]));
+            if(mapWidth<mapDivWidth && mapHeight<mapDivHeight){
+                zoomInt = i;
+                break;
+            }
+        }
+    }
+    //获取计算机dpi
+    function getDPI() {
+        var arrDPI = [];
+        if (window.screen.deviceXDPI) {
+            arrDPI[0] = window.screen.deviceXDPI;
+            arrDPI[1] = window.screen.deviceYDPI;
+        }
+        else {
+            var tmpNode = document.createElement("DIV");
+            tmpNode.style.cssText = "width:1in;height:1in;position:absolute;left:0px;top:0px;z-index:99;visibility:hidden";
+            document.body.appendChild(tmpNode);
+            arrDPI[0] = parseInt(tmpNode.offsetWidth);
+            arrDPI[1] = parseInt(tmpNode.offsetHeight);
+            tmpNode.parentNode.removeChild(tmpNode);
+        }
+        return arrDPI;
+    }
+    if (userName != null && password != null) {
+        var isDisplayPageClass = (this.CLASS_NAME == "DisplayPageClass");
+        var url = gridServiceUrl + "services/AreaService/getDepartByUser";
+        $.ajax({
+            data: { "para": "{userName:'" + userName + "'}" },
+            url: url,
+            dataType: "json",
+            type: "POST",
+            success: function (data) {
+                if (typeof (data) != "undefined") {
+                    $.cookie('departCode', data.departCode, { expires: 60 });
+                    var depart = data;
+                    url = gridServiceUrl + "services/AdminDivisionService/getDivisionInfo";
+                    $.ajax({
+                        data: { "para": "{areaCode:'" + data.departCode + "'}" },
+                        url: url,
+                        dataType: "json",
+                        type: "POST",
+                        success: function (data) {
+                            if (typeof (data) != "undefined") {
+                                //var areaData = JSON.parse(data);
+                                var areaData = data;
+                                if (depart.parentID == 0) {
+                                    map.setCenter(new WeatherMap.LonLat(areaData.geometry.center.x + (isDisplayPageClass?0:1), areaData.geometry.center.y), zoomInt);
+                                }
+                                else if (depart.parentID == 1) {
+                                    map.setCenter(new WeatherMap.LonLat(areaData.geometry.center.x + (isDisplayPageClass?0:1), areaData.geometry.center.y), zoomInt);
+                                }
+                                else {
+                                    map.setCenter(new WeatherMap.LonLat(areaData.geometry.center.x + (isDisplayPageClass?0:1), areaData.geometry.center.y), zoomInt);
+                                }
+                                var testLayer = new WeatherMap.Layer.Vector("vectorLine", { renderers: ["Canvas2"] });
+                                testLayer.id = "mapCoverLayer";
+                                map.addLayer(testLayer);
+                                map.events.register("addlayer", map, function (event) {
+                                    map.setLayerIndex(testLayer, 98);
+                                    if (GDYB.GridProductClass.layerLuoquCenter != null)
+                                        map.setLayerIndex(GDYB.GridProductClass.layerLuoquCenter, 99); //这个落区中心一定要放到最上层，否则无法移动
+                                });
+                                map.setLayerIndex(testLayer, 98);
+                                var pointArray = new Array();
+                                var pointList = areaData.geometry.points;
+                                for (var i = 0; i < pointList.length; i++) {
+                                    var lon = pointList[i].x;
+                                    var lat = pointList[i].y;
+                                    var point = new WeatherMap.Geometry.Point(lon, lat);
+                                    pointArray.push(point);
+                                }
+                                var gxPointList = new Array();
+                                //                                gxPointList.push(new WeatherMap.Geometry.Point(101.7, 18.5));
+                                //                                gxPointList.push(new WeatherMap.Geometry.Point(114.6, 18.5));
+                                //                                gxPointList.push(new WeatherMap.Geometry.Point(114.6, 28.5));
+                                //                                gxPointList.push(new WeatherMap.Geometry.Point(101.7, 28.5));
+                                gxPointList.push(new WeatherMap.Geometry.Point(-180, -90));
+                                gxPointList.push(new WeatherMap.Geometry.Point(180, -90));
+                                gxPointList.push(new WeatherMap.Geometry.Point(180, 90));
+                                gxPointList.push(new WeatherMap.Geometry.Point(-180, 90));
+                                var linearRings = new WeatherMap.Geometry.LinearRing(pointArray);
+                                var linearRings1 = new WeatherMap.Geometry.LinearRing(gxPointList);
+                                var polygon = new WeatherMap.Geometry.Polygon([linearRings, linearRings1]);
+                                var polygonVector = new WeatherMap.Feature.Vector(polygon);
+                                polygonVector.style = {
+                                    strokeColor: "#ffffff",
+                                    fillColor: "#ffffff",
+                                    strokeWidth: 1,
+                                    fillOpacity: 1,
+                                    strokeOpacity: 0.4
+                                };
+                                //testLayer.addFeatures([polygonVector]);
+                                GDYB.GDYBPage.polygonVector = polygonVector;
+
+                                var line = new WeatherMap.Geometry.LineString(pointArray);
+                                var lineVector = new WeatherMap.Feature.Vector(line);
+                                lineVector.style = {
+                                    strokeColor: "black",
+                                    strokeWidth: 2
+                                };
+                                testLayer.addFeatures([lineVector]);
+                                GDYB.GDYBPage.line = line;
+                                GDYB.GDYBPage.lineVector = lineVector;
+                                //根据登录用户地区大小缩放地图比例，并重新设置中心点
+                                if($("#map_div").length>0){
+                                    var zoomNew = 6;
+                                    var mapDivWidth = ($("#map_div").css("width").split("p"))[0];
+                                    var mapDivHeight = ($("#map_div").css("height").split("p"))[0];
+                                    var mapWidth;
+                                    var mapHeight;
+                                    var latDistance = Math.abs(lineVector.geometry.bounds.right - lineVector.geometry.bounds.left);
+                                    var lonDistance = Math.abs(lineVector.geometry.bounds.top - lineVector.geometry.bounds.bottom);
+                                    areaData.geometry.center.x = parseFloat((lineVector.geometry.bounds.right + lineVector.geometry.bounds.left)/2);
+                                    areaData.geometry.center.y = parseFloat((lineVector.geometry.bounds.top + lineVector.geometry.bounds.bottom)/2);
+                                    var scales = map.baseLayer.scales;
+                                    var dpi = getDPI()[0];
+                                    for(var i=12;i>1;i--){
+                                        mapWidth = parseInt((111*(latDistance)*1000*100/2.54*dpi)/(1/scales[i]));
+                                        mapHeight = parseInt((108*(lonDistance)*1000*100/2.54*dpi)/(1/scales[i]));
+                                        if(mapWidth<mapDivWidth && mapHeight<mapDivHeight){
+                                            zoomNew = i;
+                                            break;
+                                        }
+                                    }
+                                }
+                                PageBase.prototype.centerSetX = areaData.geometry.center.x + (isDisplayPageClass?0:1);
+                                PageBase.prototype.centerSetY = areaData.geometry.center.y;
+                                //map.setCenter(new WeatherMap.LonLat(areaData.geometry.center.x + (isDisplayPageClass?0:1), areaData.geometry.center.y), zoomNew);
+                                map.zoomToExtent(line.bounds);
+                            }
+                            else {
+                                setTimeout(function () {
+                                    map.setCenter(new WeatherMap.LonLat(100.5, 37.7), zoomInt); //格点数据范围中心点
+                                }, 300);
+                            }
+                        },
+                        error: function (e) {
+                            alertModal("获取用户所在地区失败：" + e.statusText);
+                        }
+                    });
+                    //加载缓冲区
+                    /*var url = window.location.href;
+                    if (url.indexOf("?qdl") != -1) {
+                        var alertAreasLayer = new WeatherMap.Layer.Vector("警戒区域",{renderers: ["Canvas2"]});
+                        map.addLayers([alertAreasLayer],);
+                        var alertAreas = new AlertAreas();
+                        alertAreas.displayAlertAreas(alertAreasLayer,data.departCode);
+                    }*/
+                }
+                else {
+                    setTimeout(function () {
+                        map.setCenter(new WeatherMap.LonLat(100.5, 37.7), zoomInt); //格点数据范围中心点
+                    }, 300);
+                }
+            },
+            error: function (e) {
+                alertModal("获取用户所在部门失败：" + e.statusText);
+            }
+        });
+    }
+    else {
+        setTimeout(function () {
+            map.setCenter(new WeatherMap.LonLat(100.5,37.7), zoomInt); //格点数据范围中心点
+        }, 300);
+    }
+    return map;
+};
+//创建4分屏地图
+PageBase.prototype.screen4Map = function () {
+    $("#map").html("").css("display", "none");
+    $(".mapd").css("display", "block");
+    $(".screen4Map").html("");
+    this.map1 = this.initMap({ id: "map1" });
+    this.map2 = this.initMap({ id: "map2" });
+    this.map3 = this.initMap({ id: "map3" });
+    this.map4 = this.initMap({ id: "map4" });
+
+    var t = this;
+
+    this.map1.events.register("moveend", this.map1, function () {
+        t.map2.setCenter(this.getCenter(), this.getZoom());
+        t.map3.setCenter(this.getCenter(), this.getZoom());
+        t.map4.setCenter(this.getCenter(), this.getZoom());
+    });
+    this.map1.events.register("zoomend", this.map1, function () {
+        t.map2.setCenter(this.getCenter(), this.getZoom());
+        t.map3.setCenter(this.getCenter(), this.getZoom());
+        t.map4.setCenter(this.getCenter(), this.getZoom());
+    });
+
+    this.map2.events.register("moveend", this.map2, function () {
+        t.map1.setCenter(this.getCenter(), this.getZoom());
+        t.map3.setCenter(this.getCenter(), this.getZoom());
+        t.map4.setCenter(this.getCenter(), this.getZoom());
+    });
+    this.map2.events.register("zoomend", this.map2, function () {
+        t.map1.setCenter(this.getCenter(), this.getZoom());
+        t.map3.setCenter(this.getCenter(), this.getZoom());
+        t.map4.setCenter(this.getCenter(), this.getZoom());
+    });
+
+    this.map3.events.register("moveend", this.map3, function () {
+        t.map1.setCenter(this.getCenter(), this.getZoom());
+        t.map2.setCenter(this.getCenter(), this.getZoom());
+        t.map4.setCenter(this.getCenter(), this.getZoom());
+    });
+    this.map3.events.register("zoomend", this.map3, function () {
+        t.map1.setCenter(this.getCenter(), this.getZoom());
+        t.map2.setCenter(this.getCenter(), this.getZoom());
+        t.map4.setCenter(this.getCenter(), this.getZoom());
+    });
+
+    this.map4.events.register("moveend", this.map4, function () {
+        t.map1.setCenter(this.getCenter(), this.getZoom());
+        t.map2.setCenter(this.getCenter(), this.getZoom());
+        t.map3.setCenter(this.getCenter(), this.getZoom());
+    });
+    this.map4.events.register("zoomend", this.map4, function () {
+        t.map1.setCenter(this.getCenter(), this.getZoom());
+        t.map2.setCenter(this.getCenter(), this.getZoom());
+        t.map3.setCenter(this.getCenter(), this.getZoom());
+    });
+};
+//创建单一屏幕地图
+PageBase.prototype.screen1Map = function () {
+    $("#map").html("").css("display", "block");
+    $(".mapd").css("display", "none");
+    $(".screen4Map").html("");
+    this.map = this.initMap({ id: "map" });
+    GDYB.dMapTools.init();
+};
+//进入全屏
+PageBase.prototype.launchFullScreen = function (element) {
+    if (element.requestFullscreen) {
+        element.requestFullscreen();
+    } else if (element.mozRequestFullScreen) {
+        element.mozRequestFullScreen();
+    } else if (element.webkitRequestFullscreen) {
+        element.webkitRequestFullscreen();
+    } else if (element.msRequestFullscreen) {
+        element.msRequestFullscreen();
+    }
+
+    //    //测试地图输出图片
+    //    var img = GDYB.Page.curPage.map.getImage();
+    //    $("#map_title_div").html(img);
+
+    //    //测试地图输出图片
+    //     var map = GDYB.Page.curPage.map;
+    //    var size = map.getCurrentSize();
+    //    var memCanvas = document.createElement("canvas");
+    //    memCanvas.width = size.w;
+    //    memCanvas.height = size.h;
+    //    memCanvas.style.width = size.w+"px";
+    //    memCanvas.style.height = size.h+"px";
+    //    var memContext = memCanvas.getContext("2d");
+    //    for(var i = 0; i<map.layers.length; i++){
+    //        if(typeof(map.layers[i].canvasContext) != "undefined") {
+    //            var layerCanvas = map.layers[i].canvasContext.canvas;
+    //            memContext.drawImage(layerCanvas, 0, 0, layerCanvas.width, layerCanvas.height);
+    //        }
+    //        else if(typeof(map.layers[i].renderer.canvas) != "undefined"){
+    //            var layerCanvas = map.layers[i].renderer.canvas.canvas;
+    //            memContext.drawImage(layerCanvas, 0, 0, layerCanvas.width, layerCanvas.height);
+    //        }
+    //    }
+    //    var img = new Image();
+    //    img.src = memCanvas.toDataURL("image/png");
+    //    $("#map_title_div").html(img);
+};
+//退出全屏
+PageBase.prototype.exitFullScreen = function () {
+    if (document.exitFullscreen) {
+        document.exitFullscreen();
+    } else if (document.mozCancelFullScreen) {
+        document.mozCancelFullScreen();
+    } else if (document.webkitExitFullscreen) {
+        document.webkitExitFullscreen();
+    }
+};
+
+//激活
+PageBase.prototype.active = function () {
+    var t = this;
+    if (t.is4Screen) {
+        t.screen4Map();
+    }
+    else {
+        t.screen1Map();
+    }
+    this.renderMenu(); //这个要放到创建地图之后,否则存在无法访问地图的问题
+
+
+    $("#Screen4Btn").unbind("click");
+    $("#Screen4Btn").click(function () {
+        if (!t.is4Screen) {
+            t.screen4Map();
+            t.is4Screen = true;
+            this.innerHTML = "<img src=\"imgs/img_screen1.png\"/>";
+        }
+        else {
+            t.screen1Map();
+            t.is4Screen = false;
+            this.innerHTML = "<img src=\"imgs/img_screen4.png\"/>";
+        }
+    });
+    $("#ScreenFull").unbind("click");
+    $("#ScreenFull").click(function () {
+        if (!t.isFullScreen) {
+            t.launchFullScreen(document.documentElement);
+            t.isFullScreen = true;
+            this.innerHTML = "<img src=\"imgs/img_exitfullscreen.png\"/>";
+        }
+        else {
+            t.exitFullScreen();
+            t.isFullScreen = false;
+            this.innerHTML = "<img src=\"imgs/img_launchfullscreen.png\"/>";
+        }
+    });
+    this.bindBtnEvents();
+    $(".delete").remove();
+};
+//销毁
+PageBase.prototype.destroy = function () {
+    this.map = null;
+    this.map1 = null;
+    this.map2 = null;
+    this.map3 = null;
+    this.map4 = null;
+    $("#map").html("");
+    $(".screen4Map").html("");
+    $("#menu_bd").html("");
+    $(".datetimepicker").remove();
+    $("#ZDYBDiv").remove();
+    $("#ZDYBSet").remove();
+    GDYB.ZDYBPage.refreshTime = false;
+    //
+
+    //图层置为空
+    GDYB.GridProductClass.layerLuoqu = null;
+    GDYB.GridProductClass.layerLuoquCenter = null;
+    GDYB.GridProductClass.layerLabel = null;
+    GDYB.GridProductClass.layerFillRangeColor = null;
+    GDYB.GridProductClass.layerPlot = null;
+    GDYB.GridProductClass.layerPolygon = null;
+    GDYB.GridProductClass.layerContour = null;
+    GDYB.GridProductClass.layerClimaticRegion = null;
+    GDYB.GridProductClass.layerMarkers = null;
+    GDYB.GridProductClass.layerMagic = null;
+    GDYB.GridProductClass.layerFocusArea = null;
+    GDYB.GridProductClass.layerMapping = null;
+    GDYB.GridProductClass.layerWindDirection = null;
+    GDYB.GridProductClass.layerFreePath = null;
+
+    GDYB.TextDataClass.layerPlot = null;
+    GDYB.TextDataClass.layerLabel = null;
+    GDYB.TextDataClass.layerContour = null;
+    GDYB.TextDataClass.layerPolygon = null;
+
+    GDYB.MicapsDataClass.layerPlot = null;
+    GDYB.MicapsDataClass.layerFillRangeColor = null;
+    GDYB.MicapsDataClass.layerContour = null;
+
+    GDYB.RadarDataClass.layerFillRangeColor = null;
+
+    $("#sideWrapper").css("display", "");
+    $("#panelToolsContainer").find(".noDragPanel").remove();
+    $("#map_div").find("#Panel_YSTJ").remove();
+    $("#panelToolsContainer").css("display", "none");
+    $("#map_div").css("left", "56px").css("top", "10px").css("bottom", "10px");
+    $("#panelToolsContainer").css("display", "none");
+    $("#latticeForcast").css("display", "none");
+    $("#latticePrecipitation").css("display", "none");
+    $("#mapTool_div").css("display", "none");
+    $("#menu").css("display", "block");
+    $(".GDJYDiv").remove();
+    $(".menu_changeDiv").html("");
+    GDYB.GDYBPage.myPanel_LQDZ = null;
+    GDYB.GDYBPage.myPanel_QHDZ = null;
+    GDYB.GDYBPage.myPanel_QSDZ = null;
+    GDYB.GDYBPage.myPanel_FXDZ = null;
+    GDYB.GDYBPage.myPanel_Tools = null;
+    GDYB.AWXDataClass.layerVector = null;
+    GDYB.RadarDataClass.layerVector = null;
+    GDYB.RadarDataClass.layerFillRangeColor = null;
+
+    $("#map_title_div").html("");
+    $("#map_title_div").css("display", "none");
+    $("#map1_title_div").html("");
+    $("#map2_title_div").html("");
+    $("#map3_title_div").html("");
+    $("#map4_title_div").html("");
+    $("#map_QDLtitle_div").html("");
+    $("#map_QDLtitle_div").css("display","none");
+
+    //地图工具栏
+    GDYB.dMapTools.clear();
+    $("#pdfDiv").remove();
+    $("#myInfoWindow").css("display", "none");
+    GDYB.Legend.update(null);
+    GDYB.Legend1.update(null);
+    GDYB.Legend2.update(null);
+    GDYB.Legend3.update(null);
+    $("#messageDivs").hide();
+    //格点展示
+    $("#latticeControl").css("display", "none");
+    $("#latticeTableControl").css("display", "none");
+};
+PageBase.prototype.bindBtnEvents = function () { };
+
+/**
+ * 继承
+ * @author rexer
+ */
+PageBase.prototype.extend = function (proto) {
+    var Base = this.constructor;
+
+    function Clazz() {
+        Base.apply(this, arguments);
+    }
+
+    function inherit(Child, Parent) {
+        function Bridge() { }
+        Bridge.prototype = Parent.prototype;
+        Child.prototype = new Bridge();
+        Child.prototype.constructor = Child;
+        for (var p in proto) {
+            Child.prototype[p] = proto[p];
+        }
+        return Child;
+    }
+
+    return inherit(Clazz, Base);
+};

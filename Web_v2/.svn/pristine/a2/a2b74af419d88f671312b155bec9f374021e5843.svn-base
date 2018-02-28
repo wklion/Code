@@ -1,0 +1,14 @@
+/**
+ * @author: wangkun
+ * @date:2017-12-17
+ * @description 综合监测菜单
+ */
+function SummarizeMonitorMenu() {
+    this._init_();
+}
+SummarizeMonitorMenu.prototype = {
+    constructor: SummarizeMonitorMenu,
+    _init_: function () {
+        this.name = "综合监测菜单";
+    }
+}

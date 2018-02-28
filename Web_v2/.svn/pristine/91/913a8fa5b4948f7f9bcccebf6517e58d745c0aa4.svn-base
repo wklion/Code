@@ -1,0 +1,351 @@
+/*
+ *
+ * 综合检测菜单部分
+ *
+ *
+ */
+
+//颜色
+$border-color: #4c5457; //边框颜色
+$ele-bg-color: #1c272d; //元素背景色
+$ac-bg-color: #30cafe; //选中元素背景色
+$bg-color: rgba(26, 34, 39, 0.95); //整体菜单背景色
+$text-color: #dedede; //文本颜色
+$ac-text-color: #000100; //选中部分文本颜色
+//尺寸
+//
+@mixin button_style {
+  background: $ele-bg-color;
+  //border: 1px solid $border-color;
+  cursor: pointer;
+  &:hover {
+    background: $ac-bg-color;
+    color: $ac-text-color;
+  }
+  &.active {
+    background: $ac-bg-color;
+    color: $ac-text-color;
+  }
+}
+
+@mixin timeChoose {
+  .timeChoose {
+    .nowTime {
+      display: inline-block;
+      //color: red;
+    }
+    .hourSpan {
+      * {
+        display: inline-block;
+      }
+    }
+    .option_btn {
+      margin-right: 5px;
+    }
+  }
+  .startTime,
+  .endTime {
+    margin-bottom: 10px;
+    input {
+      border: 2px solid #6d7174;
+      border-radius: 4px;
+      background: $ele-bg-color;
+      text-align: center;
+      height: 30px;
+      line-height: 30px;
+      padding: 0 10px;
+      outline: 0;
+      color: $text-color;
+    }
+    span {
+      margin-left: 27px;
+      margin-right: 20px;
+    }
+  }
+  .query_action {
+    padding-left: 4px;
+  }
+  .animationSelect {
+    width: 68px;
+    height: 30px;
+    text-align: center;
+    line-height: 30px;
+    text-indent: 20px;
+    border: 1px solid $border-color;
+    background: $ele-bg-color;
+    option {
+      height: 30px;
+      text-indent: 20px;
+    }
+  }
+  .timeListDiv {
+    width: 340px;
+    height: 127px;
+    border: 1px solid $border-color;
+    margin-left: 10px;
+  }
+}
+
+@mixin option_btn {
+  .option_btn {
+    @include button_style;
+    display: inline-block;
+    width: 68px;
+    height: 30px;
+    text-align: center;
+    line-height: 30px;
+    border-radius: 4px;
+    margin-right: 20px;
+    margin-bottom: 10px;
+    img {
+      display: block;
+      float: left;
+      margin: 8px 0 0 6px;
+    }
+  }
+}
+
+#menu {
+  color: $text-color;
+  //  text-align: center;
+  width: 400px;
+  height: 102%;
+  position: absolute;
+  top: 0;
+  right: 0;
+  border: 1px solid $border-color;
+  background: $bg-color;
+  z-index: 9999;
+  font-size: 16px;
+  button {
+    @include button_style;
+    border-radius: 4px;
+    width: 100px;
+    height: 30px;
+    color: $text-color;
+    outline: 0;
+  }
+}
+
+#menu_changeDiv {
+  display: flex;
+  a {
+    display: block;
+    color: $text-color;
+    text-align: center;
+    height: 30px;
+    line-height: 30px;
+    flex: 1;
+    text-decoration: none;
+    @include button_style;
+    border-bottom: 1px solid $border-color;
+    border-right: 1px solid $border-color;
+  }
+}
+
+#menu_bd {
+  padding-left: 14px;
+  margin-top: 20px;
+  label {
+    margin-right: 16px;
+  }
+  #qtq_tab {
+    .sk-alerm-title {
+      text-align: left;
+      margin-bottom: 10px;
+      margin-top: 10px;
+    }
+    .option_btn {
+      @include button_style;
+      display: inline-block;
+      width: 68px;
+      height: 30px;
+      text-align: center;
+      line-height: 30px;
+      border-radius: 4px;
+      margin-right: 20px;
+      margin-bottom: 10px;
+      img {
+        display: block;
+        float: left;
+        margin: 8px 0 0 6px;
+      }
+    }
+    #timeType {
+      display: inline-block;
+      //margin-left: 5px;
+    }
+    #stationType {
+      display: inline-block;
+    }
+    #ysElement {
+    }
+    #skElement {
+      button {
+        margin-right: 20px;
+      }
+      border-bottom: 1px solid $border-color;
+      margin-bottom: 10px;
+      img{
+        width: 12px;
+        height: 12px;
+      }
+      & > div {
+        margin-bottom: 6px;
+      }
+    }
+    #skElement_copy {
+      border-bottom: 1px solid $border-color;
+    }
+    .timeChoose {
+      .nowTime {
+        display: inline-block;
+        //color: red;
+      }
+      .hourSpan {
+        * {
+          display: inline-block;
+        }
+      }
+      .option_btn {
+        margin-right: 5px;
+      }
+    }
+    .startTime,
+    .endTime {
+      margin-bottom: 10px;
+      input {
+        border: 2px solid #6d7174;
+        border-radius: 4px;
+        background: $ele-bg-color;
+        text-align: center;
+        height: 30px;
+        line-height: 30px;
+        padding: 0 10px;
+        outline: 0;
+        color: $text-color;
+      }
+      span {
+        margin-left: 27px;
+        margin-right: 20px;
+      }
+    }
+    .query_action {
+      padding-left: 4px;
+    }
+    .animationSelect {
+      width: 68px;
+      height: 30px;
+      text-align: center;
+      line-height: 30px;
+      text-indent: 20px;
+      border: 1px solid $border-color;
+      background: $ele-bg-color;
+      option {
+        height: 30px;
+        text-indent: 20px;
+      }
+    }
+    .timeListDiv {
+      overflow-y: auto;
+      width: 340px;
+      height: 152px;
+      border: 1px solid $border-color;
+      margin-left: 10px;
+        P{
+            cursor: pointer;
+            &.active{
+                background: #30cafe;
+                color: #000100;
+            }
+        }
+    }
+  }
+  #leida_tab {
+    @include option_btn;
+    .puzzle {
+      .title1 {
+        margin: 10px 0;
+      }
+      .pup,
+      .swan,
+      .cappi {
+        overflow: hidden;
+        div,
+        span {
+          float: left;
+        }
+        span {
+          font-size: 13px;
+          width: 40px;
+        }
+        div {
+          button {
+            margin-bottom: 10px;
+          }
+          width: 330px;
+          padding-left: 20px;
+        }
+      }
+    }
+    .station {
+      .station_ld,
+      .station_yj,
+      .station_cp {
+        overflow: hidden;
+        span,
+        div {
+          float: left;
+        }
+        span {
+          font-size: 13px;
+          width: 40px;
+        }
+        div {
+          width: 330px;
+          padding-left: 20px;
+          button {
+            margin-bottom: 10px;
+          }
+        }
+      }
+    }
+    @include timeChoose;
+  }
+  #yuntu_tab {
+    @include option_btn;
+    button {
+      margin-bottom: 11px;
+    }
+    .satelliteDiv {
+      padding-bottom: 20px;
+      margin-bottom: 20px;
+      border-bottom: 1px solid $border-color;
+      .weixing, .tongdao, .chanpin {
+        overflow: hidden;
+        span, div {
+          float: left;
+        }
+        span {
+          width: 48px;
+        }
+        div {
+          width: 330px;
+        }
+        button {
+          margin-right: 6px;
+        }
+      }
+    }
+    @include timeChoose;
+  }
+
+  #rhjc_tab {
+    @include timeChoose;
+    @include option_btn;
+    button {
+      margin-bottom: 11px;
+      margin-right: 10px;
+    }
+  }
+}

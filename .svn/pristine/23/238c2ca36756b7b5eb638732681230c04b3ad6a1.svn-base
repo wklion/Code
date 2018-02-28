@@ -1,0 +1,2 @@
+.shape{display:inline-table}.shape.shape-circle{border-radius:50%}.shape.shape-circle.size-10{width:10px;height:10px}.shape.shape-circle.size-12{width:12px;height:12px}.shape.shape-circle.size-14{width:14px;height:14px}
+/*# sourceMappingURL=shape.min.css.map */

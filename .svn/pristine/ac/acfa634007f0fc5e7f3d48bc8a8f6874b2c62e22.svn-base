@@ -1,0 +1,246 @@
+package com.spd.grid.ws;
+
+
+import java.io.File;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.ejb.Stateless;
+import javax.ws.rs.FormParam;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+
+import org.codehaus.jettison.json.JSONObject;
+import org.slf4j.Logger;
+
+import com.alibaba.druid.pool.DruidDataSource;
+import com.alibaba.druid.pool.DruidPooledConnection;
+import com.google.gson.Gson;
+import com.mg.objects.DatasetVector;
+import com.mg.objects.Geometry;
+import com.mg.objects.Recordset;
+import com.spd.grid.domain.Application;
+import com.spd.grid.domain.FlashFloodBaseDataParam;
+import com.spd.grid.domain.LastFlashFloodByTypeParam;
+import com.spd.grid.domain.LeadFile;
+import com.spd.grid.jdbc.DataSourceSingleton;
+import com.spd.grid.tool.DatasetUtil;
+import com.spd.grid.tool.DateUtil;
+import com.spd.grid.tool.FileUtil;
+import com.spd.weathermap.util.CommonTool;
+import com.spd.weathermap.util.LogTool;
+import com.spd.weathermap.util.Toolkit;
+/**     
+ * @公司:	spd
+ * @作者: wangkun       
+ * @创建: 2017-10-18
+ * @最后修改: 2017-10-18
+ * @功能: 山洪预报预警
+ **/
+@Stateless
+@Path("ProductService")
+public class ProductService {
+	private  Logger log = LogTool.getLogger(this.getClass());
+	@POST
+	@Path("getLastFlashFloodByType")
+	@Produces("application/json")
+	public Object getLastFlashFloodByType(@FormParam("para") String para ){
+		//1、参数
+		Gson gson = new Gson();
+		LastFlashFloodByTypeParam lastFlashFloodByTypeParam = gson.fromJson(para, LastFlashFloodByTypeParam.class);
+		String strDateTime = "";
+		if(lastFlashFloodByTypeParam.getDatetime().equals("")){
+			Calendar cal = Calendar.getInstance();
+			strDateTime = DateUtil.format("yyyy-MM-dd HH:00:00", cal);
+		}
+		else{
+			strDateTime = lastFlashFloodByTypeParam.getDatetime();
+		}
+		//2、连接数据库
+		DruidDataSource dds = DataSourceSingleton.getInstance();
+		DruidPooledConnection dpConn = null;
+		try {
+			dpConn = dds.getConnection();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		String fSql = "select * from t_flashflood_alert where type='%s' and datetime<='%s'";
+		String[] types = lastFlashFloodByTypeParam.getTypes().split(",");
+		FileUtil fileUtil = new FileUtil();
+		DatasetUtil dsUtil = new DatasetUtil();
+		List<String> lsResult = new ArrayList();
+		try{
+			for(String type:types){
+				//打开shp文件
+				String fileName = "";
+				String dataType = "";
+				if(type.equals("中小河流")){
+					fileName = "riveRegion.shp";
+					dataType = "Region";
+				}
+				else if(type.equals("山洪沟")){
+					fileName = "SHGRegion.shp";
+					dataType = "Region";
+				}
+				else if(type.equals("地质灾害隐患点")){
+					fileName = "disasterPoint.shp";
+					dataType = "Point";
+				}
+				if(fileName.equals("")){
+					log.error("传入的类型不能识别,请传入(中小河流、山洪沟、地质灾害隐患点)");
+					continue;
+				}
+				DatasetVector dvShp = fileUtil.openShp(fileName);
+				if(dvShp==null){
+					System.out.println(fileName+"--失量数据打开失败!");
+					continue;
+				}
+				String sql = String.format(fSql, type,strDateTime);
+				PreparedStatement ps = dpConn.prepareStatement(sql);
+				ResultSet rsDB = ps.executeQuery();
+				rsDB.first();
+				//把数据集的数据存起来,方便检索
+				Map<String,Integer> mapRS = new HashMap();
+				while(rsDB.next()){
+					String geoID = rsDB.getString("geoID");
+					int level = rsDB.getInt("level");
+					mapRS.put(geoID, level);
+				}
+				if(mapRS.size()==0){
+					continue;
+				}
+				//从shp中查找对应数据
+				DatasetVector dvTemp = dsUtil.createTempDV(dataType);//用于存储数据
+				String fieldJson = "{\"Name\":\"level\",\"Type\":\"Int32\"}";
+				dvTemp.AddField(fieldJson);
+				Recordset rsTemp = dvTemp.Query("", null);
+				rsTemp.MoveFirst();
+				Recordset rsShp = dvShp.Query("", null);
+				rsShp.MoveFirst();
+				while(!rsShp.IsEOF()){
+					Geometry geo = rsShp.GetGeometry();
+					rsTemp.AddNew(geo);
+					String id = rsShp.GetFieldValue("ID").toString();
+					if(!mapRS.containsKey(id)){
+						rsShp.MoveNext();
+						continue;
+					}
+					int level = mapRS.get(id);
+					rsTemp.SetFieldValue("level", level);
+					rsTemp.Update();
+					rsShp.MoveNext();
+				}
+				rsShp.Destroy();
+				rsTemp.Destroy();
+				String result = "";
+				if(dataType.toLowerCase().equals("region")){
+					result = Toolkit.convertDatasetVectorToJson(dvTemp,"REGION");
+				}
+				else{
+					result = Toolkit.convertDatasetVectorToJson(dvTemp,"POINT");
+				}
+				lsResult.add(result);
+				Application.m_workspace.CloseDatasource(dvTemp.GetDatasource().GetAlias());//关闭临时数据源
+				Application.m_workspace.CloseDatasource(dvShp.GetDatasource().GetAlias());//关闭Shp数据源
+			}
+			dpConn.close();
+		}
+		catch(Exception ex){
+			ex.printStackTrace();
+		}
+		return lsResult;
+	}
+	@POST
+	@Path("getShpByType")
+	@Produces("application/json")
+	public Object getShpByType(@FormParam("para") String para ){
+		//1、参数
+		Gson gson = new Gson();
+		FlashFloodBaseDataParam flashFloodBaseDataParam = gson.fromJson(para, FlashFloodBaseDataParam.class);
+		String fileName = "";
+		String dataType = "";
+		String type = flashFloodBaseDataParam.getType();
+		if(type.equals("中小河流")){
+			fileName = "riveRegion.shp";
+			dataType = "Region";
+		}
+		else if(type.equals("山洪沟")){
+			fileName = "SHGRegion.shp";
+			dataType = "Region";
+		}
+		else if(type.equals("地质灾害隐患点")){
+			fileName = "disasterPoint.shp";
+			dataType = "Point";
+		}
+		if(fileName.equals("")){
+			log.error("传入的类型不能识别,请传入(中小河流、山洪沟、地质灾害隐患点)");
+			return null;
+		}
+		FileUtil fileUtil = new FileUtil();
+		DatasetVector dvShp = fileUtil.openShp(fileName);
+		if(dvShp==null){
+			System.out.println(fileName+"--失量数据打开失败!");
+			return null;
+		}
+		String result = "";
+		if(dataType.toLowerCase().equals("region")){
+			result = Toolkit.convertDatasetVectorToJson(dvShp,"REGION");
+		}
+		else{
+			result = Toolkit.convertDatasetVectorToJson(dvShp,"POINT");
+		}
+		return result;
+	}
+	/*
+	 * 获取气象风险产品文件目录列表
+	 * 参数：查询目录
+	 * 返回：目录下文件列表
+	 * */
+	@POST
+	@Path("getAlarmProductFilesList")
+	@Produces("application/json")
+	public Object getAlarmProductFilesList(@FormParam("para") String para) {
+		ArrayList<LeadFile> leadFiles = new ArrayList<LeadFile>();
+		try {
+			JSONObject jsonObject = new JSONObject(para);
+			String path = CommonTool.getJSONStr(jsonObject, "path");
+			
+			File[] files = null;
+			File folder = new File(path);
+			if(folder.exists()){
+				files = folder.listFiles();
+			}
+			else {
+				//continue;
+			}
+			
+			if(files == null || files.length == 0){
+				
+			}
+			else {
+				for(File file : files){
+					String filename = file.getName();
+			        Long time = file.lastModified();
+			        Calendar cd = Calendar.getInstance();
+			        cd.setTimeInMillis(time);
+			        String leadTime = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(cd.getTime());
+					leadFiles.add(new LeadFile(filename,leadTime));
+				}
+			}
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		return leadFiles;
+	}
+}

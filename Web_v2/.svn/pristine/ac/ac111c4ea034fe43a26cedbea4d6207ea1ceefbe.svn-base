@@ -1,0 +1,451 @@
+@import "color";
+@import "mixins";
+@import "animations";
+@import "global";
+@import "banner";
+@import "layout";
+@import "pages";
+
+.body {
+  $banner-size: 81px;
+  display: block;
+  overflow-y: hidden;
+  @extend .f;
+  .banner,
+  .content {
+    margin: 0;
+    @extend .w;
+  }
+  .banner {
+    height: $banner-size;
+  }
+  .overflow{
+    overflow: hidden;
+  }
+  .content {
+    height: calc(100% - #{$banner-size});
+    background-color: black;
+    .home {
+      height: 100%;
+      display: flex;
+      .left_div {
+        flex: 2.5;
+        min-width: 460px;
+        height: 100%;
+        .weatherInfo {
+          height: 36%;
+          min-height: 292px;
+          margin: 2%;
+          background-color: rgb(40, 40, 40);
+          padding: 2%;
+          .location {
+            @include iconfont("\e60f");
+            color: #C69C6C;
+          }
+          .head {
+            display: flex;
+            justify-content: space-between;
+            .dataFrom {
+              color: #C69C6C;
+              text-align: center;
+              line-height: 32px;
+            }
+          }
+          .live {
+            display: flex;
+            height: 130px;
+            justify-content: space-between;
+            .curWeather {
+              width: 48%;
+              border: 1px solid #797979;
+              background-color: #1A1A1A;
+              .live_temp {
+                color: #C69C6C;
+                height: 60%;
+                text-align: center;
+                i {
+                  font-size: 3rem;
+                }
+                span {
+                  font-size: 2rem;
+                }
+              }
+              .liveOther {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-between;
+                padding: 1%;
+                color: gainsboro;
+                div {
+                  width: 50%;
+                  span {
+                    font-size: 0.8rem;
+                  }
+                }
+              }
+            }
+            .dayAndNight {
+              width: 23%;
+              border: 1px solid #797979;
+              background-color: #1A1A1A;
+              padding: 1px;
+              div {
+                text-align: center;
+              }
+              .p16 {
+                height: 16%;
+                font-size: 0.9rem;
+              }
+              .p36 {
+                height: 36%;
+              }
+              i {
+                font-size: 2.5rem;
+                color: #f8931d;
+              }
+            }
+          }
+          .cur_live {
+            height: 130px;
+            .normal_row {
+              display: flex;
+              justify-content: space-between;
+              height: 15%;
+              span {
+                text-align: center;
+                font-size: 0.9rem;
+              }
+            }
+            .live_chart {
+              height: 40%;
+              background-color: red;
+            }
+          }
+        }
+        .dutyInfo {
+          height: 23%;
+          margin: 2%;
+          padding: 2%;
+          background: linear-gradient(to right, rgba(45, 45, 45, 1.0) 0, rgba(26, 26, 26, 1.0) 100%);
+          overflow-y: hidden;
+          .headInfo {
+            color: #C69C6C;
+            display: flex;
+            justify-content: space-between;
+            .title_right {
+              line-height: 32px;
+            }
+          }
+          th {
+            font-weight: bold;
+            background-color: #333333;
+          }
+          th, td {
+            border: 1px solid #797979;
+            text-align: center;
+          }
+        }
+        .strongWeather {
+          height: 7%;
+          min-height: 320px;
+          margin: 10px;
+          padding: 10px;
+          background-color: rgb(40, 40, 40);
+          .statHourspan {
+            text-align: center;
+          }
+          th {
+            font-weight: bold;
+            background-color: #333333;
+          }
+          th, td {
+            border: 1px solid #797979;
+            text-align: center;
+          }
+        }
+        .headCaption {
+          font-size: 1.4rem;
+          font-weight: bold;
+          color: #C69C6C;
+        }
+      }
+      .right_div {
+        flex: 7.5;
+        height: 100%;
+        //图片产品
+        .imgProduct {
+          display: flex;
+          flex-wrap: wrap;
+          height: 60%;
+          .item {
+            position: relative;
+            height: 48%;
+            width: 32.7%;
+            margin: 0.3%;
+            background-color: white;
+            .title {
+              position: absolute;
+              right: 1%;
+              top: 1%;
+              font-weight: bold;
+              font-size: 1.3rem;
+              background-color: rgba(0, 0, 0, 0.7);
+              color: white;
+              padding: 5px;
+            }
+            .imgMax {
+              position: absolute;
+              left: 1%;
+              top: 1%;
+              @include iconfont("\e612");
+              background-color: transparent;
+              border: none;
+              color: #a67c51;
+            }
+            img {
+              width: 100%;
+              height: 100%;
+            }
+          }
+        }
+        //图表产品
+        .chartProduct {
+          display: flex;
+          height: 40%;
+          .item {
+            height: 94%;
+            width: 32.7%;
+            margin: 0.3%;
+            padding: 10px;
+            background-color: rgb(26, 26, 26);
+            .chartHead {
+              height: 32px;
+              display: flex;
+              justify-content: space-between;
+              color: #C69C6C;
+              .headCaption {
+                font-size: 1.4rem;
+                font-weight: bold;
+              }
+              .headRight {
+                line-height: 32px;
+              }
+            }
+            .chartBody {
+              height: calc(100% - 32px);
+              height: -webkit-calc(100% - 32px);
+              ul {
+                padding: 0px;
+                li {
+                  list-style-type: none;
+                  display: flex;
+                  justify-content: space-between;
+                  height: 32px;
+                  line-height: 30px;
+                  .singalImg {
+                    width: 30px;
+                  }
+                  .singalTime {
+                    width: 110px;
+                  }
+                  .singalTitle {
+                    width: calc(100% - 110px);
+                    width: -webkit-calc(100% - 147px);
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+      .imgBox {
+        display: none;
+        position: absolute;
+        right: 0;
+        top: 0;
+        background: #fff;
+        .closeImg {
+          position: absolute;
+          right: 0;
+          top: 0;
+          width: 43px;
+          height: 37px;
+          font-size: 25px;
+          text-align: center;
+          background: #1c272d;
+          cursor: pointer;
+          color: #31cbff;
+        }
+        img {
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
+    .map_div {
+      height: 100%;
+      .map {
+        height: 100%;
+      }
+      .map_title_div{
+        position: absolute;
+        left: 50px;
+        top: 10px;
+        color: purple;
+        font-size: 1.5rem;
+        z-index: 9998;
+      }
+      .legend{
+        position: absolute;
+        left: 10px;
+        bottom: 10px;
+        display: flex;
+        color: black;
+        z-index: 9998;
+        .item{
+          width: 60px;
+          margin-right: 5px;
+          background-color: #eae9e6;
+          display: flex;
+          flex-direction: column-reverse;
+          .itemC{
+            height: 25px;
+            display: flex;
+            div{
+              flex: 1;
+              line-height: 25px;
+              text-align: center;
+            }
+          }
+          .item_name{
+            text-align: center;
+          }
+        }
+      }
+    }
+    .alertInfo {
+      position: absolute;
+      border: 1px solid #000;
+      font-size: 20px;
+      text-align: center;
+      background: rgba(38, 47, 52, .7);
+      border-radius: 10px;
+      width: 400px;
+      height: 60px;
+      line-height: 60px;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      margin: auto;
+      z-index: 9999;
+      //color: red;
+    }
+    #jyChart_div {
+      position: absolute;
+      left: 0px;
+      top: 0px;
+      width: 100%;
+      height: 100%;
+      background-color: #333333;
+      padding: 10px 30px;
+      color: black;
+      #dateSelect1,#dateSelect2{
+        input{
+          background: #1d282e;
+          color: #cacfd2!important;
+        }
+      }
+      #JY_Condition {
+        display: flex;
+        span {
+          height: 30px;
+          line-height: 30px;
+          margin-left: 10px;
+          margin-right: 10px;
+          //background: #1d282e;
+          display: inline-block;
+          color: #cacfd2;
+        }
+        select {
+          width: 80px;
+          background: #1d282e;
+          color: #cacfd2;
+        }
+      }
+      .jyElementDiv {
+        height: 36px;
+        line-height: 36px;
+        margin: 5px;
+        float: left;
+        width: 550px;
+        .leftTitle {
+          float: left;
+          color: #c6cacd;
+        }
+        .jyElements {
+          display: inline-block;
+          border: 1px solid #4c4c4c;
+          border-radius: 10px;
+          margin: 0px 5px;
+          min-width: 80px;
+          height: 36px;
+          line-height: 36px;
+          background-color: #1d282e;
+          color: #c6cacd;
+          text-align: center;
+          padding: 0 6px;
+          &:hover, &.active {
+            background: #33caff;
+            color: #160c02;
+          }
+        }
+      }
+      .jyTable {
+        margin-top: 50px;
+        .echartsBox {
+          width: 100%;
+          height: 350px;
+          background: deepskyblue;
+        }
+        .ybjyTable {
+          width: 100%;
+          height: 350px;
+          background-color: transparent;
+          color: white;
+        }
+      }
+    }
+  }
+}
+
+.tempIcon {
+  @include iconfont("\e613");
+}
+
+.humidityIcon {
+  @include iconfont("\e615");
+}
+
+.windIcon {
+  @include iconfont("\e610");
+}
+
+.airIcon {
+  @include iconfont("\e611");
+}
+
+.carIcon {
+  @include iconfont("\e619");
+}
+
+.dayPhenomena {
+  @include iconfont("\e60d");
+}
+
+.nightPhenomena {
+  @include iconfont("\e616");
+}

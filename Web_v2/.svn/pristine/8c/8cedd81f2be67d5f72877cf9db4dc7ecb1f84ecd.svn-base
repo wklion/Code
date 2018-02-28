@@ -1,0 +1,162 @@
+/**
+ * polyfill, utils
+ *
+ * @requires jQuery
+ *
+ * @author rexer
+ */
+
+// 服务地址
+var SERVER = 'http://weatherone.com.cn/s'
+
+// dev
+// SERVER = 'http://localhost:8080';
+
+// MicapsService接口
+var API_Micaps = SERVER + '/WMDataService/services/MicapsService';
+
+/**
+ * 复制|继承
+ */
+function extend (...args) {
+  return Object.assign ? Object.assign(...args) : jQuery.extend(...args);
+}
+
+/**
+ * 验证非空数组
+ *
+ * @param {*} any
+ * @returns {Boolean}
+ */
+function isPretty (any) {
+  return Array.isArray(any) && any.length > 0
+}
+
+/**
+ * 验证Function
+ *
+ * @param {*} any
+ * @returns {Boolean}
+ */
+function isFunction (any) {
+  return typeof any === 'function'
+}
+
+/**
+ * 参数化
+ * 添加`para`包裹参数字符串
+ *
+ * @param {*} [para]
+ * @returns
+ */
+function paramize (para = {}) {
+  return {
+    para: JSON.stringify(para)
+  }
+}
+
+/**
+ * 发起ajax请求
+ * wrapper of jQuery.ajax
+ *
+ * @param {String} type 请求类型
+ * @param {String} url 请求地址
+ * @param {*} data 请求参数
+ * @param {*} [option] jQuery.ajax设置参数
+ *
+ * @returns {Promise}
+ */
+function request (type, url, data, option) {
+  var options = Object.assign({}, option, {
+    url: url,
+    paramize: true, // 默认处理参数
+    method: type
+  });
+
+  // 参数处理
+  options.data = options.paramize ? paramize(data) : data;
+
+  // 移除多余字段
+  delete options.paramize;
+
+  return new Promise(function (resolve, reject) {
+    jQuery.ajax(options).then(resolve, reject);
+  });
+}
+
+/**
+ * 同步请求
+ *
+ * @param {String} type 请求类型
+ * @param {String} url 请求地址
+ * @param {*} data 请求参数
+ * @param {*} [option] jQuery.ajax设置参数
+ * @returns {*|null}
+ */
+request.sync = function (type, url, data, option) {
+  var result = null;
+
+  var options = Object.assign({}, option, {
+    async: false
+  });
+
+  request(type, url, data, options)
+    .then(x => result = x)
+    .catch(error => console.error(error));
+
+  return result;
+}
+
+/**
+ * post请求
+ *
+ * @returns {Promise}
+ */
+request.post = function (...args) {
+  return request('POST', ...args);
+}
+
+/**
+ * get请求
+ *
+ * @returns {Promise}
+ */
+request.get = function (...args) {
+  return request('GET', ...args);
+}
+
+/**
+ * 保存文件至本地
+ * @param {Blob} blob 文件
+ * @param {String} filename 文件名
+ */
+function download (blob, filename) {
+  if (navigator.msSaveOrOpenBlob) { //IE
+    navigator.msSaveOrOpenBlob(blob, filename);
+  } else {
+    var URL = (window.URL || window.webkitURL);
+    var url = URL.createObjectURL(blob);
+    downloading(url, filename);
+    setTimeout(function () {
+      URL.revokeObjectURL(url);
+    }, 100);
+  }
+}
+
+/**
+ *
+ * 保存文件至本地<br>
+ * a.download
+ *
+ * @param {String} url URL
+ * @param {String} filename 文件名
+ */
+function downloading (url, filename) {
+  var a = document.createElement('a');
+  a.style.display = 'none';
+  a.setAttribute('href', url);
+  a.setAttribute('download', filename);
+  document.body.appendChild(a);
+  a.dispatchEvent(new MouseEvent('click'));
+  document.body.removeChild(a);
+}

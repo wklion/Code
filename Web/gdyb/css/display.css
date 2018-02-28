@@ -1,0 +1,736 @@
+﻿/*
+ * 预报展示css
+ * by dinlerkey, 2017-04-06
+ * */
+
+@font-face {
+    font-family: "iconfont";
+    src: url('icon/iconfont.eot?t=1491529948473'); /* IE9*/
+    src: url('icon/iconfont.eot?t=1491529948473#iefix') format('embedded-opentype'), /* IE6-IE8 */
+    url('icon/iconfont.woff?t=1491529948473') format('woff'), /* chrome, firefox */
+    url('icon/iconfont.ttf?t=1491529948473') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+    url('icon/iconfont.svg?t=1491529948473#iconfont') format('svg'); /* iOS 4.1- */
+}
+
+.iconfont {
+    font-family:"iconfont" !important;
+    font-size: 24px;
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    padding-top:  4px;
+    margin-left: -2px;
+}
+
+.icon-qiwen:before { content: "\e63b"; }
+
+.icon-nengjiandu:before { content: "\e6a7"; }
+
+.icon-dafeng:before { content: "\e883"; }
+
+.icon-shidu:before { content: "\e63f"; }
+
+.icon-shui:before { content: "\e654"; }
+
+.icon-tianqi:before { content: "\e62a"; }
+
+.icon-feng:before { content: "\e959"; }
+
+.icon-jiangshuiliang:before { content: "\e95a"; }
+
+.icon-yun:before { content: "\e63c"; }
+
+.icon-wendumax:before { content: "\e6ef"; }
+
+.icon-wendumin:before { content: "\e61a"; }
+
+.icon-wuran:before { content: "\e65b"; }
+
+.icon-kaishi:before { content: "\e637"; }
+
+.icon-zanting:before { content: "\e96b"; }
+
+.icon-jiaotong:before { content: "\345d"; }
+
+.icon-lvyou:before { content: "\f0047"; }
+
+.icon-diandiandian:before { content: "\e7b2"; }
+
+.icon-tq-duoyun:before { content: "\f01bc"; }
+
+.icon-tq-mai:before { content: "\f01bd"; }
+
+.icon-tq-qing:before { content: "\f01be"; }
+
+.icon-tq-wu:before { content: "\f01bf"; }
+
+.icon-tq-xue:before { content: "\f01c0"; }
+
+.icon-tq-yin:before { content: "\f01c1"; }
+
+.icon-tq-yu:before { content: "\f01c2"; }
+
+.icon-tq-bingbao:before { content: "\e881"; }
+
+.icon-tq-zhenyu:before { content: "\e61b"; }
+
+.icon-tq-dayu:before { content: "\e622"; }
+
+.icon-tq-yangsha:before { content: "\e634"; }
+
+.icon-tq-leizhenyu:before { content: "\f002f"; }
+
+.icon-tq-dongyu:before { content: "\e6e0"; }
+
+.icon-tq-yujiaxue:before { content: "\e628"; }
+
+.icon-tq-daxue:before { content: "\e627"; }
+
+.icon-tq-fuchen:before { content: "\e8b4"; }
+
+.icon-tq-shachenbao:before { content: "\e638"; }
+
+.icon-addition_fill:before { content: "\e6e0"; }
+
+.icon-flag_fill:before { content: "\e6fb"; }
+
+.icon-xiasanjiao:before { content: "\e504"; }
+
+.icon-shangsanjiao:before { content: "\e6bb"; }
+
+.icon-jia:before { content: "\e616"; }
+
+.icon-qianbi:before { content: "\e621"; }
+
+.icon-shanchu:before { content: "\f0008"; }
+
+.icon-chazhao:before { content: "\e669"; }
+
+.icon-baocun:before { content: "\e653"; }
+
+.icon-wendang:before { content: "\e6b7"; }
+
+.icon-zhuye:before { content: "\e67b"; }
+
+.icon-xiangtai:before { content: "\e636"; }
+
+.icon-leibao:before { content: "\e66c"; }
+
+.icon-leibaodafeng:before { content: "\e676"; }
+
+.icon-zuixiaoshidu:before { content: "\e95c"; }
+
+.icon-zuidashidu:before { content: "\e6af"; }
+
+.icon-duanshiqiangjiangshui:before { content: "\e8e4"; }
+
+* {
+    box-sizing: border-box;
+}
+
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, fieldset, input, textarea, blockquote, th, td, table {
+    margin: 0;
+    padding: 0;
+}
+
+#backHome a i{
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    height: 50px;
+    width: 50px;
+    color: #fff;
+    font-size: 28px;
+}
+#backHome a i:hover{
+    color: rgba(157,3,0,1);
+    text-underline: none;
+ }
+
+#panelHost{
+    z-index: 1000;
+    position: absolute;
+    float: right;
+    right: 10px;
+    top: 10px;
+    justify-content: flex-start;
+    flex-direction: column;
+    text-align: center;
+    font-size: 24px;
+    color: white;
+    height: 90%;
+    width: 36px;
+}
+
+#mapSwitch_div{
+    z-index: 600;
+    position: absolute;
+    right: 80px;
+    top: 10px;
+}
+
+#panelHost #zoom{
+    flex-direction: column;
+    margin-bottom: 20px;
+    background-color: rgba(3,66,94,0.7);
+}
+
+#panelHost #zoom .zoomTip{
+    width: 36px;
+    height: 36px;
+    text-align: center;
+}
+
+#panelHost #zoom .zoomTip:hover{
+    cursor: pointer;
+    background-color: rgba(183,183,183,0.39);
+}
+
+#panelHost #elementDiv{
+    background-color: rgba(3,66,94,0.7);
+    display: flex;
+    flex-direction: column;
+}
+
+#panelHost #elementDiv .listMenu{
+    flex: 1;
+    width: 36px;
+    height: 36px;
+    line-height: 36px;
+    margin: 3px 0;
+    text-align: center;
+}
+#rightPanel #addList{
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    height: 36px;
+    line-height: 36px;
+    background-color: rgba(3,66,94,0.7);
+}
+/*
+#rightPanel #addList::after{
+    top: 3px;
+    right: -16px;
+    border: solid transparent;
+    content: ' ';
+    height: 0;
+    width: 0;
+    position: absolute;
+    border-left-color: rgba(70,70,70,0.34);
+    border-width: .5em;
+    margin-left: -0.5em;
+}*/
+#rightPanel .addListMenu{
+    margin-left: 5px;
+    display: inline-block;
+    width: 35px;
+}
+
+#panelHost #elementDiv .listMenu:hover,#rightPanel .addListMenu:hover{
+    cursor: pointer;
+    background-color: rgba(183,183,183,0.39);
+}
+
+#panelHost #elementDiv .listMenu.active,#rightPanel .addListMenu.active{
+    background-color: rgba(157,3,0,1);
+}
+
+#bottomPanel{
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-transition: all ease-in-out .4s;
+    transition: all ease-in-out .4s;
+    position: absolute;
+    margin-right: 270px;
+    bottom: 5px;
+    height: 60px;
+    z-index: 9999;
+    color: white;
+}
+
+#bottomPanel #progress-bar {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    position: absolute;
+    left: 15px;
+    right: 0;
+    height: 40px;
+    bottom: 0;
+}
+
+#bottomPanel #progress-bar::before {
+    left: 0;
+    width: 45px;
+    background-color: rgba(157,3,0,1);
+}
+
+#bottomPanel #progress-bar .progress-line {
+    position: absolute;
+    cursor: pointer;
+    z-index: 1;
+    border-bottom: 10px solid transparent;
+    border-top: 10px solid transparent;
+    background-clip: padding-box;
+    top: -10px;
+    left: 45px;
+    -webkit-transition: width ease-in-out .7s;
+    transition: width ease-in-out .7s;
+}
+
+.progress-line #timeLine {
+    position: absolute;
+    width: 0;
+    height: 6px;
+    background-color: rgba(157,3,0,1);
+    top: 0;
+}
+
+.progress-line .avbl {
+    position: absolute;
+    width: 100%;
+    height: 6px;
+    background-color: #d3d3d3;
+}
+
+.progress-line .avbl .subParam {
+    position: absolute;
+    height: 6px;
+    z-index: 1;
+    top: 0;
+}
+
+.progress-line .avbl .subParam.active {
+
+}
+
+.progress-line i {
+    display: block;
+    width: 3px;
+    height: 6px;
+    position: absolute;
+    background-color: #e4a600;
+    top: 0;
+}
+
+.timecode {
+    font-size: 10px;
+    position: absolute;
+    display: block;
+    box-sizing: border-box;
+    top: -2.6em;
+    margin-left: -2em;
+}
+
+.timecode .box {
+    cursor: -webkit-grab;
+    cursor: -moz-grab;
+    opacity: 0.6;
+    position: relative;
+    background: #ffffff;
+    color: black;
+    height: 2em;
+    box-sizing: border-box;
+    padding: .3em .8em;
+    white-space: nowrap;
+    text-align: center;
+    display: inline-block;
+    font-family: Verdana,sans-serif;
+    border-radius: 3px;
+}
+
+.timecode .box::after {
+    top: 100%;
+    left: 2em;
+    border: solid transparent;
+    content: ' ';
+    height: 0;
+    width: 0;
+    position: absolute;
+    border-top-color: #ffffff;
+    border-width: .5em;
+    margin-left: -0.5em;
+}
+
+.ghost-timecode {
+    transition: .3s opacity 0s;
+    -webkit-transition: .3s opacity 0s;
+    display: none;
+}
+
+.ghost-timecode .box {
+    cursor: pointer;
+    background-color: rgba(157,3,0,1);;
+    color: white;
+    opacity: 1;
+}
+
+.ghost-timecode .box::after {
+    border-top-color: rgba(157,3,0,1);
+}
+
+.loader {
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s linear .25s,opacity .25s linear;
+    width: 21px;
+    height: 9px;
+    content: url(../img/ajax-loader5.gif);
+    z-index: 21;
+}
+
+.timecode .loader {
+    position: absolute;
+    left: -2.5em;
+    top: .6em;
+}
+
+#bottomPanel #progress-bar #playpause {
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    width: 1em;
+    height: 1em;
+    cursor: pointer;
+    position: absolute;
+    font-size: 25px;
+    top: 8px;
+    left: 10px;
+    z-index: 10;
+    margin-top: -2px;
+}
+
+#bottomPanel #progress-bar #calendar {
+    position: absolute;
+    left: 45px;
+    right: 0;
+    top: 6px;
+    white-space: nowrap;
+}
+
+#bottomPanel #progress-bar #calendar::before {
+    display: block;
+    position: absolute;
+    width: 45px;
+    height: 32px;
+    background-color: rgba(70,70,70,0.34);
+    content: ' ';
+    left: -45px;
+    z-index: -1;
+}
+
+#bottomPanel #progress-bar #calendar div.clickable {
+    color: white;
+}
+
+#bottomPanel #progress-bar #calendar div {
+    display: inline-block;
+    box-sizing: border-box;
+    text-align: left;
+    padding: 8px 0 0 8px;
+    font-size: 12px;
+    height: 32px;
+    white-space: nowrap;
+    overflow: hidden;
+    color: white;
+    background-color: rgba(70,70,70,0.34);
+    margin-left: 1px;
+}
+
+.clickable {
+    cursor: pointer;
+}
+
+#bottomPanel #progress-bar::before, #bottomPanel #progress-bar::after {
+    position: absolute;
+    top: 0;
+    height: 6px;
+    content: ' ';
+}
+
+.windowInfo{
+    height: 110px;
+    width: 140px;
+    color: #fff;
+    background-color: rgba(150,150,250,0.5);
+    padding-left: 10px;
+    padding-top: 5px
+}
+
+.windowInfo .closeIcon{
+    position: absolute;
+    right: 2px;
+    top: 1px;
+    width: 12px;
+    text-align: center;
+    cursor: pointer;
+}
+.windowInfo .closeIcon:hover{
+    color: rgba(157,3,0,1);
+}
+.windowInfo .showDateDiv{
+
+}
+.windowInfo .dataSelecter{
+    width: 38px;
+    height: 18px;
+    line-height: 20px;
+    margin: -4px 5px 0;
+    background-color: rgba(150,150,250,0.5);
+    border-radius: 5px;
+    border: none;
+    color: #fff;
+    font-size: 12px;
+    padding: 0 2px;
+}
+.windowInfo .dataSelecter:hover{
+    background-color: rgba(157,3,0,1);
+}
+
+.windowPlay{
+    position:absolute;
+    top: 150px;
+    right: 100px;
+    height: 320px;
+    width: 460px;
+    opacity: 0.9;
+    background-color: rgba(200,200,200,0.7);
+    display: none;
+    z-index: 999;
+}
+.windowPlay #addLine{
+    position: absolute;
+    right: 15px;
+    height: 22px;
+    line-height: 22px;
+    font-size: 18px;
+    z-index: 99;
+}
+.windowPlay #addLine:hover{
+    color: rgba(30,40,200,0.8);
+}
+.windowPlay #addWindow{
+    padding: 20px 8px;
+    float: left;
+    position: absolute;
+    top: 36px;
+    right: 1px;
+    border: 1px solid rgba(252,252,252,0.9);
+    border-radius: 5px;
+    height: 140px;
+    width: 220px;
+    background-color: rgba(120,120,120,0.9);
+    display: none;
+}
+.windowPlay #addWindow input{
+    padding: 2px;
+    height: 28px;
+    line-height: 28px;
+    width: 200px;
+}
+.windowPlay #addWindow button{
+    position: absolute;
+    top: 100px;
+    right: 10px;
+    border: 1px solid rgba(252,252,252,0.9);
+    border-radius: 5px;
+    padding: 2px;
+    height: 28px;
+    width: 80px;
+}
+.windowPlay #addWindow button:hover{
+    color: rgba(255,255,255,1);
+    background-color: rgba(157,3,0,0.6);
+}
+.windowPlay #playTable{
+    overflow: auto;
+    margin-bottom: 0;
+}
+.windowPlay #playTable tr td input{
+    padding: 0;
+    width: 160px;
+    height: 18px;
+    text-align: left;
+    margin: 1px 0 -2px 0;
+}
+.windowPlay #playTable tr{
+    cursor: pointer;
+}
+.windowPlay #playTable tr:hover{
+    color: rgba(157,3,0,1);
+    background-color: rgba(220,220,220,0.8);
+}
+.windowPlay #playTable tr.active{
+    color: rgba(157,3,0,1);
+}
+.windowPlay #playTable .handleIcon i:hover{
+    color: rgba(30,40,200,0.8);
+}
+.windowPlay .iconHide{
+    position: absolute;
+    right: 25px;
+    width: 12px;
+    font-size: 22px;
+    text-align: center;
+    cursor: pointer;
+}
+.windowPlay .iconHide:hover{
+    color: rgba(157,3,0,1);
+}
+.windowTraff{
+    position:absolute;
+    top: 150px;
+    right: 100px;
+    height: 380px;
+    width: 260px;
+    opacity: 0.9;
+    background-color: rgba(200,200,200,0.7);
+    display: none;
+    z-index: 999;
+}
+.windowTraff .iconHide{
+    position: absolute;
+    right: 25px;
+    width: 12px;
+    font-size: 22px;
+    text-align: center;
+    cursor: pointer;
+}
+.windowTraff .iconHide:hover{
+    color: rgba(157,3,0,1);
+}
+.windowTraff .tableHead tr{
+    text-align: center;
+}
+.windowTraff #makeWord{
+    position: absolute;
+    right: 42px;
+    height: 32px;
+    line-height: 22px;
+    font-size: 24px;
+}
+.windowTraff #makeWord:hover{
+    color: rgba(157,3,0,1);
+    cursor: pointer;
+}
+.windowTraff #traffTable{
+    margin-bottom: 0;
+}
+.windowTraff #traffTable tr:hover{
+    color: rgba(157,3,0,1);
+    background-color: rgba(220,220,220,0.8);
+}
+
+.windowInfoJQ{
+    z-index: 100;
+    height: 120px;
+    width: 160px;
+    color: #fff;
+    background-color: rgba(150,150,250,0.5);
+    padding: 5px;
+    border-radius: 15px;
+}
+.windowInfoJQ .dataSelecter{
+    width: 38px;
+    height: 18px;
+    line-height: 20px;
+    margin: -4px 5px 0;
+    background-color: rgba(150,150,250,0.5);
+    border-radius: 5px;
+    border: none;
+    color: #fff;
+    font-size: 12px;
+    padding: 0 2px;
+}
+.windowInfoJQ .dataSelecter:hover{
+    background-color: rgba(157,3,0,1);
+}
+.windowInfoJQ .areaNameDiv{
+    border: 1px solid rgba(3,45,74,0.7);
+    background-color: rgba(22,94,165,0.7);
+    max-height: 40px;
+    font-size: 14px;
+    color: #fff;
+    text-align: center;
+}
+.windowInfoJQ .weatherForcastDiv{
+
+}
+.windowInfoJQ .areaLevel{
+    color: #000;
+    position: absolute;
+    right: -20px;
+    writing-mode: vertical-rl;
+}
+
+#windowScenicArea{
+    position: absolute;
+    top: 150px;
+    right: 100px;
+    height: 210px;
+    width: 140px;
+    opacity: 0.9;
+    background-color: rgba(200,200,200,0.7);
+    display: none;
+    z-index: 999;
+}
+#windowScenicArea .iconfont{
+    position: absolute;
+    right: 15px;
+    width: 12px;
+    font-size: 22px;
+    text-align: center;
+    cursor: pointer;
+}
+#windowScenicArea .scenicCheck {
+    margin: 10px;
+    position: relative;
+    font-weight: 600;
+}
+#windowScenicArea .scenicCheck input[type=checkbox] {
+    visibility: hidden;
+}
+#windowScenicArea .scenicCheck label {
+    cursor: pointer;
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    top: 0;
+    left: 70px;
+    background: #fff;
+    border:2px solid #ccc;
+    -moz-border-radius: 3px;      /* Gecko browsers */
+    -webkit-border-radius: 3px;   /* Webkit browsers */
+    border-radius:3px;            /* W3C syntax */
+}
+#windowScenicArea .scenicCheck label:after {
+    opacity: 0;
+    content: '';
+    position: absolute;
+    width: 9px;
+    height: 5px;
+    background: transparent;
+    top: 6px;
+    left: 6px;
+    border: 2px solid #333;
+    border-top: none;
+    border-right: none;
+    -webkit-transform: rotate(-45deg);
+    -moz-transform: rotate(-45deg);
+    -o-transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+}
+#windowScenicArea .scenicCheck label:hover::after {
+    opacity: 0.5;
+}
+#windowScenicArea .scenicCheck input[type=checkbox]:checked + label:after {
+    opacity: 1;
+}
+

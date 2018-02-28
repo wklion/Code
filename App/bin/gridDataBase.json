@@ -1,0 +1,9 @@
+{
+	type:"MGCMySQL",
+	alias:"gridDB",
+	server:"127.0.0.1",
+	port:"3306",
+	database:"gs_local",
+	user:"root",
+	password:"root"
+}

@@ -1,0 +1,159 @@
+/**
+ * banner
+ */
+
+// 尺寸
+$brand-width: 485px; // logo固定大小
+$brand-height: 51px;
+$user-width: 100px;
+$nav-width: calc(100% - #{$brand-width + $user-width});
+$fn-size: 4px;
+$icon-size: 2.4rem;
+// 颜色
+$text-color: #ced4da; // 文本前景色
+$text-color-highlight: #fff; //文本高亮
+$bg-color:#1c272d; // 背景色
+$fn-color: #31ccff;
+// 动画时长
+$fn-animate-time:.5s;
+// flex布局
+@mixin flex-layout {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+}
+
+.banner {
+  // 前景色 背景色
+  color: $text-color;
+  background-color: $bg-color;
+  padding: 0 1rem;
+  @include flex-layout;
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+  .brand {
+    // 品牌
+    @include flex-layout;
+    justify-content: center;
+    flex: 0 0 auto;
+    .logo {
+      height: $brand-height; // logo固定大小
+      width: $brand-width;
+      background-size: cover;
+      @include image("logo");
+    }
+    .title {
+      padding-left: 1rem;
+      font-size: 2em;
+      flex-shrink: 0;
+    }
+  }
+  .navbar {
+    margin: 0;
+    padding: 0 1rem;
+    border-radius: 0;
+    width: $nav-width;
+  }
+  .user-wrapper {
+    @include flex-layout;
+    flex: 0 0 auto;
+    justify-content: flex-end;
+    width: $user-width;
+  }
+}
+
+.navbar {
+  ul.nav {
+    @include flex-layout;
+    justify-content: flex-end;
+    list-style: none;
+    li {
+      cursor: pointer;
+      transition: box-shadow $fn-animate-time;
+      /*下划线*/
+      &:after {
+        content: "";
+        position: absolute;
+        width: 100%;
+        padding: $fn-size / 2;
+        background-color: $fn-color;
+        transition: transform $fn-animate-time;
+        transform: scale(0, 1);
+      }
+      /*内容图标*/
+      a,
+      i {
+        display: block;
+        font-size: $icon-size;
+        font-style: normal;
+        text-decoration: none;
+      }
+      /*状态切换*/
+      &.active {
+        // 注销鼠标事件
+        pointer-events: none;
+      }
+      &.active,
+      &:active {
+        a {
+          color: $fn-color;
+        }
+      }
+      &.active,
+      &:active,
+      &:hover {
+        // 下划线动画效果
+        &:after {
+          transform: scale(1, 1);
+        }
+      }
+      &:hover:not(.active) {
+        // 高亮
+        a {
+          color: $text-color-highlight;
+          font-weight: 500;
+        }
+        @include z-depth(1.5); // 阴影
+      }
+      /* **prevent bootstrap*/
+      a:hover,
+      a:focus {
+        background-color: transparent;
+      }
+    }
+  }
+}
+
+.user-wrapper {
+  margin: 0 -5px;
+  &>a {
+    margin: 0 5px;
+    cursor: pointer;
+    font-size: 16px;
+    &[disabled] {
+      pointer-events: none;
+    }
+    &:hover,
+    &:focus {
+      color: $text-color-highlight; // @include z-depth(1);
+    }
+  }
+  /** 登录状态切换 */
+  &:not(.logged) .user,
+  &:not(.logged) .logout,
+  &.logged .login {
+    @extend .hidden;
+    pointer-events: none;
+  }
+  .login {
+    @include iconfont("\e602");
+  }
+  .user {
+    @include iconfont("\e602");
+  }
+  .logout {
+    @include iconfont("\e60e");
+  }
+}

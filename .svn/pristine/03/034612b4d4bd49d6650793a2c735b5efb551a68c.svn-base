@@ -1,0 +1,3 @@
+var host = "http://"+window.location.host;
+var hostname = "http://"+window.location.hostname;
+var flashFloodServiceUrl =  hostname+":8081/GSFlashFlood/services/";

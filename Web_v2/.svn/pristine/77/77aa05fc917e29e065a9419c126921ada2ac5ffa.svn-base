@@ -1,0 +1,42 @@
+function ShortForecastingMenu() {
+  this._init_();
+}
+ShortForecastingMenu.prototype = {
+  constructor: ShortForecastingMenu,
+  _init_: function () {
+    this.name = "短时预报";
+  },
+  renderMenu:function () {
+    let html = `
+      <div class="ShortForecasting"> 
+        <dl>  
+          <dt>时次:</dt>
+          <dd><input type="datetime-local"></dd>
+          <dt>绘图:</dt>
+          <dd><button></button><button></button></dd>
+          <dt>时效:</dt>
+          <dd><button>12H</button><button>24H</button></dd>
+          <dt>类型:</dt>
+          <dd><button>雷暴</button><button>短时强降水</button><button>雷暴大风或冰雹</button></dd>
+          <dt>格距:</dt>
+          <dd><button>0.5</button><button>0.25</button><button>0.125</button></dd>
+        </dl>
+        
+        <div class="edit_grid"> 
+          <textarea name="" id="" cols="30" rows="10"></textarea>
+          <div>  
+            <button>格点编辑</button><button>站点选择</button><button>放弃编辑</button><button>提交预报</button>
+          </div>
+        </div>
+        
+        <div class="YBhistory"> 
+          <p><span>近期预报</span><span>更多</span></p>
+          <div></div>
+        </div>
+      </div>`;
+    $("#menu_bd").html(html);
+  },
+  initEvent:function () {
+
+  }
+}

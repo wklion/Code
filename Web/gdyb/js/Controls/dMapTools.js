@@ -1,0 +1,482 @@
+/**
+ * Created by dx on 2016/6/22.
+ */
+function dMapTools(){
+    var t = this;
+    //地图工具栏
+    var lineFlag = false;
+    var areaFlag = false;
+    var dxdrawLayer = new WeatherMap.Layer.Vector("drawLayer");
+    var dxlineLayer = new WeatherMap.Layer.Vector("lineLayer");
+    var dxareaLayer = new WeatherMap.Layer.Vector("areaLayer");
+    var dxinfoLayer = new WeatherMap.Layer.Vector("dxinfoLayer");
+    //var dxmousePosition = new WeatherMap.Control.MousePosition();
+    var dxdrawLine;
+    var dxdrawPolygon;
+
+    var dxdrawCtr = null;
+    var initFlag = false;
+    var hideFlag = false;
+    this.diyDraw = null;
+
+    this.init = function(){
+        if(!initFlag){
+            $("#dmapTools").find("div").click(function(){
+                t.ToolsClick(this);
+            });
+            $("#dmapTools").find("div").hover(function(){
+                if($(this).find("img").length != 0){
+                    var src = $(this).find("img").attr("src");
+                    $(this).find("img").attr("src",src.split(".")[0]+"1.png");
+                }
+            },function(){
+                if($(this).find("img").length != 0){
+                    var src = $(this).find("img").attr("src");
+                    $(this).find("img").attr("src",src.split("1")[0]+".png");
+                }
+            });
+            initFlag = true;
+        }
+        var map = GDYB.Page.curPage.map;
+        dxdrawLayer = new WeatherMap.Layer.Vector("drawLayer");
+        dxlineLayer = new WeatherMap.Layer.Vector("lineLayer");
+        dxareaLayer = new WeatherMap.Layer.Vector("areaLayer");
+        dxinfoLayer = new WeatherMap.Layer.Vector("dxinfoLayer");
+        //画线
+        dxdrawLine = new WeatherMap.Control.DrawFeature(dxdrawLayer, WeatherMap.Handler.Path, { multi: true});
+        //画面
+        dxdrawPolygon = new WeatherMap.Control.DrawFeature(dxdrawLayer, WeatherMap.Handler.Polygon);
+        map.addLayer(dxdrawLayer);
+        map.addLayer(dxlineLayer);
+        map.addLayer(dxareaLayer);
+        map.addLayer(dxinfoLayer);
+        //map.addControl(dxmousePosition);
+        map.addControl(dxdrawLine);
+        map.addControl(dxdrawPolygon);
+        dxdrawPolygon.events.on({"featureadded": drawCompleted});
+        dxdrawLine.events.on({"featureadded": drawCompleted});
+        startDragMap();
+    }
+
+    this.ToolsClick = function(obj){
+        var me = this;
+        var flag = $(obj).attr("flag");
+        var map = GDYB.Page.curPage.map;
+        if(t.diyDraw!=null){
+            t.diyDraw.deactivate();
+        }
+        switch(flag){
+            case 'zoomIn':map.zoomIn();
+                break;
+            case 'zoomOut':map.zoomOut();
+                break;
+            case 'pan':{
+                startDragMap();
+            };
+                break;
+            case 'drawLine':{
+                lineFlag = true;
+                areaFlag = false;
+                $("#dxWindows").empty();
+                clearDraw();
+                dxdrawCtr = "line";
+                //stopDragMap();
+             };
+                break;
+            case 'drawPolygon':{
+                areaFlag = true;
+                lineFlag = false;
+                $("#dxWindows").empty();
+                clearDraw();
+                dxdrawCtr = "polygon";
+                //stopDragMap();
+             };
+                break;
+            case 'fullScreen':{map.zoomToExtent(new WeatherMap.Bounds(93.5,32,112.5,43))};
+                break;
+            case 'clear':{
+                lineFlag = false;
+                areaFlag = false;
+                clearDraw();
+                startDragMap();
+            };
+                break;
+            case 'layer':{
+                var $this = $(".mapLayer").find(".moreMapLayer");
+                $this.css("display","block");
+            };
+                break;
+            case 'outImg':{
+                var img = GDYB.Page.curPage.map.getImage();
+                var url = img.src;
+                var filename = 'map.png';
+                var a = document.createElement('a');
+                a.style.display = 'none';
+                a.setAttribute('href', url);
+                a.setAttribute('download', filename);
+                document.body.appendChild(a);
+                a.dispatchEvent(new MouseEvent('click'));
+                document.body.removeChild(a);
+            };
+                break;
+            case 'drawArea':{
+                t.diyDraw.activate();
+                stopDragMap();
+            };
+                break;
+        }
+        //GDYB.Page.curPage.map.zoomToExtent(new WeatherMap.Bounds(91,32,110,43));
+    }
+    function drawCompleted(event) {
+        var geometry = event.feature.geometry;
+        dxdrawLayer.removeAllFeatures();
+        var geoVector = new WeatherMap.Feature.Vector(geometry);
+        var t  = new Array();
+        t  = geometry.components[0].components;
+        var lonLat ;
+        var contentHtml = "";
+        var content = "";
+        var fid = "";
+        if ("line" == dxdrawCtr) {
+            dxlineLayer.addFeatures(geoVector);
+            var obj = dxlineLayer.features;
+            fid = obj[obj.length-1].id;
+            var distanceStr = "";
+            distanceStr = getDistance(geometry);
+            if(distanceStr.indexOf("NaN")>-1){
+                content = "<span style='margin:1px 1px 1px 1px;color:#FC7A5B'>错误！请重试！</span>";
+            }else{
+                contentHtml = "<div title='总距离: "+distanceStr+"' style='background-color:#ffffff;border: 1px solid rgb(183,183,183);margin-top: -1px;'><span style='margin-left:2px;color:#78D2D2'> 总距离: "+distanceStr+"</span><span ><img style='margin:0px 2px 2px 5px;cursor: pointer;' title='点此关闭气泡' src='imgs/tools/closeTools.png'  onclick='GDYB.dMapTools.closeInfoWindows()'/></span></div>"
+                content = "<span style='background-color:#ffffff;margin:1px 1px 1px 1px;color:#FC7A5B'>"+distanceStr+"</span>"
+            }
+            lonLat = new WeatherMap.LonLat(t[t.length-1].x,t[t.length-1].y);
+            addResultWindows(lonLat,content,fid);
+            mapToolsWindows(lonLat,contentHtml);
+        }else {
+            //dxareaLayer.drawFeature(geoVector);
+            dxareaLayer.addFeatures(geoVector);
+            var obj = dxareaLayer.features;
+            fid = obj[obj.length-1].id;
+            var areaStr = "";
+            areaStr = getPolygonArea(geometry);
+            if(areaStr.indexOf("NaN")>-1){
+                content = "<span style='margin:1px 1px 1px 1px;color:#FC7A5B'>错误！请重试！</span>";
+            }else{
+                contentHtml = "<div title='总面积: "+areaStr+"' style='background-color:#ffffff;border: 1px solid rgb(183,183,183);margin-top: -1px;'><span style='margin-left:2px;color:#78D2D2'> 总面积: "+areaStr+"</span><span ><img style='margin:0px 2px 2px 5px;cursor: pointer;' title='点此关闭气泡' src='imgs/tools/close.png'  onclick='GDYB.dMapTools.closeInfoWindows()'/></span></div>"
+                content = "<span style='background-color:#ffffff;margin:1px 1px 1px 1px;color:#FC7A5B'>"+areaStr+"</span>"
+            }
+            lonLat = new WeatherMap.LonLat(t[t.length-2].x,t[t.length-2].y);
+            mapToolsWindows(lonLat,contentHtml);
+            addResultWindows(lonLat,content,fid);
+        }
+        //stopDragMap();
+        /*var gc = new BMap.Geocoder();
+        gc.getLocation(point, function (rs) {
+            var addComp = rs.addressComponents;
+            //$("#waterAddress").val(addComp.province + addComp.city + addComp.district + addComp.street + addComp.streetNumber);FC7A5B
+        });*/
+    }
+
+
+    function clearDraw(){
+        dxdrawLayer.removeAllFeatures();
+        dxlineLayer.removeAllFeatures();
+        dxareaLayer.removeAllFeatures();
+        if(lineFlag){
+            dxdrawLine.activate();
+            //stopDragMap();
+        }else{
+            dxdrawLine.deactivate();
+        }
+        if(areaFlag){
+            dxdrawPolygon.activate();
+            //stopDragMap();
+        }else{
+            dxdrawPolygon.deactivate();
+        }
+        $("#MapToolsDiv").css("display","none");
+        if(lineFlag == false && areaFlag == false){
+            $("#dxWindows").empty();
+        }
+    }
+
+    this.closeInfoWindows = function(){
+        $("#MapToolsDiv").css("display","none");
+        $("#MapToolsDiv").attr("hflag","true");
+        var cflag = $(".dxWindow").length;
+        if(cflag<2){
+            if(lineFlag){
+                dxlineLayer.removeAllFeatures();
+                $("#dxWindows").empty();
+            }
+            if(areaFlag){
+                dxareaLayer.removeAllFeatures();
+                $("#dxWindows").empty();
+            }
+        }else{
+            $(".dxWindow").each(function(){
+                $(this).css("display","block");
+            });
+        }
+    }
+
+    this.closeSmall = function(obj){
+        var t = $(obj);
+        var fid = t.parent(0).attr("fid");
+        if(lineFlag){
+            dxlineLayer.removeFeatures(dxlineLayer.getFeatureById(fid));
+        }
+        if(areaFlag){
+            dxareaLayer.removeFeatures(dxareaLayer.getFeatureById(fid));
+        }
+        t.parent(0).remove();
+
+    }
+
+
+    function mapToolsWindows(lonLat,contentHTML){
+        var map = GDYB.Page.curPage.map;
+        var pixel = map.getPixelFromLonLat(lonLat);
+        if(contentHTML.length>0){
+            $("#mtsContent").html(contentHTML);
+            var height = parseInt($("#MapToolsDiv").css("height"));
+            var width = $("#MapToolsDiv").css("width");
+            var bt = "B";
+            var lr = "L";
+            if(pixel.y>height||((parseInt($("#map_div").css("height"))-pixel.y)<height)){
+                bt = "B";
+            }
+            else{
+                bt = "T";
+            }
+            if((document.body.offsetWidth-pixel.x)>(parseInt(width)-50)){
+                lr = "L";
+            }
+            else{
+                lr = "R";
+            }
+            $(".mtsContentImg").css("display","none");
+            $("#mtsContent"+bt+lr).css("display","block");
+            $("#MapToolsDiv").css("top",pixel.y);
+            $("#MapToolsDiv").css("left",pixel.x);
+            if(bt == "B"){
+                $("#MapToolsDiv").css("margin-top","-"+(height+2)+"px");
+            }
+            else{
+                $("#MapToolsDiv").css("margin-top","4px")
+            }
+            if(lr == "L"){
+                $("#MapToolsDiv").css("margin-left","-50px");
+            }
+            else{
+                $("#MapToolsDiv").css("margin-left","-"+width);
+            }
+            $("#MapToolsDiv").css("display","block");
+            map.events.register("move", map, function(event){
+                $("#MapToolsDiv").css("display", "none");
+            });
+            /*
+            map.events.register("move", map, function(event){
+                var pixel = map.getPixelFromLonLat(lonLat);
+                var ctop = parseInt($("#map_div").css("height"))-75;
+                var cleft = parseInt($("#map_div").css("width"))-56;
+                if($("#MapToolsDiv").css("display")=="block") {
+                    if (pixel.y > ctop || pixel.x > cleft || pixel.y < 75 || pixel.x < 56) {
+                        $("#MapToolsDiv").css("display", "none");
+                    } else {
+                        $("#MapToolsDiv").css("top", pixel.y);
+                        $("#MapToolsDiv").css("left", pixel.x);
+                    }
+                }
+            });
+            */
+        }
+
+    }
+
+    function addResultWindows(lonLat,content,fid){
+        var map = GDYB.Page.curPage.map;
+        var pixel = map.getPixelFromLonLat(lonLat);
+        var cflag = 0;
+        if($(".dxWindow").length>0){
+            cflag = $(".dxWindow").length+1;
+        }
+        $("#dxWindows").append("<div id='dxWindow"+cflag+"' hflag='' fid='"+fid+"' class='dxWindow' style='background-color:#ffffff;position: absolute;height:18px;line-height:18px;font-size:10px;;z-index: 99'></div>");
+        $("#dxWindow"+cflag).html(content);
+        $("#dxWindow"+cflag).append("<span title='关闭'  onclick='GDYB.dMapTools.closeSmall(this)'><img  style='line-height:16px;margin:0px 0px 2px 1px;' src='imgs/tools/lclose.png' /></span>");
+        var width = $("#dxWindow"+cflag).css("width");
+        $("#dxWindow"+cflag).css("top",pixel.y);
+        $("#dxWindow"+cflag).css("left",pixel.x);
+        $("#dxWindow"+cflag).css("margin-top","14px");
+        $("#dxWindow"+cflag).css("margin-left","-"+width);
+        $("#dxWindow"+cflag).css("position","absolute");
+        $("#dxWindow"+cflag).css("border","1px solid red ");
+
+        if(cflag<2){
+            if(!(content.indexOf("错误")>-1)){
+                $("#dxWindow"+cflag).css("display","none");
+            }
+        }else{
+            $(".dxWindow").each(function(){
+                if($(this).attr("hflag") != "hyes"){
+                    $(this).css("display","block");
+                }
+            });
+            $("#dxWindow"+cflag).css("display","none");
+        }
+        map.events.register("move", map, function(event){
+            var top = parseInt($("#map_div").css("height"))-85;
+            var left = parseInt($("#map_div").css("width"))-66;
+            $(".dxWindow").each(function(){
+                var lonLat = null;
+                if(lineFlag){
+                    var t =  dxlineLayer.getFeatureById($(this).attr("fid")).geometry.components[0].components;
+                    lonLat = new WeatherMap.LonLat(t[t.length-1].x,t[t.length-1].y);
+                }
+                if(areaFlag){
+                    var t =  dxareaLayer.getFeatureById($(this).attr("fid")).geometry.components[0].components;
+                    lonLat = new WeatherMap.LonLat(t[t.length-2].x,t[t.length-2].y);
+                }
+                var pixel = map.getPixelFromLonLat(lonLat);
+                var ctop = parseInt($(this).css("top"));
+                var cleft = parseInt($(this).css("left"));
+                if($(this).css("display")=="block") {
+                    if (ctop > top ||ctop< 66 || cleft > left || cleft < 85) {
+                        $(this).css("display","none");
+                        $(this).attr("hflag","hyes");
+                    } else {
+                        $(this).css("top", pixel.y);
+                        $(this).css("left", pixel.x);
+                    }
+                }else {
+                    if (85 < ctop < top && 86 < cleft < left) {
+                        $(this).css("display", "block");
+                        $(this).css("top", pixel.y);
+                        $(this).css("left", pixel.x);
+                        $(this).attr("hflag","");
+                    }
+                }
+            });
+
+            /*
+            if($("#dxWindow"+cflag).css("display")=="block"){
+                var pixel = map.getPixelFromLonLat(lonLat);
+                $("#dxWindow"+cflag).css("top",pixel.y);
+                $("#dxWindow"+cflag).css("left",pixel.x);
+            }
+            */
+        });
+    }
+
+    //计算距离
+    function getDistance(geoRegion){
+        var measureParam = new WeatherMap.REST.MeasureParameters(geoRegion);
+        var pointsArr = new Array();
+        pointsArr = geoRegion.components[0].components;
+        var distance = 0;
+        var len = pointsArr.length;
+        if(len > 2){
+            var p1;
+            var p2;
+            for(var i=0; i<len-1; i=i+1)
+            {
+                p1 = pointsArr[i];
+                p2 = pointsArr[i+1];
+                var a = degtoRad(p1.x - p2.x);
+                var b = degtoRad(p1.y-p2.y);
+                var s = 2 * Math.asin(Math.sqrt(Math.abs(Math.pow(Math.sin(a / 2), 2)
+                    + Math.cos(p1.x) * Math.cos(p2.x)
+                    * Math.pow(Math.sin(b / 2), 2))));
+                 distance += s;
+                var testStr = distance+"123";
+            }
+            distance = distance * 6378137.0;
+        }else{
+            p1 = pointsArr[len-1];
+            p2 = pointsArr[0];
+            var a = degtoRad(p1.x - p2.x);
+            var b = degtoRad(p1.y-p2.y);
+            var s = 2 * Math.asin(Math.sqrt(Math.abs(Math.pow(Math.sin(a / 2), 2)
+                + Math.cos(p1.x) * Math.cos(p2.x)
+                * Math.pow(Math.sin(b / 2), 2))));
+            distance = s * 6378137.0;
+        }
+        distance = Math.abs(distance);
+        var disStr = "";
+        if(distance<1000){
+            disStr = Number(distance).toFixed(0) + " 米";
+        }else{
+            disStr = Number(distance/1000).toFixed(3) + " 千米";
+        }
+
+        return disStr;
+    }
+
+    //计算面积
+    function getPolygonArea(geoRegion){
+        var pointsArr = new Array();
+        pointsArr = geoRegion.components[0].components;
+        var area = 0;
+        var len = pointsArr.length;
+        if(len > 2){
+            var p1;
+            var p2;
+            for(var i=0; i<len-1; i=i+1)
+            {
+                p1 = pointsArr[i];
+                p2 = pointsArr[i+1];
+                area += degtoRad(p2.x - p1.x) * (2 + Math.sin(degtoRad(p1.y)) + Math.sin(degtoRad(p2.y)));
+            }
+            area = area * 6378137.0 * 6378137.0 / 2.0;
+        }
+        area = Math.abs(area);
+        var areaStr = null;
+        if(area<1000000){
+            areaStr = Number(area).toFixed(0) + " 平方米";
+        }else{
+            areaStr = Number(area/1000000).toFixed(3) + " 平方千米";
+        }
+        return areaStr;
+    }
+
+    function degtoRad(val){
+        return val*Math.PI/180;
+    }
+
+
+    function startDragMap(){
+        var map = GDYB.Page.curPage.map;
+        for(var i =0; i < map.events.listeners.mousemove.length; i++) {
+            var handler = map.events.listeners.mousemove[i];
+            if(handler.obj.CLASS_NAME == "WeatherMap.Handler.Drag"){
+                handler.obj.active = true;
+            }
+        }
+
+        for(var i=0;i< map.controls.length;i++) {
+            if(map.controls[i].displayClass == "smControlDrawFeature"){
+                map.controls[i].deactivate();
+            }
+        }
+
+    }
+    function stopDragMap(){
+        var map = GDYB.Page.curPage.map;
+        for(var i =0; i < map.events.listeners.mousemove.length; i++) {
+            var handler = map.events.listeners.mousemove[i];
+            if(handler.obj.CLASS_NAME == "WeatherMap.Handler.Drag"){
+                handler.obj.active = false;
+            }
+        }
+    }
+
+    this.clear = function(){
+        dxlineLayer.removeAllFeatures();
+        dxareaLayer.removeAllFeatures();
+        $("#MapToolsDiv").css("display","none");
+        $("#dxWindows").empty();
+    }
+    this.registerDrawControl = function(control){
+        t.diyDraw = control;
+    }
+}

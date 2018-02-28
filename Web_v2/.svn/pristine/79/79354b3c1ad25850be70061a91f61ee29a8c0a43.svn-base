@@ -1,0 +1,540 @@
+/**
+ * @author: wangkun
+ * @date:2017-12-07
+ * @description 首页
+ */
+function Home() {
+    this._init_();
+}
+Home.prototype = {
+    constructor: Home,
+    liveChart:null,
+    tenMChart:null,//10分钟图表
+    testChart:null,//检验图表
+    task:[],//任务表
+    _init_: function () {
+        var me = this;
+        me.name = "首页";
+        $("#content").html(`
+            <div class="home">
+                <div id="left_div" class="left_div">
+                    <div id="weatherInfo" class="weatherInfo">
+                        <div class="head">
+                            <div class="curPos">
+                                <span class="headCaption">兰州市</span>
+                                <span class="location"></span>
+                                <span>18:11</span>
+                                <span>实况</span>
+                            </div>
+                            <div class="dataFrom">
+                                <span>18:00更新</span>
+                                <span>数据来源 兰州中心台</span>
+                            </div>
+                        </div>
+                        <div class="live">
+                            <div class="curWeather">
+                                <div class="live_temp"><i class="tempIcon"></i><span>15℃</span></div>
+                                <div class="liveOther">
+                                    <div id="live_humidity"><i class="humidityIcon"></i><span>相对湿度</span><span>51%</span></div>
+                                    <div id="live_wind"><i class="windIcon"></i><span>东北风</span><span>2级</span></div>
+                                    <div id="live_AQI"><i class="airIcon"></i><span>94</span><span>良</span></div>
+                                    <div id="live_car"><i class="carIcon"></i><span>限行</span><span>5和0</span></div>
+                                </div>
+                            </div>
+                            <div class="dayAndNight">
+                                <div class="p16">20日白天</div>
+                                <div class="p36"><i class="dayPhenomena"></i></div>
+                                <div class="p16">晴</div>
+                                <div class="p16">26℃</div>
+                                <div class="p16">微风</div>
+                            </div>
+                            <div class="dayAndNight">
+                                <div class="p16">20日夜间</div>
+                                <div class="p36"><i class="nightPhenomena"></i></div>
+                                <div class="p16">晴</div>
+                                <div class="p16">11℃</div>
+                                <div class="p16">微风</div>
+                            </div>
+                        </div>
+                        <div class="cur_live">
+                            <div class="normal_row"><span>08时</span><span>11时</span><span>14时</span><span>17时</span><span>20时</span><span>23时</span><span>02时</span><span>05时</span></div>
+                            <div class="normal_row"><span class="dayPhenomena"></span><span class="dayPhenomena"></span><span class="dayPhenomena"></span><span class="dayPhenomena"></span><span class="dayPhenomena"></span><span class="dayPhenomena"></span><span class="dayPhenomena"></span><span class="dayPhenomena"></span></div>
+                            <div id="live_chart" class="live_chart"></div>
+                            <div class="normal_row"><span>微风</span><span>微风</span><span>微风</span><span>微风</span><span>微风</span><span>微风</span><span>微风</span><span>微风</span></div>
+                            <div class="normal_row"><span><3级</span><span><3级</span><span><3级</span><span><3级</span><span><3级</span><span><3级</span><span><3级</span><span><3级</span></div>
+                        </div>
+                    </div>
+                    <div id="dutyInfo" class="dutyInfo">
+                        <div class="headInfo">
+                            <span class="headCaption">值班人员</span>
+                            <span class="title_right">2017/12/06 星期三 15:30</span>
+                        </div>
+                        <div class="duty-detail">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr><th>姓名</th><th>岗位</th><th>电话</th><th>科室</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>王某某</td><td>值班岗</td><td>1300000000000</td><td>短临科</td></tr>
+                                    <tr><td>李某某</td><td>首席岗</td><td>1310000000000</td><td>短临科</td></tr>
+                                    <tr><td>张某某</td><td>值班岗</td><td>1320000000000</td><td>短临科</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div id="strongWeather" class="strongWeather">
+                        <div class="headInfo">
+                            <span class="headCaption">实况统计分析</span>
+                        </div>
+                        <div class="statHourspan">2017年12月7日14时至2017年12月8日14时</div>
+                        <div id="sw_stat">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr><th>类型</th><th>站次</th><th>最强</th><th>出现时间</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>大风</td><td>2</td><td>瓜州榆林千佛洞</td><td>6月12日</td></tr>
+                                    <tr><td>短时强降水</td><td>5</td><td>华家岭(35.2)</td><td>6月12日</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div id="sw_detail">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr><th>类型</th><th>站次</th><th>出现时间</th><th>站名</th><th>值</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>大风</td><td>2</td><td>瓜州榆林千佛洞</td><td>6月12日</td><td>18.3</td></tr>
+                                    <tr><td>短时强降水</td><td>5</td><td>华家岭(35.2)</td><td>6月12日</td><td>18.3</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div id="right_div" class="right_div">
+                    <div class="imgProduct" id="imgProduct">
+                    </div>
+                    <div class="chartProduct" id="chartProduct">
+                    </div>
+                </div>
+            </div>
+        `);
+        var config = me.getConfig();
+        var html = "";
+        config.imgProduct.forEach(item=>{
+            var imgSrc = imgCacheUrl+item.url;
+            html+='<div class="item" id='+item.id+'><image src='+imgSrc+'></image><button class="imgMax"></button><span class="title">'+item.name+'</span></div>';
+        });
+        $("#imgProduct").html(html);
+        html = "";
+        config.chartProduct.forEach(item=>{
+            html+='<div class="item" id="'+item.id+'"><div class="chartHead"><span class="headCaption">'+item.name+'</span><span class="headRight">'+item.updateTime+'</span></div><div class="chartBody"></div></div>';
+        });
+        $("#chartProduct").html(html);
+        initLiveChart();//初始化表格
+        init10MChart();//初始化5分钟实况
+        initTest();//检验
+        let livePrecImg = setInterval(me.updateLivePrecImg(),1000*60);
+        me.task.push({
+            name:"降水分布图",
+            class:livePrecImg
+        });
+        me.updateAlertSingal();
+        me.update10MData();//5分钟实况数据
+        me.updateTestData();
+        function initLiveChart(){
+            me.liveChart = echarts.init($("#live_chart")[0]);
+            var option = {
+                title: {
+                    text: ''
+                },
+                tooltip: {
+                    trigger: 'axis'
+                },
+                xAxis:  {
+                    type: 'category',
+                    boundaryGap: false,
+                    data: ['08','11','14','17','20','23','02','05']
+                },
+                yAxis: {
+                    show:true,
+                    min:function(value){
+                        return value.min;
+                    },
+                    type: 'value',
+                    axisLabel: {
+                        formatter: '{value} °C'
+                    }
+                },
+                series: [
+                    {
+                        name:'气温',
+                        type:'line',
+                        data:[11, 11, 15, 13, 12, 13, 10,8],
+                    }
+                ]
+            }
+            me.liveChart.setOption(option);
+        }
+        function init10MChart(){
+            me.tenMChart = echarts.init($("#live5m .chartBody")[0]);
+            var option = {
+                legend: {
+                    data:['气温','降水'],
+                    textStyle:{
+                        color:"white"
+                    }
+                },
+                textStyle:{
+                    color:"white"
+                },
+                grid:{
+                    bottom:20
+                },
+                xAxis:[{
+                        type: 'category',
+                        data:['08:00','08:05','08:10','08:15','08:20','08:25','08:30','08:35','08:40','08:45','08:50',"08:55"],
+                        axisPointer: {
+                            type: 'shadow'
+                        }
+                    }
+                ],
+                yAxis:[{
+                    type: 'value',
+                    name: '气温',
+                    axisLabel: {
+                        formatter: '{value} °C'
+                    }
+                },{
+                    type: 'value',
+                    name: '降水',
+                    axisLabel: {
+                        formatter: '{value} ml'
+                    }
+                }
+                ],
+                series:[{
+                        name:'气温',
+                        type:'line',
+                        itemStyle:{
+                            normal:{
+                                color:"red"
+                            }
+                        },
+                        data:[2.0, 2.2, 3.3, 4.5, 6.3, 10.2, 20.3, 23.4, 23.0, 16.5, 12.0, 6.2]
+                    },{
+                        name:'降水',
+                        type:'bar',
+                        yAxisIndex: 1,
+                        itemStyle:{
+                            normal:{
+                                color:"blue"
+                            }
+                        },
+                        data:[2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3]
+                    },
+                ]
+            };
+            me.tenMChart.setOption(option);
+        }
+        function initTest(){
+            me.testChart = echarts.init($("#test .chartBody")[0]);
+            var option = {
+                textStyle:{
+                    color:"white"
+                },
+                grid:{
+                    bottom:20
+                },
+                legend: {
+                    data:['中央台指导','省台指导','城镇预报','本地mos1','ops'],
+                    textStyle:{
+                        color:"white"
+                    }
+                },
+                xAxis:[{
+                    type: 'category',
+                    data:['24小时预报'],
+                    axisPointer: {
+                        type: 'shadow'
+                    }
+                }],
+                yAxis : [
+                    {
+                        type : 'value'
+                    }
+                ],
+                series : [{
+                        name:'中央台指导',
+                        type:'bar',
+                        data:[1.4]
+                    },
+                    {
+                        name:'省台指导',
+                        type:'bar',
+                        data:[1.8]
+                    },
+                    {
+                        name:'城镇预报',
+                        type:'bar',
+                        data:[2.2]
+                    },
+                    {
+                        name:'本地mos1',
+                        type:'bar',
+                        data:[1.0]
+                    },
+                    {
+                        name:'ops',
+                        type:'bar',
+                        data:[1.3]
+                    }
+                ]
+            };
+            me.testChart.setOption(option);
+        }
+    },
+    getConfig:function(){
+        var module = {
+            imgProduct:[{
+                name:"强天气实况",
+                id:"live",
+                url:"test/live.png"
+            },{
+                name:"葵花红外云图",
+                id:"sat",
+                url:"test/sat.png"
+            },{
+                name:"全省雷达拼图",
+                id:"radar",
+                url:"test/radar.png"
+            },{
+                name:"降水分布图",
+                id:"livePrec",
+                url:"test/prec.png"
+            },{
+                name:"预警监控",
+                id:"earlyWarning",
+                url:"test/earlyWarning.png"
+            },{
+                name:"临近预警",
+                id:"nearWarning",
+                url:"test/earlyWarning.png"
+            }],
+            chartProduct:[{
+                name:"预警信号",
+                id:"alertSignal",
+                updateTime:"更新日期：17-12-07 15:36"
+            },{
+                name:"5分钟实况",
+                id:"live5m",
+                updateTime:"更新日期：17-12-07 15:36"
+            },{
+                name:"检验评估",
+                id:"test",
+                updateTime:""
+            }]
+        };
+        return module;
+    },
+    /**
+     * @author:wangkun
+     * @date:2017-12-08
+     * @modifyDate:
+     * @return:
+     * @description:获取预警信号
+     */
+    getAlertSingal:function(recall){
+        var testData = [
+            {
+                type:"大风",
+                level:"蓝色",
+                departName:"兰州",
+                datetime:"2017-09-01"
+            },
+            {
+                type:"强降水",
+                level:"黄色",
+                departName:"庆阳",
+                datetime:"2017-09-02"
+            },
+            {
+                type:"雷电",
+                level:"蓝色",
+                departName:"天水",
+                datetime:"2017-09-03"
+            }
+        ];
+        var me = this;
+        let url= gsDataService + "services/DBService/getSignalGtDataByTimes";
+        var param = {
+            startTime:'2017-12-10 19:20:00',
+            endTime:'2017-12-13 19:20:00'
+        };
+        request('POST',url,param).then(function(data){
+            recall(data);
+        });
+    },
+    /**
+     * @author:wangkun
+     * @date:2017-12-08
+     * @modifyDate:
+     * @return:
+     * @description:更新预警信号
+     */
+    updateAlertSingal:function(){
+        var now = new MyDate();
+        let strDate = now.format("yy-MM-dd hh:mm");
+        $("#alertSignal .headRight").html("更新时间:"+strDate);
+        this.getAlertSingal(function(data){
+            var html = "<ul>";
+            var limit = 9;
+            data.forEach(item=>{
+                if(limit<1){
+                    return;
+                }
+                let title = item.headline;
+                var index1 = title.indexOf("发布");
+                if(index1==-1){
+                    index1 = title.indexOf("解除");
+                }
+                let index2 = title.indexOf("预警");
+                let type = title.substring(index1+2,index2);
+                let strDateTime = item.sendTime;
+                let lonDateTime = parseInt(strDateTime);
+                let tempDate = new MyDate(lonDateTime);
+                let url = host+"/imgs/WarningIcon/"+type+".jpg";
+                strDateTime = tempDate.format("MM月dd日hh时");
+                html+="<li>";
+                let imgHtml = '<img class="singalImg" src="'+url+'"></img>';
+                html+=imgHtml;
+                html+='<span class="singalTitle">'+title+'</span>';
+                html+='<span class="singalTime">'+strDateTime+'</span>';
+                html+="</li>";
+                limit--;
+            });
+            html+="</ul>";
+            $("#alertSignal .chartBody").html(html);
+        });
+    },
+    /**
+     * @author:wangkun
+     * @date:2017-12-13
+     * @modifyDate:
+     * @return:
+     * @description:获取5分钟数据
+     */
+    get10MData:function(){
+        var me = this;
+        let url= gsDataService + "services/DBService/getOneStationDetail";
+        var param = {
+            ObservTimesStart:'201706011300',
+            ObservTimesEnd:'201706011500',
+            stationNum:'52889',
+            tableName:'HIS_REALDATA_201706'
+        };//兰州测试
+        var tempData = [];
+        var precData = [];
+        var timeData = [];
+        request('POST',url,param).then(function(data){
+            data.forEach(item=>{
+                let precVal = item.Precipitation;
+                let tempVal = item.DryBulTemp;
+                tempData.push(tempVal);
+                precData.push(precVal);
+                let strH = item.ObservTimes.substring(8,10);
+                let strM = item.ObservTimes.substring(10,12);
+                let strHM = strH+":"+strM;
+                timeData.push(strHM);
+            });
+            var option = me.tenMChart.getOption();
+            option.xAxis[0].data = timeData;
+            option.series[0].data = tempData;
+            option.series[1].data = precData;
+            me.tenMChart.setOption(option);
+        });
+    },
+    /**
+     * @author:wangkun
+     * @date:2017-12-13
+     * @modifyDate:
+     * @return:
+     * @description:更新5分钟数据
+     */
+    update10MData:function(){
+        this.get10MData();
+    },
+    /**
+     * @author:wangkun
+     * @date:2017-12-13
+     * @modifyDate:
+     * @return:
+     * @description:获取检验数据
+     */
+    getTestData:function(){
+    },
+    /**
+     * @author:wangkun
+     * @date:2017-12-13
+     * @modifyDate:
+     * @return:
+     * @description:更新检验数据
+     */
+    updateTestData:async function(){
+        var me = this;
+        let url= gridServiceUrl + "services/ForecastfineService/getGridCheck";
+        var param = {
+            startTime:'17092008',
+            endTime:'17093008',
+            forecastHour:'08',
+            element:'r12',
+            type:'barometer'
+        };
+        var mapResult = new Map();
+        request('POST',url,param).then(function(data){
+            data.forEach(item=>{
+                let productType = item.productType;
+                let val = item.value;
+                let tempVal = mapResult.get(productType);
+                if(tempVal==undefined){
+                    mapResult.set(productType,val);
+                }
+                else{
+                    let avg = (val+tempVal)/2;
+                    mapResult.set(productType,avg);
+                }
+            });
+            var legendData = [];
+            var vals = [];
+            mapResult.forEach((val,key)=>{
+                legendData.push(key);
+                vals.push(val);
+            });
+            var option = me.testChart.getOption();
+            //option.legend = [];
+            option.legend[0].data = legendData;
+            let valSize = vals.length;
+            option.series = [];
+            for(var i=0;i<valSize;i++){
+                option.series.push({
+                    data:[vals[i]],
+                    name:legendData[i],
+                    type:'bar'
+                });
+            }
+            me.testChart.clear();
+            me.testChart.setOption(option);
+        });
+    },
+    /**
+     * @author:wangkun
+     * @date:2017-12-17
+     * @modifyDate:
+     * @return:
+     * @description:更新实况降水数据
+     */
+    updateLivePrecImg:function(){
+        let imgUrl = imgCacheUrl+"prec/output.png?rnd="+Math.random();
+        $("#livePrec img").attr("src",imgUrl);
+    }
+}

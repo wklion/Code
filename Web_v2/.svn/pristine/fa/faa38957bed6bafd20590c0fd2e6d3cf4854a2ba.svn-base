@@ -1,0 +1,81 @@
+@charset "UTF-8";
+/** ## 引入字体 */
+@font-face { /* 思源黑体 */
+font-family: "Source Han Sans"; src: url("//at.alicdn.com/t/webfont_6wjccvlrkayh9f6r.eot"); src: url("//at.alicdn.com/t/webfont_6wjccvlrkayh9f6r.eot?#iefix") format("embedded-opentype"), url("//at.alicdn.com/t/webfont_6wjccvlrkayh9f6r.woff") format("woff"), url("//at.alicdn.com/t/webfont_6wjccvlrkayh9f6r.ttf") format("truetype"), url("//at.alicdn.com/t/webfont_6wjccvlrkayh9f6r.svg#NotoSansHans-DemiLight") format("svg"); }
+/** ## Reset */
+html, body { font-family: "Source Han Sans", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif; font-size: 15px; }
+
+*, *:before, *:after { -webkit-box-sizing: border-box; box-sizing: border-box; }
+
+/** ## Position & Box */
+.absolute { position: absolute; }
+
+.w, .f, html, body, .full, .body, .body .banner, .body .content { position: relative; width: 100%; }
+
+.h, .f, html, body, .full, .body { position: relative; height: 100%; }
+
+.full { margin: 0; padding: 0; }
+
+.auto-w { width: auto !important; }
+
+.auto-h { width: auto !important; }
+
+/** ## align & float */
+.align-center { text-align: center; }
+
+.align-left { text-align: left; }
+
+.align-right { text-align: right; }
+
+.left { float: left; }
+
+.right { float: right; }
+
+.invisible { visibility: hidden; }
+
+.hide { display: none; }
+
+.hidden, .user-wrapper:not(.logged) .user, .user-wrapper:not(.logged) .logout, .user-wrapper.logged .login { display: none !important; }
+
+.hoverable { -webkit-transition: -webkit-box-shadow .25s; transition: -webkit-box-shadow .25s; transition: box-shadow .25s; transition: box-shadow .25s, -webkit-box-shadow .25s; -webkit-box-shadow: 0; box-shadow: 0; }
+
+.hoverable:hover { -webkit-transition: -webkit-box-shadow .25s; transition: -webkit-box-shadow .25s; transition: box-shadow .25s; transition: box-shadow .25s, -webkit-box-shadow .25s; -webkit-box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); }
+
+/** banner */
+.banner { color: #ced4da; background-color: #1c272d; padding: 0 1rem; display: -webkit-box; display: -ms-flexbox; display: flex; -ms-flex-wrap: nowrap; flex-wrap: nowrap; -webkit-box-align: center; -ms-flex-align: center; align-items: center; }
+.banner a { color: inherit; text-decoration: none; }
+.banner .brand { display: -webkit-box; display: -ms-flexbox; display: flex; -ms-flex-wrap: nowrap; flex-wrap: nowrap; -webkit-box-align: center; -ms-flex-align: center; align-items: center; -webkit-box-pack: center; -ms-flex-pack: center; justify-content: center; -webkit-box-flex: 0; -ms-flex: 0 0 auto; flex: 0 0 auto; }
+.banner .brand .logo { height: 51px; width: 485px; background-size: cover; background-image: url("../images/logo.png"); }
+.banner .brand .title { padding-left: 1rem; font-size: 2em; -ms-flex-negative: 0; flex-shrink: 0; }
+.banner .navbar { margin: 0; padding: 0 1rem; border-radius: 0; width: calc(100% - 585px); }
+.banner .user-wrapper { display: -webkit-box; display: -ms-flexbox; display: flex; -ms-flex-wrap: nowrap; flex-wrap: nowrap; -webkit-box-align: center; -ms-flex-align: center; align-items: center; -webkit-box-flex: 0; -ms-flex: 0 0 auto; flex: 0 0 auto; -webkit-box-pack: end; -ms-flex-pack: end; justify-content: flex-end; width: 100px; }
+
+.navbar ul.nav { display: -webkit-box; display: -ms-flexbox; display: flex; -ms-flex-wrap: nowrap; flex-wrap: nowrap; -webkit-box-align: center; -ms-flex-align: center; align-items: center; -webkit-box-pack: end; -ms-flex-pack: end; justify-content: flex-end; list-style: none; }
+.navbar ul.nav li { cursor: pointer; /*下划线*/ /*内容图标*/ /*状态切换*/ /* **prevent bootstrap*/ }
+.navbar ul.nav li:after { content: ""; position: absolute; width: 100%; padding: 2px; background-color: #31ccff; -webkit-transition: -webkit-transform .5s; transition: -webkit-transform .5s; transition: transform .5s; transition: transform .5s, -webkit-transform .5s; -webkit-transform: scale(0, 1); transform: scale(0, 1); }
+.navbar ul.nav li a, .navbar ul.nav li i { display: block; font-size: 2.4rem; font-style: normal; text-decoration: none; }
+.navbar ul.nav li.active, .navbar ul.nav li:active { pointer-events: none; }
+.navbar ul.nav li.active a, .navbar ul.nav li:active a { color: #31ccff; }
+.navbar ul.nav li.active:after, .navbar ul.nav li:active:after, .navbar ul.nav li:hover:after { -webkit-transform: scale(1, 1); transform: scale(1, 1); }
+.navbar ul.nav li:hover:not(.active) { -webkit-box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2); box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2); }
+.navbar ul.nav li:hover:not(.active) a { color: #fff; font-weight: 500; }
+.navbar ul.nav li a:hover, .navbar ul.nav li a:focus { background-color: transparent; }
+
+.user-wrapper { margin: 0 -5px; /** 登录状态切换 */ }
+.user-wrapper > a { margin: 0 5px; cursor: pointer; font-size: 16px; }
+.user-wrapper > a[disabled] { pointer-events: none; }
+.user-wrapper > a:hover, .user-wrapper > a:focus { color: #fff; -webkit-box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2); box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2); }
+.user-wrapper:not(.logged) .user, .user-wrapper:not(.logged) .logout, .user-wrapper.logged .login { pointer-events: none; }
+.user-wrapper .login { font-family: "iconfont" !important; font-style: normal; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+.user-wrapper .login:before { content: ""; }
+.user-wrapper .user { font-family: "iconfont" !important; font-style: normal; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+.user-wrapper .user:before { content: ""; }
+.user-wrapper .logout { font-family: "iconfont" !important; font-style: normal; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+.user-wrapper .logout:before { content: ""; }
+
+html, body { width: 100%; height: 100%; min-width: 100%; }
+
+.body { display: block; }
+.body .banner, .body .content { margin: 0; }
+.body .banner { height: 80px; }
+.body .content { height: calc(100% - 80px); }

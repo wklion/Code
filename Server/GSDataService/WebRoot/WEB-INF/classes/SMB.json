@@ -1,0 +1,9 @@
+{
+	"bb":
+	{
+		"userid": "administrator",
+		"password": "X3850x5",
+		"dir":"Y:/",
+		"format":"^Z/d{4}_date/d{6}_006.txt"
+	}
+ }

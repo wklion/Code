@@ -1,0 +1,405 @@
+@charset "UTF-8";
+/*
+ *
+ * 综合检测菜单部分
+ *
+ *
+ */
+#menu {
+  color: #dedede;
+  width: 400px;
+  height: 102%;
+  position: absolute;
+  top: 0;
+  right: 0;
+  border: 1px solid #4c5457;
+  background: rgba(26, 34, 39, 0.95);
+  z-index: 9999;
+  font-size: 16px; }
+  #menu button {
+    background: #1c272d;
+    cursor: pointer;
+    border-radius: 4px;
+    width: 100px;
+    height: 30px;
+    color: #dedede;
+    outline: 0; }
+    #menu button:hover {
+      background: #30cafe;
+      color: #000100; }
+    #menu button.active {
+      background: #30cafe;
+      color: #000100; }
+
+#menu_changeDiv {
+  display: flex; }
+  #menu_changeDiv a {
+    display: block;
+    color: #dedede;
+    text-align: center;
+    height: 30px;
+    line-height: 30px;
+    flex: 1;
+    text-decoration: none;
+    background: #1c272d;
+    cursor: pointer;
+    border-bottom: 1px solid #4c5457;
+    border-right: 1px solid #4c5457; }
+    #menu_changeDiv a:hover {
+      background: #30cafe;
+      color: #000100; }
+    #menu_changeDiv a.active {
+      background: #30cafe;
+      color: #000100; }
+
+#menu_bd {
+  padding-left: 14px;
+  margin-top: 20px; }
+  #menu_bd label {
+    margin-right: 16px; }
+  #menu_bd #qtq_tab .sk-alerm-title {
+    text-align: left;
+    margin-bottom: 10px;
+    margin-top: 10px; }
+  #menu_bd #qtq_tab .option_btn {
+    background: #1c272d;
+    cursor: pointer;
+    display: inline-block;
+    width: 68px;
+    height: 30px;
+    text-align: center;
+    line-height: 30px;
+    border-radius: 4px;
+    margin-right: 20px;
+    margin-bottom: 10px; }
+    #menu_bd #qtq_tab .option_btn:hover {
+      background: #30cafe;
+      color: #000100; }
+    #menu_bd #qtq_tab .option_btn.active {
+      background: #30cafe;
+      color: #000100; }
+    #menu_bd #qtq_tab .option_btn img {
+      display: block;
+      float: left;
+      margin: 8px 0 0 6px; }
+  #menu_bd #qtq_tab #timeType {
+    display: inline-block; }
+  #menu_bd #qtq_tab #stationType {
+    display: inline-block; }
+  #menu_bd #qtq_tab #skElement {
+    border-bottom: 1px solid #4c5457;
+    margin-bottom: 10px; }
+    #menu_bd #qtq_tab #skElement button {
+      margin-right: 20px; }
+    #menu_bd #qtq_tab #skElement img {
+      width: 12px;
+      height: 12px; }
+    #menu_bd #qtq_tab #skElement > div {
+      margin-bottom: 6px; }
+  #menu_bd #qtq_tab #skElement_copy {
+    border-bottom: 1px solid #4c5457; }
+  #menu_bd #qtq_tab .timeChoose .nowTime {
+    display: inline-block; }
+  #menu_bd #qtq_tab .timeChoose .hourSpan * {
+    display: inline-block; }
+  #menu_bd #qtq_tab .timeChoose .option_btn {
+    margin-right: 5px; }
+  #menu_bd #qtq_tab .startTime,
+  #menu_bd #qtq_tab .endTime {
+    margin-bottom: 10px; }
+    #menu_bd #qtq_tab .startTime input,
+    #menu_bd #qtq_tab .endTime input {
+      border: 2px solid #6d7174;
+      border-radius: 4px;
+      background: #1c272d;
+      text-align: center;
+      height: 30px;
+      line-height: 30px;
+      padding: 0 10px;
+      outline: 0;
+      color: #dedede; }
+    #menu_bd #qtq_tab .startTime span,
+    #menu_bd #qtq_tab .endTime span {
+      margin-left: 27px;
+      margin-right: 20px; }
+  #menu_bd #qtq_tab .query_action {
+    padding-left: 4px; }
+  #menu_bd #qtq_tab .animationSelect {
+    width: 68px;
+    height: 30px;
+    text-align: center;
+    line-height: 30px;
+    text-indent: 20px;
+    border: 1px solid #4c5457;
+    background: #1c272d; }
+    #menu_bd #qtq_tab .animationSelect option {
+      height: 30px;
+      text-indent: 20px; }
+  #menu_bd #qtq_tab .timeListDiv {
+    overflow-y: auto;
+    width: 340px;
+    height: 152px;
+    border: 1px solid #4c5457;
+    margin-left: 10px; }
+  #menu_bd #leida_tab .option_btn {
+    background: #1c272d;
+    cursor: pointer;
+    display: inline-block;
+    width: 68px;
+    height: 30px;
+    text-align: center;
+    line-height: 30px;
+    border-radius: 4px;
+    margin-right: 20px;
+    margin-bottom: 10px; }
+    #menu_bd #leida_tab .option_btn:hover {
+      background: #30cafe;
+      color: #000100; }
+    #menu_bd #leida_tab .option_btn.active {
+      background: #30cafe;
+      color: #000100; }
+    #menu_bd #leida_tab .option_btn img {
+      display: block;
+      float: left;
+      margin: 8px 0 0 6px; }
+  #menu_bd #leida_tab .puzzle .title1 {
+    margin: 10px 0; }
+  #menu_bd #leida_tab .puzzle .pup,
+  #menu_bd #leida_tab .puzzle .swan,
+  #menu_bd #leida_tab .puzzle .cappi {
+    overflow: hidden; }
+    #menu_bd #leida_tab .puzzle .pup div,
+    #menu_bd #leida_tab .puzzle .pup span,
+    #menu_bd #leida_tab .puzzle .swan div,
+    #menu_bd #leida_tab .puzzle .swan span,
+    #menu_bd #leida_tab .puzzle .cappi div,
+    #menu_bd #leida_tab .puzzle .cappi span {
+      float: left; }
+    #menu_bd #leida_tab .puzzle .pup span,
+    #menu_bd #leida_tab .puzzle .swan span,
+    #menu_bd #leida_tab .puzzle .cappi span {
+      font-size: 13px;
+      width: 40px; }
+    #menu_bd #leida_tab .puzzle .pup div,
+    #menu_bd #leida_tab .puzzle .swan div,
+    #menu_bd #leida_tab .puzzle .cappi div {
+      width: 330px;
+      padding-left: 20px; }
+      #menu_bd #leida_tab .puzzle .pup div button,
+      #menu_bd #leida_tab .puzzle .swan div button,
+      #menu_bd #leida_tab .puzzle .cappi div button {
+        margin-bottom: 10px; }
+  #menu_bd #leida_tab .station .station_ld,
+  #menu_bd #leida_tab .station .station_yj,
+  #menu_bd #leida_tab .station .station_cp {
+    overflow: hidden; }
+    #menu_bd #leida_tab .station .station_ld span,
+    #menu_bd #leida_tab .station .station_ld div,
+    #menu_bd #leida_tab .station .station_yj span,
+    #menu_bd #leida_tab .station .station_yj div,
+    #menu_bd #leida_tab .station .station_cp span,
+    #menu_bd #leida_tab .station .station_cp div {
+      float: left; }
+    #menu_bd #leida_tab .station .station_ld span,
+    #menu_bd #leida_tab .station .station_yj span,
+    #menu_bd #leida_tab .station .station_cp span {
+      font-size: 13px;
+      width: 40px; }
+    #menu_bd #leida_tab .station .station_ld div,
+    #menu_bd #leida_tab .station .station_yj div,
+    #menu_bd #leida_tab .station .station_cp div {
+      width: 330px;
+      padding-left: 20px; }
+      #menu_bd #leida_tab .station .station_ld div button,
+      #menu_bd #leida_tab .station .station_yj div button,
+      #menu_bd #leida_tab .station .station_cp div button {
+        margin-bottom: 10px; }
+  #menu_bd #leida_tab .timeChoose .nowTime {
+    display: inline-block; }
+  #menu_bd #leida_tab .timeChoose .hourSpan * {
+    display: inline-block; }
+  #menu_bd #leida_tab .timeChoose .option_btn {
+    margin-right: 5px; }
+  #menu_bd #leida_tab .startTime,
+  #menu_bd #leida_tab .endTime {
+    margin-bottom: 10px; }
+    #menu_bd #leida_tab .startTime input,
+    #menu_bd #leida_tab .endTime input {
+      border: 2px solid #6d7174;
+      border-radius: 4px;
+      background: #1c272d;
+      text-align: center;
+      height: 30px;
+      line-height: 30px;
+      padding: 0 10px;
+      outline: 0;
+      color: #dedede; }
+    #menu_bd #leida_tab .startTime span,
+    #menu_bd #leida_tab .endTime span {
+      margin-left: 27px;
+      margin-right: 20px; }
+  #menu_bd #leida_tab .query_action {
+    padding-left: 4px; }
+  #menu_bd #leida_tab .animationSelect {
+    width: 68px;
+    height: 30px;
+    text-align: center;
+    line-height: 30px;
+    text-indent: 20px;
+    border: 1px solid #4c5457;
+    background: #1c272d; }
+    #menu_bd #leida_tab .animationSelect option {
+      height: 30px;
+      text-indent: 20px; }
+  #menu_bd #leida_tab .timeListDiv {
+    width: 340px;
+    height: 127px;
+    border: 1px solid #4c5457;
+    margin-left: 10px; }
+  #menu_bd #yuntu_tab .option_btn {
+    background: #1c272d;
+    cursor: pointer;
+    display: inline-block;
+    width: 68px;
+    height: 30px;
+    text-align: center;
+    line-height: 30px;
+    border-radius: 4px;
+    margin-right: 20px;
+    margin-bottom: 10px; }
+    #menu_bd #yuntu_tab .option_btn:hover {
+      background: #30cafe;
+      color: #000100; }
+    #menu_bd #yuntu_tab .option_btn.active {
+      background: #30cafe;
+      color: #000100; }
+    #menu_bd #yuntu_tab .option_btn img {
+      display: block;
+      float: left;
+      margin: 8px 0 0 6px; }
+  #menu_bd #yuntu_tab button {
+    margin-bottom: 11px; }
+  #menu_bd #yuntu_tab .satelliteDiv {
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #4c5457; }
+    #menu_bd #yuntu_tab .satelliteDiv .weixing, #menu_bd #yuntu_tab .satelliteDiv .tongdao, #menu_bd #yuntu_tab .satelliteDiv .chanpin {
+      overflow: hidden; }
+      #menu_bd #yuntu_tab .satelliteDiv .weixing span, #menu_bd #yuntu_tab .satelliteDiv .weixing div, #menu_bd #yuntu_tab .satelliteDiv .tongdao span, #menu_bd #yuntu_tab .satelliteDiv .tongdao div, #menu_bd #yuntu_tab .satelliteDiv .chanpin span, #menu_bd #yuntu_tab .satelliteDiv .chanpin div {
+        float: left; }
+      #menu_bd #yuntu_tab .satelliteDiv .weixing span, #menu_bd #yuntu_tab .satelliteDiv .tongdao span, #menu_bd #yuntu_tab .satelliteDiv .chanpin span {
+        width: 48px; }
+      #menu_bd #yuntu_tab .satelliteDiv .weixing div, #menu_bd #yuntu_tab .satelliteDiv .tongdao div, #menu_bd #yuntu_tab .satelliteDiv .chanpin div {
+        width: 330px; }
+      #menu_bd #yuntu_tab .satelliteDiv .weixing button, #menu_bd #yuntu_tab .satelliteDiv .tongdao button, #menu_bd #yuntu_tab .satelliteDiv .chanpin button {
+        margin-right: 6px; }
+  #menu_bd #yuntu_tab .timeChoose .nowTime {
+    display: inline-block; }
+  #menu_bd #yuntu_tab .timeChoose .hourSpan * {
+    display: inline-block; }
+  #menu_bd #yuntu_tab .timeChoose .option_btn {
+    margin-right: 5px; }
+  #menu_bd #yuntu_tab .startTime,
+  #menu_bd #yuntu_tab .endTime {
+    margin-bottom: 10px; }
+    #menu_bd #yuntu_tab .startTime input,
+    #menu_bd #yuntu_tab .endTime input {
+      border: 2px solid #6d7174;
+      border-radius: 4px;
+      background: #1c272d;
+      text-align: center;
+      height: 30px;
+      line-height: 30px;
+      padding: 0 10px;
+      outline: 0;
+      color: #dedede; }
+    #menu_bd #yuntu_tab .startTime span,
+    #menu_bd #yuntu_tab .endTime span {
+      margin-left: 27px;
+      margin-right: 20px; }
+  #menu_bd #yuntu_tab .query_action {
+    padding-left: 4px; }
+  #menu_bd #yuntu_tab .animationSelect {
+    width: 68px;
+    height: 30px;
+    text-align: center;
+    line-height: 30px;
+    text-indent: 20px;
+    border: 1px solid #4c5457;
+    background: #1c272d; }
+    #menu_bd #yuntu_tab .animationSelect option {
+      height: 30px;
+      text-indent: 20px; }
+  #menu_bd #yuntu_tab .timeListDiv {
+    width: 340px;
+    height: 127px;
+    border: 1px solid #4c5457;
+    margin-left: 10px; }
+  #menu_bd #rhjc_tab .timeChoose .nowTime {
+    display: inline-block; }
+  #menu_bd #rhjc_tab .timeChoose .hourSpan * {
+    display: inline-block; }
+  #menu_bd #rhjc_tab .timeChoose .option_btn {
+    margin-right: 5px; }
+  #menu_bd #rhjc_tab .startTime,
+  #menu_bd #rhjc_tab .endTime {
+    margin-bottom: 10px; }
+    #menu_bd #rhjc_tab .startTime input,
+    #menu_bd #rhjc_tab .endTime input {
+      border: 2px solid #6d7174;
+      border-radius: 4px;
+      background: #1c272d;
+      text-align: center;
+      height: 30px;
+      line-height: 30px;
+      padding: 0 10px;
+      outline: 0;
+      color: #dedede; }
+    #menu_bd #rhjc_tab .startTime span,
+    #menu_bd #rhjc_tab .endTime span {
+      margin-left: 27px;
+      margin-right: 20px; }
+  #menu_bd #rhjc_tab .query_action {
+    padding-left: 4px; }
+  #menu_bd #rhjc_tab .animationSelect {
+    width: 68px;
+    height: 30px;
+    text-align: center;
+    line-height: 30px;
+    text-indent: 20px;
+    border: 1px solid #4c5457;
+    background: #1c272d; }
+    #menu_bd #rhjc_tab .animationSelect option {
+      height: 30px;
+      text-indent: 20px; }
+  #menu_bd #rhjc_tab .timeListDiv {
+    width: 340px;
+    height: 127px;
+    border: 1px solid #4c5457;
+    margin-left: 10px; }
+  #menu_bd #rhjc_tab .option_btn {
+    background: #1c272d;
+    cursor: pointer;
+    display: inline-block;
+    width: 68px;
+    height: 30px;
+    text-align: center;
+    line-height: 30px;
+    border-radius: 4px;
+    margin-right: 20px;
+    margin-bottom: 10px; }
+    #menu_bd #rhjc_tab .option_btn:hover {
+      background: #30cafe;
+      color: #000100; }
+    #menu_bd #rhjc_tab .option_btn.active {
+      background: #30cafe;
+      color: #000100; }
+    #menu_bd #rhjc_tab .option_btn img {
+      display: block;
+      float: left;
+      margin: 8px 0 0 6px; }
+  #menu_bd #rhjc_tab button {
+    margin-bottom: 11px;
+    margin-right: 10px; }
+
+/*# sourceMappingURL=zhjc_menu.css.map */

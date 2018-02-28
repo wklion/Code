@@ -1,0 +1,10 @@
+E:\GS\Code\Server\ResDeal\ResDeal\ResDeal\bin\Debug\ResDeal.exe
+E:\GS\Code\Server\ResDeal\ResDeal\ResDeal\bin\Debug\ResDeal.pdb
+E:\GS\Code\Server\ResDeal\ResDeal\ResDeal\bin\Debug\SuperMap.Data.dll
+E:\GS\Code\Server\ResDeal\ResDeal\ResDeal\bin\Debug\SuperMap.Mapping.dll
+E:\GS\Code\Server\ResDeal\ResDeal\ResDeal\bin\Debug\zh-CN\SuperMap.Data.resources.dll
+E:\GS\Code\Server\ResDeal\ResDeal\ResDeal\obj\Debug\ResDeal.csprojResolveAssemblyReference.cache
+E:\GS\Code\Server\ResDeal\ResDeal\ResDeal\obj\Debug\ResDeal.exe
+E:\GS\Code\Server\ResDeal\ResDeal\ResDeal\obj\Debug\ResDeal.pdb
+D:\Supermap\Bin\ResDeal.exe
+D:\Supermap\Bin\ResDeal.pdb

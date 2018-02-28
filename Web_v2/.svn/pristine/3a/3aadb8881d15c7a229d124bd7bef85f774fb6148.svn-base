@@ -1,0 +1,14 @@
+/**
+ * @author: wangkun
+ * @date:2017-12-17
+ * @description 雷达菜单
+ */
+function RadarMenu() {
+    this._init_();
+}
+RadarMenu.prototype = {
+    constructor: RadarMenu,
+    _init_: function () {
+        this.name = "雷达菜单";
+    }
+}

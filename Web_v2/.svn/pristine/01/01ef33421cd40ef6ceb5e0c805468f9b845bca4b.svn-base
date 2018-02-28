@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="cn">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <title>甘肃省-市县预报业务一体化业务平台</title>
+  <link rel="shortcut icon" href="favicon.ico">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <!-- IE9 不做兼容 -->
+  <!--[if lt IE 9]>
+    <script>window.location = 'assets/ie.html';</script>
+  <![endif]-->
+  <!-- vendors -->
+  <link rel="stylesheet" href="css/bootstrap.css">
+  <!-- iconfont -->
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_496996_5yjvpnt4ghczbyb9.css">
+  <link rel="stylesheet" href="css/main.css">
+</head>
+
+<body>
+  <div class="body">
+    <div class="banner">
+      <div class="brand">
+        <a class="logo" href="./nativ.html"></a>
+        <a class="title" href="#home">气象风险</a>
+      </div>
+      <div class="navbar">
+        <ul class="nav">
+          <li class="nav-item active"><a href="#NAV1" title="NAV1"><i class="iconfont icon-block"></i></a></li>
+          <li class="nav-item"><a href="#NAV2" title="NAV2"><i class="iconfont icon-block"></i></a></li>
+          <li class="nav-item"><a href="#NAV3" title="NAV3"><i class="iconfont icon-block"></i></a></li>
+          <li class="nav-item"><a href="#NAV4" title="NAV4"><i class="iconfont icon-block"></i></a></li>
+          <li class="nav-item"><a href="#NAV5" title="NAV5"><i class="iconfont icon-block"></i></a></li>
+          <li class="nav-item"><a href="#NAV6" title="NAV6"><i class="iconfont icon-block"></i></a></li>
+          <li class="nav-item"><a href="#NAV7" title="NAV7"><i class="iconfont icon-block"></i></a></li>
+          <li class="nav-item"><a href="#NAV8" title="NAV8"><i class="iconfont icon-block"></i></a></li>
+          <li class="nav-item"><a href="#NAV9" title="NAV9"><i class="iconfont icon-block"></i></a></li>
+        </ul>
+      </div>
+      <!-- logged标记已登录 -->
+      <div class="user-wrapper logged">
+        <a class="login" href="javascript:;">登录</a>
+        <a class="user" href="javascript:;">用户</a>
+        <a class="logout" href="javascript:;"></a>
+      </div>
+    </div>
+    <div class="content">
+    </div>
+  </div>
+</body>
+
+</html>

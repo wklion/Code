@@ -1,0 +1,118 @@
+//-------------------------雨情快报----------------------
+//-------------------------------颜色--------------------
+$border-color: #808080;
+$text-color: #808080;
+$btn-text-color: #476d78;
+$btn-bg-color: #1c272d;
+$btn-ac-bg-color: #30cafe;
+$btn-border-color: #808080;
+$bg-color_1: #21282e;
+$bg-color_2: #1c272d;
+@mixin input-text {
+  input[type=text],
+  input[type=datetime-local] {
+    border: 1px solid $border-color;
+    background: $bg-color_2;
+  }
+}
+
+#menu_bd {
+  @include input-text;
+  #yjForecastDiv {
+    .qdlTitleBar {
+      width: 84px;
+    }
+    & > div {
+      margin-bottom: 10px;
+    }
+    #div_QianFaRen, #yjqs_div_datetime, #yjqs_divElement, #yjqs_warnLevel, #divGridDistance {
+      & > div {
+        display: inline-block;
+      }
+    }
+    #div_QianFaRen {
+      .selectYuBaoYuan {
+        height: 28px;
+        width: 79px;
+        background: #1c272d;
+        border-radius: 5px;
+        padding-left: 5px;
+      }
+    }
+
+    #yjqs_div_datetime {
+      input {
+        height: 30px;
+        width: 179px;
+        text-indent: 10px;
+        border-radius: 6px;
+      }
+    }
+
+    #yjqs_divElement {
+      margin-bottom: 10px;
+      position: relative;
+      .qdlTitleBar {
+        position: relative;
+        top: -20px;
+      }
+      .qdlContentDiv {
+        button {
+          width: 87px;
+          height: 43px;
+          float: left;
+          margin-right: 9px;
+          font-size: 13px;
+        }
+      }
+
+    }
+
+    #yjqs_warnLevel {
+      .qdlContentDiv {
+        button {
+          width: 66px;
+          height: 29px;
+          font-size: 14px;
+        }
+      }
+    }
+    #divGridDistance {
+      .qdlContentDiv {
+        button {
+          width: 90px;
+          height: 29px;
+        }
+      }
+    }
+
+    #yjqs_txtContent, #guide {
+      background: $bg-color_1;
+      border: 1px solid $border-color;
+      color: $text-color;
+      width: 369px;
+      height: 109px;
+    }
+
+    div {
+      .moreForecast {
+        margin-left: 267px;
+      }
+      #divProductsOfRecent24H_qsyb {
+        border: 1px solid;
+        width: 371px;
+        height: 121px;
+        &>div{
+          margin: 10px 5;
+        }
+        img{
+          float: right;
+        }
+        .active{
+          background: $bg-color_2;
+        }
+      }
+
+    }
+  }
+}

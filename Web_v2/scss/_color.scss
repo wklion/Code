@@ -1,0 +1,64 @@
+/**
+ * ## Color
+ */
+$grays: (
+  "gray-100": #f8f9fa,
+  "gray-200": #ebebeb,
+  "gray-300": #dee2e6,
+  "gray-400": #ced4da,
+  "gray-500": #adb5bd,
+  "gray-600": #999,
+  "gray-700": #444,
+  "gray-800": #303030,
+  "gray-900": #212
+);
+
+$colors: map-merge((
+  "primary": #1a2227,
+  "secondary":#31ccff,
+  "success": #5cb85c,
+  "info": #5bc0de,
+  "warning": #f0ad4e,
+  "danger": #d9534f,
+  "light": #02bdda,
+  "white": #fff,
+  "black": #000,
+  "blue": #375a7f,
+  "indigo": #6610f2,
+  "purple": #6f42c1,
+  "pink": #e83e8c,
+  "red": #E74C3C,
+  "orange": #ff9900,
+  "yellow": #F39C12,
+  "green": #00bc8c,
+  "teal": #20c997,
+  "cyan": #3498DB,
+  "gray": #3f3f3f
+), $grays);
+
+
+// Colors
+// Color Classes
+@each $color_name,
+$color in $colors {
+  .bg-#{$color_name} {
+    background-color: $color !important;
+  }
+  .text-#{$color_name} {
+    color: $color !important;
+  }
+}
+
+// Fn
+@function color($color_name) {
+  @if map-has-key($colors, $color_name) {
+    @return map-get($colors, $color_name);
+  }
+  @warn "Unknown `#{$color_name}` in $colors.";
+  @return null;
+}
+
+@function gray($level: 100) {
+  @return map-get($grays, "gray-"+$level);
+}
+

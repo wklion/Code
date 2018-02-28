@@ -1,0 +1,71 @@
+﻿var GDYB = {
+  // 用户模块 FIXME demo
+  User: {
+    getName: function () {
+      return 'admin';
+    },
+    getDepart: function () {
+      return '62';
+    }
+  },
+  FeatureUtilityClass: new FeatureUtilityClass()
+};
+GDYB.Page = {
+  curPage: null,
+  curModuleID: "home",
+  curModule: null, //当前模块
+  map: null,//当前地图
+
+  initEvent: function () {
+    var t = this;
+    $(".nav-item").on("click", function () {
+      var $t = $(this);
+      var a = $t.find("a");
+      $t.addClass("active").siblings(".active").removeClass("active");
+      $(".brand .title").text(a.attr("title")).attr("href", a.attr("href"));
+      t.curModuleID = this.id;
+      t.main();
+
+    });
+  },
+  main: function () {
+    if (this.curModuleID === "home") {
+      var home = new Home();
+    } else if (this.curModuleID === "zhgc") {
+      var mapUtil = new MapUtil();
+      this.map = mapUtil.map;
+      var zhjcmenu = new ZHJCMenuClass();
+      zhjcmenu.renderMenu();
+    } else if (this.curModuleID === "qdl") {
+      console.log("强对流!");
+      var mapUtil = new MapUtil();
+    } else if (this.curModuleID === "qxyj") {
+      console.log("气象预警!");
+      var mapUtil = new MapUtil();
+    } else if (this.curModuleID === "ybzz") {
+      console.log("预报制作!");
+    } else if (this.curModuleID === "yjxh") {
+      var mapUtil = new MapUtil();
+      var YJXHPage = new YJXHPageClass();
+      YJXHPage.map = mapUtil.map;
+      YJXHPage.renderMenu();
+    } else if (this.curModuleID === "yqkb") {
+      console.log("雨情快报!");
+      var yqkbpage = new YQKBPageClass();
+      yqkbpage.renderMenu();
+
+    } else if (this.curModuleID === "jypg") {
+      console.log("检验评估!");
+    } else if (this.curModuleID === "znzs") {
+      console.log("智能展示!");
+      var mapUtil = new MapUtil();
+    } else if (this.curModuleID === "sjjk") {
+      var GMSMonitor = new GMSMonitorPageClass();
+      GMSMonitor.renderMenu();
+    }
+    var alertInfo = new AlertInfo();
+    alertInfo.init();
+  },
+
+
+}

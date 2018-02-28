@@ -1,0 +1,80 @@
+//-------------------------------颜色--------------------
+$border-color: #4c5457; //边框颜色
+$ele-bg-color: #1c272d; //元素背景色
+$ac-bg-color: #30cafe; //选中元素背景色
+$bg-color: #262f34; //整体菜单背景色
+$text-color: #dedede; //文本颜色
+$ac-text-color: #000100; //选中部分文本颜色
+//---------------------------尺寸--------------------------
+$font-size: 16px;
+
+@mixin button {
+  button {
+    width: 90px*1.5;
+    height: 27px*1.5;
+    border: 1px solid $border-color;
+    outline: 0;
+    margin: 4px 7px;
+    border-radius: 5px;
+    background: $ele-bg-color;
+    color: $text-color;
+    &:hover {
+      background: #01ffff;
+      color: $ac-text-color;
+    }
+    &.active {
+      background: $ac-bg-color;
+      color: $ac-text-color;
+    }
+  }
+}
+
+.ybzzpage {
+
+  height: 115%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  .ybzz_left {
+    height: 100%;
+    background: #1c272d;
+    //margin-right: 300px;
+    transform-origin: 0 0;
+    transform: scale(0.88);
+
+  }
+  .ybzz_right {
+    @include button;
+    width: 300px;
+    height: 100%;
+    background: #262f34;
+    position: absolute;
+    top: 0;
+    right: 0;
+    .ybzz_type {
+      height: 50px;
+    }
+    .ybzz_type_con {
+
+    }
+    .ybzz_competition {
+      display: none;
+      button{
+        width: 100px;
+        height: 30px;
+        border-radius: 5px;
+        margin-left: 33px;
+      }
+    }
+    button {
+      margin: 0;
+      display: block;
+      float: left;
+      width: 50%;
+      border-radius: 0;
+    }
+  }
+}
+@import "weatherSummarize";

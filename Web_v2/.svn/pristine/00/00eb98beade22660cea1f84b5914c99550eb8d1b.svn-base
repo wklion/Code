@@ -1,0 +1,16 @@
+function AlertInfo() {
+  this.init = function () {
+    // console.log("alertInfo init");
+    let html = `<div id="alertInfo" class="alertInfo">这儿是提示信息!</div>`;
+    $("#content").append(html);
+    $("#alertInfo").hide();
+  };
+  this.show = function (str = "") {
+    $("#alertInfo").html(str).show();
+  };
+  this.hide = function (str = "") {
+    setTimeout(function () {
+      $("#alertInfo").html(str).hide();
+    }, 2000)
+  };
+}

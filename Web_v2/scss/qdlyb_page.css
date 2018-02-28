@@ -1,0 +1,137 @@
+#menu_bd input[type=text],
+#menu_bd input[type=datetime-local] {
+  border: 1px solid #808080;
+  background: #1c272d; }
+#menu_bd .BackgroundFiled p {
+  font-size: 19px;
+  margin-bottom: 5px;
+  text-indent: -10px; }
+#menu_bd .BackgroundFiled dl {
+  float: left;
+  padding-top: 20px; }
+#menu_bd .BackgroundFiled dt {
+  width: 70px;
+  float: left;
+  margin-bottom: 20px;
+  font-weight: normal; }
+#menu_bd .BackgroundFiled dd {
+  float: left;
+  width: 300px; }
+  #menu_bd .BackgroundFiled dd button {
+    width: 80px;
+    margin-left: 20px;
+    margin-bottom: 12px;
+    float: left;
+    font-size: 14px;
+    border: 0; }
+  #menu_bd .BackgroundFiled dd input {
+    margin-left: 20px;
+    font-size: 14px; }
+#menu_bd .BackgroundFiled dl:nth-of-type(2) {
+  border-top: 1px solid #30cafe; }
+  #menu_bd .BackgroundFiled dl:nth-of-type(2) dd button {
+    height: 49px; }
+#menu_bd #yjForecastDiv .qdlTitleBar {
+  width: 84px; }
+#menu_bd #yjForecastDiv > div {
+  margin-bottom: 10px; }
+#menu_bd #yjForecastDiv #div_QianFaRen > div, #menu_bd #yjForecastDiv #yjqs_div_datetime > div, #menu_bd #yjForecastDiv #yjqs_divElement > div, #menu_bd #yjForecastDiv #yjqs_warnLevel > div, #menu_bd #yjForecastDiv #divGridDistance > div {
+  display: inline-block; }
+#menu_bd #yjForecastDiv #div_QianFaRen .selectYuBaoYuan {
+  height: 28px;
+  width: 79px;
+  background: #1c272d;
+  border-radius: 5px;
+  padding-left: 5px; }
+#menu_bd #yjForecastDiv #yjqs_div_datetime input {
+  height: 30px;
+  width: 220px;
+  text-indent: 10px;
+  border-radius: 6px; }
+#menu_bd #yjForecastDiv #yjqs_divElement {
+  margin-bottom: 10px;
+  position: relative; }
+  #menu_bd #yjForecastDiv #yjqs_divElement .qdlTitleBar {
+    position: relative;
+    top: -20px; }
+  #menu_bd #yjForecastDiv #yjqs_divElement .qdlContentDiv button {
+    width: 87px;
+    height: 43px;
+    float: left;
+    margin-right: 9px;
+    font-size: 13px; }
+#menu_bd #yjForecastDiv #yjqs_warnLevel .qdlContentDiv button {
+  width: 66px;
+  height: 29px;
+  font-size: 14px; }
+#menu_bd #yjForecastDiv #divGridDistance .qdlContentDiv button {
+  width: 90px;
+  height: 29px; }
+#menu_bd #yjForecastDiv #yjqs_txtContent, #menu_bd #yjForecastDiv #guide {
+  background: #21282e;
+  border: 1px solid #808080;
+  color: #808080;
+  width: 369px;
+  height: 109px; }
+#menu_bd #yjForecastDiv div .moreForecast {
+  margin-left: 267px; }
+#menu_bd #yjForecastDiv div #divProductsOfRecent24H_qsyb {
+  border: 1px solid;
+  width: 371px;
+  height: 121px; }
+  #menu_bd #yjForecastDiv div #divProductsOfRecent24H_qsyb img {
+    float: right; }
+  #menu_bd #yjForecastDiv div #divProductsOfRecent24H_qsyb .active {
+    background: #1c272d; }
+#menu_bd .ShortForecasting dl {
+  float: left; }
+#menu_bd .ShortForecasting dt {
+  width: 70px;
+  float: left;
+  margin-bottom: 20px;
+  font-weight: normal; }
+#menu_bd .ShortForecasting dd {
+  float: left;
+  width: 300px; }
+  #menu_bd .ShortForecasting dd:nth-of-type(4) button {
+    height: 46px; }
+  #menu_bd .ShortForecasting dd:nth-of-type(2) button {
+    background: none;
+    width: 16px;
+    height: 16px;
+    background: url("../imgs/leibao.png") no-repeat;
+    border-radius: 0;
+    margin-bottom: 20px;
+    margin-top: 6px; }
+    #menu_bd .ShortForecasting dd:nth-of-type(2) button:nth-of-type(2) {
+      background: url("../imgs/bingbao.png") no-repeat; }
+  #menu_bd .ShortForecasting dd input, #menu_bd .ShortForecasting dd button {
+    margin-bottom: 20px;
+    margin-left: 20px; }
+  #menu_bd .ShortForecasting dd button {
+    width: 80px;
+    margin-left: 20px;
+    margin-bottom: 12px;
+    float: left;
+    font-size: 14px;
+    border: 0; }
+#menu_bd .ShortForecasting textarea {
+  background: #1c272d;
+  width: 366px; }
+#menu_bd .ShortForecasting .edit_grid button {
+  margin-left: 50px;
+  margin-bottom: 9px; }
+#menu_bd .ShortForecasting .YBhistory p {
+  overflow: hidden; }
+  #menu_bd .ShortForecasting .YBhistory p span:nth-of-type(1) {
+    float: left; }
+  #menu_bd .ShortForecasting .YBhistory p span:nth-of-type(2) {
+    float: right;
+    margin-right: 43px; }
+#menu_bd .ShortForecasting .YBhistory > div {
+  width: 347px;
+  height: 270px;
+  border: 1px solid #808080;
+  margin-top: 20px; }
+
+/*# sourceMappingURL=qdlyb_page.css.map */

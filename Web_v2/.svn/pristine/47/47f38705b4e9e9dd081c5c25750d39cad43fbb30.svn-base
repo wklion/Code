@@ -1,0 +1,30 @@
+/**
+ * @author: wangkun
+ * @date:2017-12-18
+ * @description 公用类
+ */
+function Common() {
+    this._init_();
+}
+Common.prototype = {
+    constructor: Common,
+    _init_: function () {
+        this.name = "公用类";
+    },
+    /**
+   * @author:wangkun
+   * @date:2017-12-18
+   * @modifyDate:
+   * @return:
+   * @description:获取MCS
+   */
+    getMCS:function(strDateTime,id){
+        var param = {
+            element:id,
+            level:"",
+            datetime:strDateTime
+        };
+        var url = dataSericeUrl+"services/AWXService/getMCS";
+        return request("POST",url,param);
+    }
+}

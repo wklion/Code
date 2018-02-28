@@ -1,0 +1,47 @@
+function ZHJCMenuClass() {
+  this.renderMenu = function () {
+    var html = `<div id="menu">
+      <a href="" id="displayBtn"></a>
+      <div id="menu_changeDiv">
+        <a class="menu_change active">强天气</a>
+        <a class="menu_change">雷达</a>
+        <a class="menu_change">云图</a>
+        <a class="menu_change">融合检测</a>
+      </div>
+      <div id="menu_bd"></div>
+    </div>`;
+    $(".map_div").append(html);
+    let strongWeatherMenu = new StrongWeatherMenu();
+    strongWeatherMenu.renderMenu();
+    // strongWeatherMenu.initEvent();
+
+    //tab切换
+    $('#menu_changeDiv a').click(function (e) {
+
+      $(this).siblings().removeClass("active");
+      $(this).addClass("active");
+      GDYB.mapUtil.clearMap();
+      if (this.innerHTML == "强天气") {
+        let strongWeatherMenu = new StrongWeatherMenu();
+        strongWeatherMenu.renderMenu();
+      }
+      else if (this.innerHTML == "雷达") {
+        let radarMenu = new RadarMenu();
+        radarMenu.renderMenu();
+        radarMenu.initEvent();
+
+      }
+      else if (this.innerHTML == "云图") {
+        let satMenu = new SatMenu();
+        satMenu.renderMenu();
+        satMenu.initEvent();
+      }
+      else if (this.innerHTML == "融合检测") {
+        let mixMenu = new MixMenu();
+        mixMenu.renderMenu();
+      }
+    })
+
+
+  }
+}

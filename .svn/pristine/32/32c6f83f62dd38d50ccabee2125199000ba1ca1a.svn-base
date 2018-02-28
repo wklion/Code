@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper 
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.spd.grid.mapper.ForecastfineMapper"> 
+    <!-- 这里的id必须和UserMapper接口中的接口方法名相同，不然运行的时候也要报错 --> 
+    <select id="getUserStation" resultType="java.util.HashMap"  parameterType="map"> 
+    <![CDATA[
+    	select a.*,c.AreaName,c.AreaCode as CityAreaCode from t_stationforecast a left join t_area b on b.AreaCode = a.AreaCode
+		left join t_area c on c.areacode = b.ParentID 
+		where a.AreaCode like #{departCode} and a.type = #{type} order by c.AreaName DESC,a.AreaCode,a.id
+		]]>
+    </select>
+    
+    <select id="getUserStationNew" resultType="java.util.HashMap"  parameterType="map"> 
+    <![CDATA[
+    	select a.*,b.AreaName as xAreaName,c.AreaName from t_stationforecast a 
+    	left join t_area b on b.AreaCode = a.AreaCode
+		left join t_area c on c.areacode = b.ParentID  
+ 		where locate(CONCAT(',',a.StationNum,','),CONCAT(',',(select stationNums from t_forecastfineinfo where id = #{id}),','))>0 
+ 		and a.type = #{type} and a.AreaCode like #{departCode}
+ 		order by c.AreaName DESC,a.HYJXHType,a.AreaNum,a.id
+		]]>
+    </select>
+    
+    <select id="getZDYBPublishTime" resultType="java.util.HashMap"  parameterType="map"> 
+    <![CDATA[
+    	select a.name as productName,a.stationType,a.showTable,b.* from t_forecastfine a left join t_forecastfineinfo b on a.id = b.`type` 
+    	where b.depart like #{depart} and b.areaCodes like #{areaCode} order by a.id,b.publishTime,b.name 
+		]]>
+    </select>
+    
+    <select id="getZDYBSet" resultType="java.util.HashMap"  parameterType="map"> 
+    <![CDATA[
+    	select * from t_forecastfineInfo  where depart like #{depart} and type = #{type}
+		]]>
+    </select>
+    
+    <select id="getZDYBType" resultType="java.util.HashMap"  parameterType="map"> 
+    <![CDATA[
+    	select * from t_forecastfine
+		]]>
+    </select>
+    
+    <select id="updateZDYBSet" resultType="java.util.HashMap"  parameterType="map"> 
+    <![CDATA[
+    	update t_forecastfineinfo set publishTime = #{publishTime},gdybPublishTime = #{gdybPublishTime},makeTime = #{makeTime},forecastTime = #{forecastTime},gdybType = #{gdybType},endTime = #{endTime}
+    	 ,stationNums = #{stationNums},depart = #{depart},areaCodes = #{areaCodes},outType = #{outType},hourSpan = #{hourSpan},
+    	 hourSpanTotal = #{hourSpanTotal}
+    	 ,postType = #{postType},ui = #{ui} where id = #{id}
+		]]>
+    </select>
+    
+    <select id="insertZDYBSet" resultType="java.util.HashMap"  parameterType="map"> 
+    <![CDATA[
+    	insert into t_forecastfineinfo (publishTime,gdybPublishTime,makeTime,forecastTime,gdybType,endTime,stationNums,name,depart,areaCodes,type,outType,context,hourSpan,hourSpanTotal,zdybHour,postType,ui)
+    	 values (#{publishTime}, #{gdybPublishTime}, #{makeTime}, #{forecastTime},#{gdybType}, #{endTime}, #{stationNums}, #{name}, #{depart},#{areaCodes}, #{type}, #{outType}, #{context}, #{hourSpan}, #{hourSpanTotal}, #{zdybHour}, #{postType}, #{ui})
+		]]>
+    </select>
+    
+    <select id="getZDYBElement" resultType="java.util.HashMap"  parameterType="map"> 
+    <![CDATA[
+    	select * from t_forecastfineelement
+		]]>
+    </select>
+    
+    <select id="getZDYBOutType" resultType="java.util.HashMap"  parameterType="map"> 
+    <![CDATA[
+    	select * from t_forecastfineouttype
+		]]>
+    </select>
+    
+    <select id="getZDYBStationType" resultType="java.util.HashMap"  parameterType="map"> 
+    <![CDATA[
+    	select * from t_tationforecaststype
+		]]>
+    </select>
+    
+    <select id="getGDYBPublishTime" resultType="java.util.HashMap"  parameterType="map"> 
+    <![CDATA[
+    	select * from t_forecastforlattice
+		]]>
+    </select>
+    
+    <select id="deleteProductTime" resultType="java.util.HashMap"  parameterType="map"> 
+    <![CDATA[
+    	delete from t_forecastfineinfo where id = #{id}
+		]]>
+    </select>
+    
+    <select id="addProductType" resultType="java.util.HashMap"  parameterType="map"> 
+    <![CDATA[
+    	insert into t_forecastfine (name,stationType,showTable) values (#{name},#{stationType},#{showTable})
+		]]>
+    </select>
+    
+    <select id="addStationType" resultType="java.util.HashMap"  parameterType="map"> 
+    <![CDATA[
+    	insert into t_tationforecaststype (name,type) values (#{name},#{type})
+		]]>
+    </select>
+    
+    <select id="deleteProductType" resultType="java.util.HashMap"  parameterType="map"> 
+    <![CDATA[
+    	delete from t_forecastfine where id = #{id}
+		]]>
+    </select>
+    
+    <select id="updateForecastMessage" resultType="java.util.HashMap"  parameterType="map"> 
+    <![CDATA[
+    	insert into t_forecastmessage (productId,updateTime,content,departName,departCode,userName,showName) values (#{productId},#{updateTime},#{content},#{departName}
+    	,#{departCode},#{userName},#{showName})
+		]]>
+    </select>
+    
+    <select id="getForecastMessage" resultType="java.util.HashMap"  parameterType="map"> 
+    <![CDATA[
+    	select * from t_forecastmessage where productId = #{productId}
+		]]>
+    </select>
+    
+    <select id="insertArchiveProduct" resultType="java.util.HashMap"  parameterType="map"> 
+    <![CDATA[
+    	insert into t_archiveProduct (gridProductId,fileName)
+    	 values (#{gridProductId}, #{fileName})
+		]]>
+    </select>
+    
+    <select id="getArchiveProduct" resultType="java.util.HashMap"  parameterType="map"> 
+    <![CDATA[
+    	select * from t_archiveProduct where gridProductId = #{productId}
+		]]>
+    </select>
+    
+    <select id="getWaringByADCode" resultType="java.util.HashMap"  parameterType="map"> 
+    	<![CDATA[
+	    	SELECT DISTINCT * FROM t_warningresult 
+	    	WHERE 
+    	]]>
+    	<if test="beginTime == null or endTime == null">
+  			str_to_date(addtime, '%Y-%m-%d %H:%i:%s') BETWEEN (now() - interval 3 hour) AND (now())
+		</if>
+		<if test="beginTime != null and endTime != null">
+  			str_to_date(addtime, '%Y-%m-%d %H:%i:%s') BETWEEN #{beginTime} AND #{endTime}
+		</if>
+    	<if test="isDeal != null">
+  			AND isDeal =  #{isDeal} 
+		</if>
+		<if test="areaLeavl != null and #{areaCode} != null">
+  			AND LEFT(AreaCode, #{areaLeavl}) = #{areaCode} 
+		</if>
+    </select>
+    
+    <select id="getWHByArea" resultType="java.util.HashMap"  parameterType="map"> 
+    	<![CDATA[
+	    	SELECT * FROM t_warningHold 
+    	]]>
+		<if test="areaLeavl != null ">
+  			WHERE LENGTH(areacode) = #{areaLeavl} 
+		</if>
+    </select>
+    
+    <!-- AreaCode LIKE CONCAT('%',#{areaCode},'%')   -->
+    <update id="WarningDeal" parameterType="map"> 
+    	<![CDATA[
+    		UPDATE t_warningresult SET isDeal = #{state} 
+    	]]>
+    	<if test="dealTime != null ">
+  			,dealTime = #{dealTime} 
+		</if>
+		<if test="decisioner != null ">
+  			,decisioner = #{decisioner} 
+		</if>
+    	WHERE id =  #{dataId}
+    </update>
+    
+    <update id="WarningDealTest" parameterType="map">
+    	UPDATE t_warningresult
+    	<set>
+		     <foreach collection="fields.entrySet()" index="key" item="value" separator=",">  
+			      <if test="key != 'id'.toString() and key != null">
+			        ${key} = #{value}  
+			      </if> 
+		      </foreach>
+	    </set>
+	    WHERE id =  #{dataId}
+     </update> 
+     
+     <select id="getWRBytimeRange" resultType="java.util.HashMap"  parameterType="map"> 
+    	<![CDATA[
+	    	SELECT DISTINCT * FROM t_warningrecord 
+    	]]>
+    		WHERE 
+		    	str_to_date(addtime, '%Y-%m-%d %H:%i:%s') 
+		    	BETWEEN #{beginTime} AND #{endTime}
+		<if test="areaLeavl != null and areaCode != null">
+  			AND LEFT(Admin_Code_CHN, #{areaLeavl}) = #{areaCode} 
+		</if>
+		<if test="types != null ">
+  			AND wType = #{types} 
+		</if>
+    </select>
+    
+    <select id="getWarningHistory" resultType="java.util.HashMap"  parameterType="map"> 
+    	<![CDATA[
+	    	SELECT DISTINCT * FROM t_warningresult 
+	    ]]>
+    		WHERE 
+		    	str_to_date(addtime, '%Y-%m-%d %H:%i:%s') 
+		    BETWEEN #{beginTime} AND #{endTime}
+		<if test="areaLeavl != null and areaCode != null">
+  			AND LEFT(AreaCode, #{areaLeavl}) = #{areaCode} 
+		</if>
+    </select>
+    <!-- 考虑到数据压力，仅统计最近31天数据量（可调，但是需要优化） -->
+    <select id="getWarningDailyStatis" resultType="java.util.HashMap"  parameterType="map"> 
+    	<![CDATA[
+    	SELECT count(*) AS dayCount,STR_TO_DATE(addtime, '%Y-%m-%d') AS dataTime  FROM t_warningresult WHERE DATE_SUB(CURDATE(), INTERVAL 31 DAY) <= addtime GROUP BY STR_TO_DATE(addtime, '%Y-%m-%d')  ORDER BY STR_TO_DATE(addtime, '%Y-%m-%d') ASC
+    	]]>
+    </select>
+    
+    <select id="getWarningHolds" resultType="java.util.HashMap"  parameterType="map"> 
+    	<![CDATA[
+    	SELECT * FROM t_warning_hold 
+    	]]>
+    	<if test="hid != null and hid != '' ">
+  			WHERE id = #{hid} 
+		</if>
+    </select>
+    <update id="updateHolds" parameterType="map"> 
+    	<![CDATA[
+    		UPDATE t_warning_hold 
+    	]]>
+    	<set>
+	    	<if test="minvalue != null ">
+	  			minvalue = #{minvalue} 
+			</if>
+			<if test="timeRange != null ">
+	  			,timeRange = #{timeRange} 
+			</if>
+			<if test="stationpercent != null ">
+	  			,stationpercent = #{stationpercent} 
+			</if>
+		</set>
+    	WHERE id =  #{hid}
+    </update>
+    
+    <select id="createYjzd" parameterType="map"> 
+    	<![CDATA[
+    		insert into product (productType,productname,createTime,productowner,productcontent) 
+    				 	 values (#{productType},#{productname},#{createTime},#{productowner},#{productcontent})
+    	]]>
+    </select>
+    
+    <select id="getGridCheck" resultType="java.util.HashMap"  parameterType="map"> 
+    <![CDATA[
+    	select * from t_gridcheckinfo where forecastTime >= #{ObservTimesStart}  and forecastTime <= #{ObservTimesEnd} and element = #{element} and StationCode = #{StationCode} and forecastHour = #{forecastHour}
+		]]>
+    </select>
+    <select id="getGridCheckSta" resultType="java.util.HashMap"  parameterType="map"> 
+    <![CDATA[
+    	select a.* from t_gridcheckinfosta a left join t_station b on a.stationNum = b.StationNum where a.forecastTime >= #{ObservTimesStart}  and a.forecastTime <= #{ObservTimesEnd} and a.element = #{element} and a.forecastHour = #{forecastHour} and a.productType = #{productType} and left(b.AreaCode,#{num}) = #{AreaCode} and a.stationNum like #{station}
+		]]>
+    </select>
+    <select id="getGridCheckStaAll" resultType="java.util.HashMap"  parameterType="map"> 
+    <![CDATA[
+    	select a.productType,a.forecastTime,a.hourspan,a.type,a.value,left(b.AreaCode,#{num}+2) as AreaCode from t_gridcheckinfosta a left join t_station b on a.stationNum = b.StationNum where a.forecastTime >= #{ObservTimesStart}  and a.forecastTime <= #{ObservTimesEnd} and a.element = #{element} and a.forecastHour = #{forecastHour} and left(b.AreaCode,#{num}) = #{AreaCode} and a.stationNum like #{station}
+		]]>
+    </select>
+    
+    <select id="getStation" resultType="java.util.HashMap"  parameterType="map"> 
+    <![CDATA[
+    	select * from t_station where Type = #{Type}
+		]]>
+    </select>
+    <select id="getStationNew" resultType="java.util.HashMap"  parameterType="map"> 
+    <![CDATA[
+    	select * from t_station where Type = #{Type} and AreaCode like #{AreaCode}
+		]]>
+    </select>
+	<select id="getArea" resultType="java.util.HashMap"  parameterType="map"> 
+    <![CDATA[
+    	select * from t_area where ParentID = #{ParentID}
+		]]>
+    </select>
+	<select id="getNewestDataTime" resultType="java.util.HashMap"  parameterType="map"> 
+    <![CDATA[
+    	select DATE_FORMAT(MAX(addtime), '%Y-%m-%d %H:00:00') as datetime from t_warningresult where isDeal = '未处理'
+		]]>
+    </select>
+	<select id="getWarningNewest1H" resultType="java.util.HashMap"  parameterType="map"> 
+    <![CDATA[
+	    	SELECT DISTINCT * FROM t_warningresult WHERE str_to_date(addtime, '%Y-%m-%d %H:%i:%s') >  #{dateTime}
+		]]>
+    </select>
+    
+</mapper> 

@@ -1,0 +1,785 @@
+function ZNZSPageClas() {
+  this._init_();
+}
+
+ZNZSPageClas.prototype = {
+  constructor: ZNZSPageClas,
+
+  _init_() {
+    let _this = this;
+    let lmu = new LayerManagerUtil();
+    _this.currentPosition = {lon: 103.8, lat: 36.1};
+    _this.gridLayer = lmu.addLayer("格点展示", "grid");
+    _this.gridLayer.items = heatMap_TempStyles;
+
+    _this.tbPage = 0;//记录table的页数
+
+    //播放进度条的一些参数
+    _this.isPlay = true;
+    _this.timeInterval = null;
+    _this.i = 0;
+    _this.progress = 0;
+
+    //echarts的横坐标数据,间隔为3小时的时间数组
+    _this.AxisDate = [];
+    //echarts的温度数据;
+    _this.yAxis2T = [];
+    //echarts的降水数据;
+    _this.yAxisR3 = [];
+
+    //获取到的数据保存在这
+    _this.tableData = []
+
+    _this.maxOfR3 = 0;
+    _this.minOfR3 = 0;
+
+  },
+
+  renderMenu() {
+    let html = `
+      <div id="znzsPage">
+        <div class="topPanel">
+         <input type="date" class="currentDate" value="2017-07-04" id="currentDate">
+          <select name="" id="timeSelect" class="timeSelect">
+            <option value="05小时" flag="05:00:00">05小时</option>
+            <option value="16小时" flag="16:00:00">16小时</option>
+          </select>
+          <select name="" id="">
+            <option value="省台">省台</option>
+          </select>
+         <!-- <div class="footstep"> 
+           <span>1</span>
+           <span>2</span>
+           <span>3</span>
+          </div>-->
+        
+          <span id="playGrid" class="playGrid"> 
+            <i class="iconfont icon-kaishi"></i>
+          </span>
+       
+          <div id="progress_out" class="progress progress-striped active">
+            <div id="progress_in" class="progress-bar progress-bar-info">
+              <!--<span class="sr-only">40% 完成</span>-->
+            </div>
+          </div>
+          
+          <div class="progressRuling"> 
+            <span><i></i><b></b></span><span><i></i><b></b></span><span><i></i><b></b></span><span><i></i><b></b></span><span><i></i><b></b></span><span><i></i><b></b></span><span><i></i><b></b></span><span><i></i><b></b></span><span><i></i><b></b></span><span><i></i><b></b></span><span><i></i><b></b></span>
+          </div>
+        </div>
+        <div class="leftPanel">
+          <div class="sunMsg znzsPanel"> 
+            <div class="reason"> 
+              <img src="imgs/节气.jpg" alt="">
+              <div class="date">10月7-9日</div>
+            </div>
+            <div class="sunRun">  
+              <p>该地日出日落时间、季节提醒</p>
+              <div>
+                <i class="iconfont icon-baitian"></i>
+                <span>日出时间: 06:19</span>
+              </div>
+              <div> 
+                <i class="iconfont icon-wanshang"></i>
+                <span>日落时间: 18:19</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="actualWeather  znzsPanel"> 
+            <div id="weatherInfo" class="weatherInfo">
+              <div class="head">
+                  <div class="curPos">
+                      <span class="headCaption">兰州市</span>
+                      <span class="location icon-dingwei iconfont"></span>
+                      <span id="curTime">18:11</span>
+                      <span>实况</span>
+                  </div>
+                  <div class="dataFrom">
+                      <span>08:00更新</span>
+                      <span>数据来源 兰州中心台</span>
+                  </div>
+              </div>
+              <div class="live">
+                  <div class="curWeather">
+                      <div class="live_temp"><i class="tempIcon"></i><span>?</span></div>
+                      <div class="liveOther">
+                          <div id="live_humidity"><i class="humidityIcon"></i><span>相对湿度</span><span>?</span></div>
+                          <div id="live_wind"><i class="windIcon"></i><span>东北风</span><span>2级</span></div>
+                          <div id="live_AQI"><i class="airIcon"></i><span>94</span><span>良</span></div>
+                          <div id="live_car"><i class="carIcon"></i><span>限行</span><span>5和0</span></div>
+                      </div>
+                  </div>
+                  <div class="dayAndNight">
+                      <div class="p16">20日白天</div>
+                      <div class="p36"><i class="dayPhenomena"></i></div>
+                      <div class="p16">晴</div>
+                      <div class="p16" id="dayTemp">26℃</div>
+                      <div class="p16">微风</div>
+                  </div>
+                  <div class="dayAndNight">
+                      <div class="p16">20日夜间</div>
+                      <div class="p36"><i class="nightPhenomena"></i></div>
+                      <div class="p16">晴</div>
+                      <div class="p16" id="nightTemp">11℃</div>
+                      <div class="p16">微风</div>
+                  </div>
+              </div>
+              <div class="cur_live">
+                  <div class="normal_row"><span>08时</span><span>11时</span><span>14时</span><span>17时</span><span>20时</span><span>23时</span><span>02时</span><span>05时</span></div>
+                  <div class="normal_row"><span class="dayPhenomena"></span><span class="dayPhenomena"></span><span class="dayPhenomena"></span><span class="dayPhenomena"></span><span class="dayPhenomena"></span><span class="dayPhenomena"></span><span class="dayPhenomena"></span><span class="dayPhenomena"></span></div>
+                  <div id="live_chart" class="live_chart"></div>
+                  <div class="normal_row"><span>微风</span><span>微风</span><span>微风</span><span>微风</span><span>微风</span><span>微风</span><span>微风</span><span>微风</span></div>
+                  <div class="normal_row"><span><3级</span><span><3级</span><span><3级</span><span><3级</span><span><3级</span><span><3级</span><span><3级</span><span><3级</span></div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="todayLiveNum znzsPanel"> 
+            <span>今日生活指数</span><span>( 2017-10-16 08:00发布 )</span>
+            <ul class="liveNumInfo"> 
+              <li><span>舒适</span></li>
+              <li><span>舒适</span></li>
+              <li><span>舒适</span></li>                 
+              <li><span>舒适</span></li>
+              <li><span>舒适</span></li>
+              <li><span>舒适</span></li>           
+              <li><span>舒适</span></li>
+              <li><span>舒适</span></li>
+              <li><span>舒适</span></li> 
+            </ul>
+          </div>
+        </div>
+        <div class="rightPanel">
+          <div class="forewarning znzsPanel"> 
+            <p><span class="tit">预警信号</span><span class="warningTime">观测时间: <span>8-26 10:00</span></span></p>
+            <ul class="forewarningInfo"> 
+              <li><img src="imgs/WarningIcon/大风蓝色.jpg" alt=""><span>甘肃省发布大风蓝色预警</span><span>09月20日16时</span></li>       
+              <li><img src="imgs/WarningIcon/大风黄色.jpg" alt=""><span>甘肃省发布强对流黄色预警</span><span>09月20日16时</span></li>        
+              <li><img src="imgs/WarningIcon/霜冻蓝色.jpg" alt=""><span>甘肃省发布霜冻蓝色预警</span><span>09月20日16时</span></li>
+            </ul>
+          </div>
+          
+          <div class="detailForecast znzsPanel"> 
+            <p>精细化预报</p>
+            <div class="forecastEcharts" id="forecastEcharts"></div>
+            <i class="iconfont icon-xiangzuo1 preTable"></i>
+            <table class="forecast_tb"> 
+              <tr>
+                <td rowspan="2" class="td1st">预报要素</td>
+                <td colspan="8" id="tableDate">2017-08-30</td>
+              </tr>
+              <tr class="tableTime" id="tableTime">         
+                <td>20:00</td>
+                <td>20:00</td>
+                <td>20:00</td>
+                <td>20:00</td>
+                <td>20:00</td>
+                <td>20:00</td>
+                <td>20:00</td>
+                <td>20:00</td>
+              </tr>
+              <tr id="h3Rain">
+                <td class="td1st">3小时降水(mm)</td>
+                <td>00</td>
+                <td>00</td>
+                <td>00</td>
+                <td>00</td>
+                <td>00</td>
+                <td>00</td>
+                <td>00</td>
+                <td>00</td>
+              
+              </tr>
+               <tr id="h6Rain">
+                <td class="td1st">6小时降水(mm)</td>
+              
+                <td colspan="2">00</td>
+                <td colspan="2">00</td>
+                <td colspan="2">00</td>
+                <td colspan="2">00</td>
+              
+              </tr>
+               <tr id="h12Rain">
+                <td class="td1st">12小时降水(mm)</td>
+                <td colspan="4">00</td>
+                <td colspan="4">00</td>
+               
+              </tr>
+               <tr id="TMax">
+                <td class="td1st">日最高温(℃)</td>
+                <td>00</td>
+                <td>00</td>
+                <td>00</td>
+                <td>00</td>
+                <td>00</td>
+                <td>00</td>
+                <td>00</td>
+                <td>00</td>
+              </tr>
+               <tr id="TMin">
+                <td class="td1st">日最低温(℃)</td>
+                <td>00</td>
+                <td>00</td>
+                <td>00</td>
+                <td>00</td>
+                <td>00</td>
+                <td>00</td>
+                <td>00</td>
+                <td>00</td>
+              </tr>
+            </table>
+            <i class="iconfont icon-xiangyou1 nextTable"></i>
+            <p class="forecast_text">未来3小时气温4.6摄氏度,降水0mm,南风小鱼3级,相对湿度20%,雨量0%</p>
+          </div> 
+          
+          <div class="riskForecast znzsPanel"> 
+            <img src="imgs/znzs/气象风险预警.jpg" alt="">
+          </div>
+        </div>
+        <ul class="znzsPanelCrl"> 
+         <li><i class="iconfont icon-gs-right-01"></i></li>
+         <li><i class="iconfont icon-gs-right-02"></i></li>
+         <li><i class="iconfont icon-gs-right-03"></i></li>
+         <li class="gridEleList"> 
+           <ul id="gridEleList">   
+             <li class="gridEleItem" data-toggle="tooltip" data-placement="left" title="日降水量" data="r12"><i class="iconfont icon-rijiangshuiliang"></i></li>
+             <li class="gridEleItem" data-toggle="tooltip" data-placement="left" title="日最高温" data="tmax"><i class="iconfont icon-rizuigaowen"></i></li>
+             <li class="gridEleItem" data-toggle="tooltip" data-placement="left" title="日最低温" data="tmin"><i class="iconfont icon-rizuidiwen"></i></li>
+             <li class="gridEleItem" data-toggle="tooltip" data-placement="left" title="日最大风" data="wmax"><i class="iconfont icon-rizuidafeng"></i></li>
+             <li class="gridEleItem" data-toggle="tooltip" data-placement="left" title="天气" data="w"><i class="iconfont icon-tianqi"></i></li>
+             <li class="gridEleItem" data-toggle="tooltip" data-placement="left" title="降水量" data="r3"><i class="iconfont icon-jiangshuiliang"></i></li>
+             <li class="gridEleItem" data-toggle="tooltip" data-placement="left" title="气温" data="2t"><i class="iconfont icon-qiwen"></i></li>
+             <li class="gridEleItem" data-toggle="tooltip" data-placement="left" title="风" data="10uv"><i class="iconfont icon-feng"></i></li>
+             <li class="gridEleItem" data-toggle="tooltip" data-placement="left" title="云量" data="tcc"><i class="iconfont icon-yunliang"></i></li>
+             <li class="gridEleItem" data-toggle="tooltip" data-placement="left" title="能见度" data="vis"><i class="iconfont icon-nengjiandu"></i></li>             
+             <li id="more" title="查看更多"><i class="iconfont icon-gengduo"></i></li>
+             <li class="gridEleItem" data-toggle="tooltip" data-placement="left" title="相对湿度" data="rh"><i class="iconfont icon-xiangduishidu"></i></li>             
+             <li class="gridEleItem" data-toggle="tooltip" data-placement="left" title="相态" data="ppg"><i class="iconfont icon-xiangtai"></i></li>             
+             <li class="gridEleItem" data-toggle="tooltip" data-placement="left" title="雾" data="fog"><i class="iconfont icon-wu"></i></li>             
+             <li class="gridEleItem" data-toggle="tooltip" data-placement="left" title="霾" data="hz"><i class="iconfont icon-mai"></i></li>             
+             <li class="gridEleItem" data-toggle="tooltip" data-placement="left" title="沙尘" data="sand"><i class="iconfont icon-shachen"></i></li>             
+             <li class="gridEleItem" data-toggle="tooltip" data-placement="left" title="短时强降水" data="rat"><i class="iconfont icon-duanshiqiangjiangshui"></i></li>             
+             <li class="gridEleItem" data-toggle="tooltip" data-placement="left" title="冰雹" data="hail"><i class="iconfont icon-bingbao"></i></li>             
+             <li class="gridEleItem" data-toggle="tooltip" data-placement="left" title="雷暴" data="ssm"><i class="iconfont icon-leibao"></i></li>             
+             <li class="gridEleItem" data-toggle="tooltip" data-placement="left" title="雷暴大风" data="smg"><i class="iconfont icon-leibaodafeng"></i></li>             
+             <li class="gridEleItem" data-toggle="tooltip" data-placement="left" title="空气污染等级" data="air"><i class="iconfont icon-kongqiwurandengji"></i></li>             
+             <li id="back" title="返回"><i class="iconfont icon-fanhui"></i></li>     
+           </ul> 
+         </li>
+         <li><i class="iconfont icon-gs-right-09"></i></li>
+         <li><i class="iconfont icon-gs-right-10"></i></li>
+         <li><i class="iconfont icon-gs-right-11"></i></li>
+        </ul>
+      </div>`;
+    $("#content").append(html);
+
+
+  },
+  initEvent() {
+    let _this = this;
+    let param = {
+      element: '2t',
+      type: 'prvn',
+      level: '1000',
+      hourspan: 24,
+      maketime: '2017-07-04 05:00:00',
+      version: 'p',
+      datetime: '2017-07-04 08:00:00'
+    };
+    /*let height = [];
+    $(".znzsPanel").each(function (index, item) {
+      height[index] = $(item).css("height");
+    });
+    console.log($(".znzsPanelCrl .isShow"));
+    $(".znzsPanelCrl .isShow").click(function () {
+      $(".znzsPanel").stop(false, true);
+      let index = $(this).index('.isShow');
+      let _this = this;
+      console.log(index);
+      if ($(".znzsPanel").eq(index).css("display") == "none") {
+        $(".znzsPanel").eq(index).show().animate({"height": height[index]}, 1000);
+        $(_this).parent().addClass("active");
+      }
+      else {
+        $(".znzsPanel").eq(index).animate({"height": "0px"}, 1000, function () {
+          $(this).hide();
+        });
+        $(_this).parent().removeClass("active");
+      }
+    })*/
+
+    _this.settLiveChart();
+    //格点播放
+    $("#playGrid").on("click", function () {
+      if (!param.element) {
+        alert("请先选择要素!");
+        return;
+      }
+
+      if (_this.isPlay) {
+        $(this).html(`<i class="iconfont icon-weibiaoti519"></i>`);
+        _this.isPlay = false;
+        let playSet = dataConfig[param.element];
+        let count = playSet.totalHour / playSet.hourSpan;
+
+        let progressTotalWidth = parseInt($('#progress_out').css('width'));
+
+        // console.log(progressTotalWidth);
+
+        function progressRun(id) {
+          _this.progress += progressTotalWidth / count;
+          $('#' + id).css({
+            width: _this.progress
+          })
+        }
+
+        //播放进度条
+        _this.timeInterval = setInterval(function () {
+          _this.i++;
+          if (_this.i > count) {
+            _this.i = 0;
+            _this.progress = 0;
+          }
+
+          param.hourspan = playSet.hourSpan * _this.i;
+          $.ajax({
+            type: "POST",
+            url: "http://101.200.12.178:3080/WMGridService/services/GridService/getGrid",
+            data: {"para": JSON.stringify(param)},
+            success(data) {
+              let com = new Common();
+              let result = com.converGridToDatasetGrid(data, "r3");
+              // console.log(result);
+              _this.gridLayer.setDatasetGrid(result);
+              _this.gridLayer.isShowGridline = false;
+              // _this.gridLayer.isShowLabel = false;
+              _this.gridLayer.refresh();
+              progressRun("progress_in");
+            }
+          })
+        }, 2000);
+      }
+      else {
+        $(this).html(`<i class="iconfont icon-kaishi"></i>`);
+        _this.isPlay = true;
+        clearInterval(_this.timeInterval)
+      }
+
+    });
+    // 根据要素获取格点数据
+    //http://172.23.2.237:8080/WMGridService/services/GridService/getGrid
+    // {element:'tmax',type:'prvn',level:'1000',hourspan:24,maketime:'2018-01-12 05:00:00',version:'p',datetime:'2018-01-12 08:00:00'}
+    $(".znzsPanelCrl .gridEleItem").on("click", function () {
+      $(this).find("i").addClass("active");
+      $(this).siblings().find("i").removeClass("active");
+
+      //切换要素,停止之前的格点播放并重置
+      clearInterval(_this.timeInterval)
+      _this.isPlay = true;
+      _this.i = 0;
+      _this.progress = 0;
+
+      $("#progress_in").css({
+        width: _this.progress
+      });
+      $("#playGrid").html(`<i class="iconfont icon-kaishi"></i>`);
+
+
+      param.element = $(this).attr("data");
+      // console.log(param.element);
+
+      //点击要素计算并添加进度条刻度
+      let dataTime = new MyDate(param.maketime);
+      // console.log(dataTime);
+      $(".currentDate").html(dataTime.toLocaleDateString());
+      $(".progressRuling b").each(function (index, item) {
+        $(this).html(dataTime.format("yyyy-MM-dd"));
+        dataTime.addDays(1);
+      })
+      $.ajax({
+        type: "POST",
+        url: "http://101.200.12.178:3080/WMGridService/services/GridService/getGrid",
+        data: {"para": JSON.stringify(param)},
+        success(data) {
+          let com = new Common();
+          let result = com.converGridToDatasetGrid(data, "r3");
+          // console.log(result);
+          _this.gridLayer.setDatasetGrid(result);
+          _this.gridLayer.isShowGridline = false;
+          // _this.gridLayer.isShowLabel = false;
+          _this.gridLayer.refresh();
+
+        }
+      })
+    });
+
+
+    //右侧导航栏缩放及提示信息
+    // $('[data-toggle="tooltip"]').tooltip();
+    //有bug----------------------------------
+
+
+    $(".nextTable").on("click", function () {
+      _this.tbPage++;
+      // console.log(_this.tbPage);
+      if (_this.tbPage >= 3) {
+        alert("没有了");
+        _this.tbPage--;
+      }
+      else {
+        _this.setTableData(_this.tbPage);
+        _this.setTableDateTime(_this.tbPage);
+        _this.setForecastEcharts();
+
+      }
+
+
+    });
+    $(".preTable").on("click", function () {
+      _this.tbPage--;
+      // console.log(_this.tbPage);
+      if (_this.tbPage < 0) {
+        alert("没有了");
+        _this.tbPage++;
+      }
+      else {
+        _this.setTableData(_this.tbPage);
+        _this.setTableDateTime(_this.tbPage);
+        _this.setForecastEcharts();
+
+      }
+
+
+    });
+    $("#more").on("click", function () {
+      $("#gridEleList").animate({top: "-550px"});
+    });
+    $("#back").on("click", function () {
+      $("#gridEleList").animate({top: "0px"});
+    });
+    _this.getDataFormPOS();
+    /* _this.setTableDateTime(_this.tbPage);
+     _this.setTableData(_this.tbPage);
+     _this.setForecastEcharts();*/
+  },
+  //通过坐标获取数据,要素为数组,
+  getDataFormPOS() {
+    let _this = this;
+    // this.setTableDateTime(_this.tbPage);
+    let param = {
+      // element: '2t',
+      type: 'prvn',
+      // level: '1000',
+      // hourspan: 24,
+      // maketime: '2017-07-04 05:00:00',
+      version: 'p',
+      // datetime: '2017-07-04 08:00:00'
+    };
+
+    var t = this;
+    if (typeof(t.currentPosition) == "undefined")
+      return;
+    var arrayPoint = [];
+    arrayPoint.push({x: t.currentPosition.lon, y: t.currentPosition.lat});
+
+    var arrayElement = [];
+    this.getHourSpan = function (element) {
+      var hourspans = null;
+      if (element == "r12" || element == "w" || element == "air" || element == "wmax") {
+        hourspans = [12, 24, 36, 48, 60, 72];
+      }
+      else if (element == "tmax" || element == "tmin") {
+        hourspans = [24, 48, 72];
+      }
+      else {
+        hourspans = [3, 6, 9, 12, 15, 18, 21, 24, 27, 30, 33, 36, 39, 42, 45, 48, 51, 54, 57, 60, 63, 66, 69, 72];
+      }
+      return hourspans;
+    };
+    arrayElement.push({name: "2t", element: "2t", hourSpans: JSON.stringify(this.getHourSpan("2t"))});
+    arrayElement.push({name: "r3", element: "r3", hourSpans: JSON.stringify(this.getHourSpan("r3"))});
+    arrayElement.push({name: "tmax", element: "tmax", hourSpans: JSON.stringify(this.getHourSpan("tmax"))});
+    arrayElement.push({name: "tmin", element: "tmin", hourSpans: JSON.stringify(this.getHourSpan("tmin"))});
+    /*arrayElement.push({name:"rh", element:"rh",hourSpans:JSON.stringify(GDYB.GDYBPage.getHourSpan("rh"))});
+    arrayElement.push({name:"tcc", element:"tcc",hourSpans:JSON.stringify(GDYB.GDYBPage.getHourSpan("tcc"))});
+    arrayElement.push({name:"vis", element:"vis",hourSpans:JSON.stringify(GDYB.GDYBPage.getHourSpan("vis"))});*/
+
+    var url = gridServiceUrl + "services/GridService/grid2points"; //格点转任意点
+    param.makeTime = $("#currentDate")[0].value + " " + $("#timeSelect option:selected").attr("flag");
+    param.elements = arrayElement;
+    param.points = arrayPoint;
+    $.ajax({
+      data: {"para": JSON.stringify(param)},
+      url: url,
+      dataType: "json",
+      success: function (data) {
+        _this.tableData = data.items;
+        // console.log(_this.tableData);
+        _this.setTableDateTime(_this.tbPage)
+        _this.setTableData(_this.tbPage);
+        _this.setForecastEcharts();
+      },
+      error: function (e) {
+
+      },
+      type: "POST"
+    });
+    // showChartDiv();
+  },
+
+
+  //设置表格的时间
+  setTableDateTime(addDay) {
+    let _this = this;
+    let startTime = new MyDate($("#currentDate")[0].value + "T" + $("#timeSelect option:selected").attr("flag"));
+    startTime.addDays(addDay);
+    startTime.addHours(3);
+    $("#tableDate").html(startTime.format("yyyy-MM-dd") + " 到 " + startTime.addDays(1).format("yyyy-MM-dd"));
+    startTime.addDays(-1);
+    // console.log(startTime)
+    $("#tableTime").find("td").each(function () {
+      startTime.addHours(3);
+      _this.AxisDate.push(startTime.format("hh:mm"));
+
+      $(this).html(startTime.format("hh:mm"));
+    })
+  }
+  ,
+
+
+  //设置表格中的数据
+  setTableData(tbPage) {
+    let _this = this;
+    _this.maxOfR3 = 0;
+    _this.minOfR3 = 0;
+    _this.maxOf2T = 0;
+    _this.minOf2T = 99;
+    let r3Date = _this.tableData.filter(function (value) {
+      return value.element == 'r3';
+    });
+    //提取2t数据
+    let DataOf2t = _this.tableData.filter(function (value) {
+      return value.element == '2t';
+    });
+
+    //获取r3和2t的最大最小值
+    r3Date.forEach(function (item, index) {
+      // console.log(item)
+      if (item.datas[0] > _this.maxOfR3)
+        _this.maxOfR3 = item.datas[0];
+      if (item.datas[0] < _this.minOfR3)
+        _this.minOfR3 = item.datas[0];
+    });
+    DataOf2t.forEach(function (item, index) {
+      // console.log(item)
+      if (item.datas[0] > _this.maxOf2T)
+        _this.maxOf2T = item.datas[0];
+      if (item.datas[0] < _this.minOf2T)
+        _this.minOf2T = item.datas[0];
+    });
+    _this.maxOfR3 = (parseInt(_this.maxOfR3 / 10) + 1) * 10;
+    _this.maxOf2T = (parseInt(_this.maxOf2T / 10) + 1) * 10;
+    _this.minOf2T = (parseInt(_this.minOf2T / 10)) * 10;
+    // console.log(_this.maxOf2T, _this.minOf2T)
+
+    let subR3Data = r3Date.slice(tbPage * 8, tbPage * 8 + 8);
+    let sub2TData = DataOf2t.slice(tbPage * 8, tbPage * 8 + 8);
+    // console.log(subR3Data);
+
+    $("#h3Rain").find("td").not(".td1st").each(function (index, item) {
+      _this.yAxisR3.push(subR3Data[index].datas[0]);
+      _this.yAxis2T.push(sub2TData[index].datas[0]);
+      $(this).html(subR3Data[index].datas[0]);
+    });
+
+
+    $("#h6Rain").find("td").not(".td1st").each(function (index, item) {
+      $(this).html((subR3Data[index * 2].datas[0] + subR3Data[index * 2 + 1].datas[0]).toFixed(1));
+    });
+
+    $("#h12Rain").find("td").not(".td1st").each(function (index, item) {
+      let result = 0;
+      for (let i = 0; i < 4; i++) {
+        result += subR3Data[index * 4 + i].datas[0];
+      }
+      $(this).html(result.toFixed(1));
+    });
+    /* let TMaxDate = _this.tableData.filter(function (value) {
+       return value.element == 'tmax';
+     });*/
+
+    console.log(DataOf2t)
+    /* _2TData.forEach(function (index,item) {
+       _this.yAxis2T.push(item.datas[0]);
+     })
+     console.log(_this.yAxis2T)*/
+
+  },
+  settLiveChart() {
+    let _this = this;
+    _this.liveChart = echarts.init($("#live_chart")[0]);
+    var option = {
+      title: {
+        text: ''
+      },
+      grid: {
+        top: 20,
+        bottom: 0,
+        left: '2%',
+        right: '2%'
+      },
+      xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        data: ['08', '11', '14', '17', '20', '23', '02', '05'],
+        splitLine: {
+          show: false
+        }
+      },
+      yAxis: {
+        show: true,
+        min: function (value) {
+          return value.min;
+        },
+        splitLine: {
+          show: false
+        }
+        // type: 'value',
+        // axisLabel: {
+        //   formatter: '{value} °C'
+        // }
+      },
+      series: [
+        {
+          name: '最高气温',
+          type: 'line',
+          data: [11, 11, 15, 13, 12, 13, 10, 8],
+          itemStyle: {
+            normal: {
+              label: {
+                show: true
+              }
+            }
+          }
+        },
+        {
+          name: '最底气温',
+          type: 'line',
+          data: [10, 10, 13, 12, 11, 11, 9, 7],
+          itemStyle: {
+            normal: {
+              color: "blue",
+              label: {
+                show: true
+              },
+              lineStyle: {
+                type: 'dotted'
+              }
+            }
+          }
+        },
+      ]
+    };
+    _this.liveChart.setOption(option);
+  },
+  //echars温度和降水
+  setForecastEcharts() {
+    let _this = this;
+    _this.R3_2T_Chart = echarts.init($("#forecastEcharts")[0]);
+    let option = {
+      /*legend: {
+        data: ['气温', '降水'],
+        textStyle: {
+          color: "white"
+        }
+      },*/
+      textStyle: {
+        color: "white"
+      },
+      tooltip: {
+        trigger: "axis"
+      },
+      grid: {
+        top: 40,
+        bottom: 20,
+      },
+
+      xAxis: [{
+        type: 'category',
+        data: _this.AxisDate,
+        axisPointer: {
+          type: 'shadow'
+        },
+        axisLine: {
+          lineStyle: {
+            color: '#fff',
+            width: 1,   //这里是坐标轴的宽度,可以去掉
+          }
+        }
+      }
+      ],
+      yAxis: [{
+        splitLine: {show: false},//去除网格线
+        type: 'value',
+        name: '气温',
+        min: _this.minOf2T,
+        max: _this.maxOf2T,
+        axisLabel: {
+          formatter: '{value} °C'
+        },
+        axisLine: {
+          lineStyle: {
+            color: '#fff',
+            width: 1,   //这里是坐标轴的宽度,可以去掉
+          }
+        }
+      }, {
+        splitLine: {show: false},//去除网格线
+
+        type: 'value',
+        name: '降水',
+        min: 0,
+        max: _this.maxOfR3,
+        axisLabel: {
+          formatter: '{value} ml'
+        },
+        axisLine: {
+          lineStyle: {
+            color: '#fff',
+            width: 1,   //这里是坐标轴的宽度,可以去掉
+          }
+        }
+      }
+      ],
+      series: [{
+        name: '气温',
+        type: 'line',
+        itemStyle: {
+          normal: {
+            color: "red"
+          }
+        },
+        data: _this.yAxis2T
+      }, {
+        name: '降水',
+        type: 'bar',
+        yAxisIndex: 1,
+        itemStyle: {
+          normal: {
+            color: "blue"
+          }
+        },
+        data: _this.yAxisR3
+      },
+      ]
+    };
+    console.log(_this.AxisDate);
+
+    _this.R3_2T_Chart.setOption(option);
+    _this.yAxis2T = [];
+    _this.AxisDate = [];
+    _this.yAxisR3 = [];
+  }
+};
+

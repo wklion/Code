@@ -1,0 +1,362 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <META http-equiv="Content-Type" content="text/html;">
+    <META http-equiv="Content-Type" content="application/pdf;">
+    <title>甘肃省智能网格预报产品展示平台</title>
+    <link rel="stylesheet" href="css/zui.min.css"/>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/common.css"/>
+    <link rel="stylesheet" href="assets/layui/css/layui.css">
+    <link rel="stylesheet" href="css/datetimepicker.min.css"/>
+    <link rel="stylesheet" href="css/buttons.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/display.css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/buttons.js"></script>
+    <script type="text/javascript" src='libs/WeatherMap.Include.js'></script>
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="js/jquery.cookie.js"></script>
+    <script type="text/javascript" src="js/zui.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap-modal.js"></script>
+    <script type="text/javascript" src="js/bootstrap.js"></script>
+    <script type="text/javascript" src="js/highcharts/highcharts.js"></script>
+    <script type="text/javascript" src="js/highcharts/highcharts-zh_CN.js"></script>
+    <script type="text/javascript" src="js/highcharts/exporting.js"></script>
+    <script type="text/javascript" src="js/styles/plotStyles_surface.js"></script>
+    <script type="text/javascript" src="js/styles/plotStyles_hight.js"></script>
+    <script type="text/javascript" src="js/styles/plotStyles_rhjc.js"></script>
+    <script type="text/javascript" src="js/styles/plotStyles_zhjc.js"></script>
+    <script type="text/javascript" src="js/styles/rain1hStyles.js"></script>
+    <script type="text/javascript" src="js/styles/rain3hStyles.js"></script>
+    <script type="text/javascript" src="js/styles/rain6hStyles.js"></script>
+    <script type="text/javascript" src="js/styles/rain12hStyles.js"></script>
+    <script type="text/javascript" src="js/styles/rain24hStyles.js"></script>
+    <script type="text/javascript" src="js/styles/windStyles.js"></script>
+    <script type="text/javascript" src="js/styles/tempStyles.js"></script>
+    <script type="text/javascript" src="js/styles/rhStyles.js"></script>
+    <script type="text/javascript" src="js/styles/tccStyles.js"></script>
+    <script type="text/javascript" src="js/styles/heatMap_TempStyles.js"></script>
+    <script type="text/javascript" src="js/styles/heatMap_RHStyles.js"></script>
+    <script type="text/javascript" src="js/styles/heatMap_SatelliteStyles.js"></script>
+    <script type="text/javascript" src="js/styles/heatMap_TCCStyles.js"></script>
+    <script type="text/javascript" src="js/styles/heatMap_Rain24Styles.js"></script>
+    <script type="text/javascript" src="js/styles/heatMap_RadarStyles.js"></script>
+    <script type="text/javascript" src="js/styles/heatMap_500hPaHightStyles.js"></script>
+    <script type="text/javascript" src="js/styles/heatMap_IR1Styles.js"></script>
+    <script type="text/javascript" src="js/styles/heatMap_IR2Styles.js"></script>
+    <script type="text/javascript" src="js/styles/heatMap_IR3Styles.js"></script>
+    <script type="text/javascript" src="js/styles/heatMap_IR4Styles.js"></script>
+    <script type="text/javascript" src="js/styles/heatMap_VISStyles.js"></script>
+    <script type="text/javascript" src="js/styles/heatMap_FYVISStyles.js"></script>
+    <script type="text/javascript" src="js/styles/heatMap_10uvStyles.js"></script>
+    <script type="text/javascript" src="js/styles/heatMap_AirStyles.js"></script>
+    <script type="text/javascript" src="js/styles/heatMap_WStyles.js"></script>
+    <script type="text/javascript" src="js/styles/heatMap_CalamityStyles.js"></script>
+    <script type="text/javascript" src="js/styles/heatMap_MCRStyles.js"></script>
+    <script type="text/javascript" src="js/styles/heatMap_CLCStyles.js"></script>
+    <script type="text/javascript" src="js/styles/heatMap_GDYB_PPH.js"></script>
+    <script type="text/javascript" src="js/styles/heatMap_GDYB_FOG.js"></script>
+    <script type="text/javascript" src="js/styles/heatMap_GDYB_HAIL.js"></script>
+    <script type="text/javascript" src="js/styles/heatMap_GDYB_HZ.js"></script>
+    <script type="text/javascript" src="js/styles/heatMap_GDYB_RAT.js"></script>
+    <script type="text/javascript" src="js/styles/heatMap_GDYB_SAND.js"></script>
+    <script type="text/javascript" src="js/styles/heatMap_GDYB_SMG.js"></script>
+    <script type="text/javascript" src="js/styles/heatMap_GDYB_SSM.js"></script>
+    <script type="text/javascript" src="js/styles/heatMap_GDYB_VIS.js"></script>
+    <script type="text/javascript" src="js/CommonFunction.js"></script>
+    <script type="text/javascript" src="js/Renderer/Plot.js"></script>
+    <script type="text/javascript" src="js/Renderer/StreamLine.js"></script>
+    <script type="text/javascript" src="js/Renderer/NeonLine.js"></script>
+    <script type="text/javascript" src="js/Renderer/Contour.js"></script>
+    <script type="text/javascript" src="js/Controls/datetimepicker.min.js"></script>
+    <script type="text/javascript" src="js/Controls/Chart.js"></script>
+    <script type="text/javascript" src="js/Controls/ChartClass.js"></script>
+    <script type="text/javascript" src="js/Controls/DateSelecter.js"></script>
+    <script type="text/javascript" src="js/Controls/YuBaoshixiaoTools.js"></script>
+    <script type="text/javascript" src="js/Controls/SideWrapper.js"></script>
+    <script type="text/javascript" src="js/Controls/MapSwitch.js"></script>
+    <script type="text/javascript" src="js/Controls/dMapTools.js"></script>
+    <script type="text/javascript" src="js/Controls/Legend.js"></script>
+    <script type="text/javascript" src="js/Controls/MessageControl.js"></script>
+    <script type="text/javascript" src="js/Controls/html2canvas.js"></script>
+    <script type="text/javascript" src="js/CorrectAction.js"></script>
+    <script type="text/javascript" src="js/MagicTool.js"></script>
+    <script type="text/javascript" src="js/FilterTool.js"></script>
+    <script type="text/javascript" src="js/CrossRelation.js"></script>
+    <script type="text/javascript" src="js/CrossCorrection.js"></script>
+    <script type="text/javascript" src="js/Pages/PageBase.js"></script>
+    <script type="text/javascript" src="js/Pages/SKZLPageClass.js"></script>
+    <script type="text/javascript" src="js/Pages/WXLDPageClass.js"></script>
+    <script type="text/javascript" src="js/Pages/SZMSPageClass.js"></script>
+    <script type="text/javascript" src="js/Pages/GDYBPageClass.js"></script>
+    <script type="text/javascript" src="js/Pages/ZDYBPageClass.js"></script>
+    <script type="text/javascript" src="js/Pages/XTGLPageClass.js"></script>
+    <script type="text/javascript" src="js/Pages/ZDYBSZPageClass.js"></script>
+    <script type="text/javascript" src="js/Pages/ZDGLPageClass.js"></script>
+    <script type="text/javascript" src="js/Pages/GDZSPageClass.js"></script>
+    <script type="text/javascript" src="js/Pages/QDLSKPageClass.js"></script>
+    <script type="text/javascript" src="js/Pages/QDLLDPageClass.js"></script>
+    <script type="text/javascript" src="js/Pages/QDLYTPageClass.js"></script>
+    <script type="text/javascript" src="js/Pages/ZHJCSKPageClass.js"></script>
+    <script type="text/javascript" src="js/Pages/ZHJCLDPageClass.js"></script>
+    <script type="text/javascript" src="js/Pages/ZHJCYTPageClass.js"></script>
+    <script type="text/javascript" src="js/Pages/QDLRHJCPageClass.js"></script>
+    <script type="text/javascript" src="js/Pages/QDLGNMXPageClass.js"></script>
+    <script type="text/javascript" src="js/Pages/QDLLJYBPageClass.js"></script>
+    <script type="text/javascript" src="js/Pages/QDLQSYBPageClass.js"></script>
+    <script type="text/javascript" src="js/Pages/QDLQXFXPageClass.js" ></script>
+    <script type="text/javascript" src="js/Pages/DisplayPageClass.js"></script>
+    <script type="text/javascript" src="js/Pages/GDJYPageClass.js"></script>
+    <script type="text/javascript" src="js/Pages/YJXHPageClass.js"></script>
+    <script type="text/javascript" src="js/Pages/QDLQXFXPageClass.js" ></script>
+    <script type="text/javascript" src="js/Controls/Chat.js"></script>
+    <script type="text/javascript" src="js/GridProductClass.js"></script>
+    <script type="text/javascript" src="js/DataClass/RadarDataClass.js"></script>
+    <script type="text/javascript" src="js/DataClass/AWXDataClass.js"></script>
+    <script type="text/javascript" src="js/DataClass/MicapsDataClass.js"></script>
+    <script type="text/javascript" src="js/DataClass/TextDataClass.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
+    <script type="text/javascript" src="js/Layers/LocalTiledCacheLayer.js"></script>
+    <script type="text/javascript" src="js/Layers/LocalTiledCacheLayerBlackMap.js"></script>
+    <script type="text/javascript" src="js/Layers/LocalTiledCacheLayerWhiteMap.js"></script>
+    <script type="text/javascript" src="js/Layers/LocalTiledCacheLayerTDTIMG.js"></script>
+    <script type="text/javascript" src="js/Layers/LocalTiledCacheLayerTDTMAP.js"></script>
+    <script type="text/javascript" src="js/Layers/LocalTiledCacheLayerTDTTER.js"></script>
+    <script type="text/javascript" src="js/Layers/TianDiTuLayer.js"></script>
+    <script type="text/javascript" src="js/Layers/StreamLayer.js"></script>
+    <script type="text/javascript" src="js/FeatureUtilityClass.js"></script>
+    <script type="text/javascript" src="js/Layers/FillColorLayer.js"></script>
+    <script type="text/javascript" src="js/Layers/FillRangeColorLayer.js"></script>
+    <script type="text/javascript" src="js/Layers/MappingLayer.js"></script>
+    <script type="text/javascript" src="js/DataCache.js"></script>
+    <script type="text/javascript" src="js/DataStack.js"></script>
+    <script type="text/javascript" src="js/GridAnalyst.js"></script>
+    <script type="text/javascript" src="js/Rect.js"></script>
+    <script type="text/javascript" src="js/Panels/DragPanelBase.js"></script>
+    <script type="text/javascript" src="js/Panels/Panel_Tools.js"></script>
+    <script type="text/javascript" src="js/Panels/Panel_LQDZ.js"></script>
+    <script type="text/javascript" src="js/Panels/Panel_QHDZ.js"></script>
+    <script type="text/javascript" src="js/Panels/Panel_QSDZ.js"></script>
+    <script type="text/javascript" src="js/Panels/Panel_FXDZ.js"></script>
+    <script type="text/javascript" src="js/Panels/Panel_YSTJ.js"></script>
+    <script type="text/javascript" src="js/timeSlide.js"></script>
+    <script src="data/StreamLine.js"></script>
+    <script src="data/StreamLine_uv.js"></script>
+    <script src="data/winddata.js"></script>
+    <!-- mmgrid-->
+    <link rel="stylesheet" href="css/mmgrid/mmGrid-bootstrap.css"/>
+    <link rel="stylesheet" href="css/mmgrid/mmGrid.css"/>
+    <link rel="stylesheet" href="css/mmgrid/mmPaginator.css"/>
+    <script type="text/javascript" src="js/mmGrid.js"></script>
+    <!-- mmgrid end -->
+    <!-- artdialog -->
+    <link rel="stylesheet" href="css/artdialog/ui-dialog.css"/>
+    <script type="text/javascript" src="css/artdialog/dialog-min.js"></script>
+    <!-- artdialog end-->
+    <script type="text/javascript" src="js/jquery.form.js"></script>
+    <script type="text/javascript" src="js/latticeForcast.js"></script>
+    <script type="text/javascript" src="js/util/AlertAreas.js"></script>
+</head>
+<body>
+<div class="body">
+    <div class="banner" style="z-index:999;">
+        <div class="logo">
+            <img style="margin-top: -4px;" src="imgs/logo1.png" height="100%"><span
+                style="font-size: 27px;letter-spacing: 5px;display: inline-block;font-family:微软雅黑;margin-left: 20px;float: right;margin-top: 3px;font-weight: bold;">甘肃省智能网格预报产品展示平台</span>
+        </div>
+        <!--右键菜单-->
+        <div id="divContextMenu"
+             style="display:none;width:80px;position:absolute;top:0px;left:0px;border: solid 1px rgb(150,160,200);background-color: #FFFFFF;color: #000000;z-index: 99;cursor: pointer;font-size: 12px;">
+            <div id="div_copy">复制</div>
+            <div id="div_paste" style="display: none">粘贴</div>
+            <div id="div_cancel">取消</div>
+        </div>
+        <!--登录按钮-->
+        <div id="login" style="" class="loginInfo">
+            <div id="user_img" style="padding-right: 2px;">
+            </div>
+            <span id="span_user" style="display: none;"></span><a id="a_exit" style="float: left;">登录</a>
+            <div id="user_hid">
+                <ul>
+                    <li id="a_signout"><a title="退出">注销登录</a></li>
+                    <li><a href="./docs/GDYB_UserManual.pdf" target="_blank" title="用户手册">用户手册</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="content">
+        <div id="divTool"
+             style="position: absolute;top: 15px;z-index: 99;left: 10px;border-radius: 5px;background-color: rgba(70,70,70,0.5);">
+            <div id='dateSelect' class="dataSelectGridPage" style='margin-left: 0;float:left'></div>
+            <select id='selectMakeTime' class="displaySelect">
+                <option value='5'>05时</option>
+                <option value='16'>16时</option>
+            </select>
+            <select id='selectProductType' class="displaySelect">
+                <option value='prvn_p'>省台指导</option>
+                <option value='cty_p'>市台订正</option>
+            </select>
+        </div>
+        <div id="zoom3Into" style="position: absolute;top: 15px;z-index: 99;left: 240px;border-radius: 5px;background-color: rgba(70,70,70,0.5);">
+            <div flag="6" title="界面等级Ⅰ" data-toggle="tooltip" data-placement="bottom">Ⅰ</div>
+            <div flag="7" title="界面等级Ⅱ" data-toggle="tooltip" data-placement="bottom">Ⅱ</div>
+            <div flag="9" title="界面等级Ⅲ" data-toggle="tooltip" data-placement="bottom">Ⅲ</div>
+        </div>
+        <!--<div id="divHourSpan" style="width: 80%;position: absolute;z-index: 99;top: 1px;left: 300px;"></div>-->
+        <div id="rightPanel">
+        </div>
+        <div id="bottomPanel">
+            <div id="progress-bar" class="progress-bar">
+            </div>
+        </div>
+        <div id="map_div" style="height: 100%;width: 100%; top: 0;">
+            <div id="map"></div>
+        </div>
+        <div class="chartDiv">
+            <div id="forcastForm" class="chartElement"></div>
+            <div id="formExt"></div>
+            <div id="fileTip" title="打开图表"></div>
+            <div id="belowDiv">
+                <div id="latticeTable"></div>
+                <div id="weatherDescription"></div>
+            </div>
+        </div>
+        <div id="mapSwitch_div">
+            <div style="float:right;">
+                <div>
+                    <img id="curImg" class="mapNowImg" style="" flag="vec" src="imgs/img_map_tdt_img.png">
+                </div>
+            </div>
+            <div id="div_tdt_img" onclick="tiandituOnclick(this)" class="moreMapLayer"
+                 style="float: right; margin-right: 5px; display: none;">
+                <div>
+                    <div>
+                        <img class="mapImg" flag="img" src="imgs/img_map_tdt_img.png">
+                    </div>
+                </div>
+            </div>
+            <div id="div_tdt_ter" onclick="tiandituOnclick(this)" class="moreMapLayer"
+                 style="float: right; margin-right: 5px; display: none;">
+                <div>
+                    <div>
+                        <img class="mapImg" flag="ter" src="imgs/img_map_tdt_ter.png">
+                    </div>
+                </div>
+            </div>
+            <div id="div_tdt_map" onclick="tiandituOnclick(this)" class="moreMapLayer"
+                 style="float: right; margin-right: 5px; display: none;">
+                <div>
+                    <div>
+                        <img class="mapImg" flag="vec" src="imgs/img_map_tdt_map.png">
+                    </div>
+                </div>
+            </div>
+            <div id="div_loc_day" onclick="tiandituOnclick(this)" class="moreMapLayer"
+                 style="float: right; margin-right: 5px; display: none;">
+                <div>
+                    <div>
+                        <img class="mapImg" flag="day" src="imgs/img_map_loc_day.png">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="div_alert" class="modal fade in" style="display: none; ">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a class="close" data-dismiss="modal">×</a>
+                    <h3>提示</h3>
+                </div>
+                <div class="modal-body">
+                    <h4 id="div_alert_content"></h4>
+                </div>
+                <div class="modal-footer">
+                    <a id="alert_ok" href="#" data-dismiss="modal" class="btn btn-success">确定</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="div_modal_confirm" class="modal fade in" style="display: none; ">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a class="close" data-dismiss="modal">×</a>
+                    <h3>提示</h3>
+                </div>
+                <div id="divImportModelType" class="modal-body">
+                    <h4 id="div_modal_confirm_content"></h4>
+                </div>
+                <div class="modal-footer">
+                    <a id="btn_canel" href="#" class="btn" data-dismiss="modal">取消</a>
+                    <a id="btn_ok" href="#" data-dismiss="modal" class="btn btn-success">确定</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="backHome" title="回到主页" style="display: none"><a href="nativ.html"><i class="iconfont icon-zhuye"></i></a>
+    </div>
+</div>
+</body>
+<script type="text/javascript">
+
+    var host = "http://172.23.2.237";
+    var dataSericeUrl = host + ":8081/WMDataService/";
+    var gridServiceUrl = host + ":8080/WMGridService/";
+    var userServiceUrl = host + ":8080/WMUser/";
+    var gsDataService = host + ":8081/GSDataService/";
+    var archiveService = host + ":8080/SPDArchiveService/";
+    var nTickCount = 0;
+
+    $(document).ready(function () {
+        window.GDYB && GDYB.Page.main();
+    });
+
+    //鼠标滑过地图切换DIV
+    $("#mapSwitch_div").hover(function () {
+        var $this = $(this).find(".moreMapLayer");
+        $this.css("display", "block");
+    }, function () {
+        var $this = $(this).find(".moreMapLayer");
+        $this.css("display", "none");
+    });
+
+    //控制图表显示
+    $("#formExt, #fileTip").click(function () {
+        if (!$("#formExt").hasClass("active")) {
+            hidChartDiv();
+        }
+        else {
+            showChartDiv();
+        }
+    });
+    function showChartDiv() {
+        $(".chartDiv").stop();
+        $("#formExt,#forcastForm").css("display", "block");
+        $("#fileTip").css("display", "none");
+        $(".chartDiv").animate({"width": "600px"}, 1200, "linear", function () {
+            $("#formExt").css({
+                "border-left-color": "rgba(102,102,102,1)",
+                "border-right-color": "rgba(102,102,102,0)"
+            }).removeClass("active");
+            $("#belowDiv").slideDown(500);
+        });
+    }
+    function hidChartDiv() {
+        $(".chartDiv").stop();
+        $("#belowDiv").slideUp(500);
+        $(".chartDiv").animate({"width": "0"}, 1200, "linear", function () {
+            $("#forcastForm").css("display", "none");
+            $("#fileTip").css("display", "block");
+            $("#formExt").css({
+                "border-left-color": "rgba(102,102,102,0)",
+                "border-right-color": "rgba(102,102,102,0.7)"
+            }).addClass("active");
+        });
+    }
+    $(".logo").click(function () {
+        window.location.href = "nativ.html";
+    });
+</script>
+</html>

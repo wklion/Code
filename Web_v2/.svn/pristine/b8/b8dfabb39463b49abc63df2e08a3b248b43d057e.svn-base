@@ -1,0 +1,101 @@
+function NowcastingMenu() {
+  this._init_();
+}
+
+NowcastingMenu.prototype = {
+  constructor: NowcastingMenu,
+  _init_: function () {
+    this.name = "临近预报菜单";
+  },
+  renderMenu: function () {
+    let html = `<div id="yjForecastDiv">
+    <div id="div_QianFaRen">
+        <div class="qdlTitleBar">签发人：</div>
+        <div id="issueor" class="menuDropDown" name="model">
+            <!--<input class="inputYuBaoyuan" type="text">-->
+            <select id="selectQianFaRen" class="selectYuBaoYuan">
+              <option>王宝鉴</option>
+              <option>杨建才</option>
+              <option>刘新伟</option>
+              <option>赵庆云</option>
+              <option>许东蓓</option>
+              <option>黄玉霞</option>
+              <option>傅朝</option>
+            </select>
+        </div>
+    </div>
+    <div id="yjqs_div_datetime">
+        <div class="qdlTitleBar">时次：</div>
+        <!--<div class="menuDropDown" name="model">-->
+            <!--<span id="yjqs_selectMakeTime" value="8">08时</span>-->
+            <!--<div id="makeTimeDiv" class="selectYuBaoYuan">-->
+                <!--<div value="8">08时</div>-->
+                <!--<div value="20">20时</div>-->
+            <!--</div>-->
+        <!--</div>-->
+        <div id="yjqs_dateSelect">
+            <div>
+               <!--<img class="dateBtn" src="imgs/dateBtn1.png">-->
+               <input type="text" value="2017-12-18 21:00:00">
+               <!--<img class="dateBtn" src="imgs/dateBtn2.png">-->
+            </div>
+        </div>
+        <div></div>
+    </div>
+    <div id="yjqs_divElement">
+        <div class="qdlTitleBar">类型：</div>
+        <div class="qdlContentDiv">
+            <button id="stsp" value="2" class="active">雷暴</button>
+            <button id="ts" value="1">短时强降水</button>
+            <button id="tsgh" value="3">雷暴大风或冰雹</button>
+        </div>
+    </div>
+    <div id="yjqs_warnLevel">
+        <div class="qdlTitleBar">等级：</div>
+        <div class="qdlContentDiv">
+            <button id="ts" value="1" class="active">蓝色</button>
+            <button value="2">黄色</button>
+            <button value="3">橙色</button>
+            <button value="3">红色</button>
+        </div>
+    </div>
+    <div id="divGridDistance">
+        <div class="qdlTitleBar">格距：</div>
+        <div class="qdlContentDiv">
+            <button class="active">0.5</button>
+            <button>0.25</button>
+            <button>0.125</button>
+        </div>
+    </div>
+    <div>
+        <textarea id="yjqs_txtContent"></textarea>
+        <textarea id="guide"></textarea>
+        <div id="controlBtn" class="qdlContentDiv">
+            <button id="btnGridEdit">格点编辑</button>
+            <button id="btnStationSelect">站点选择</button>
+            <button id="btnCancel">放弃编辑</button>
+            <button id="btnSave">发布预警</button>
+            <button id="brush">画刷</button>
+        </div>
+    </div>
+    <div>
+        <div class="title1">近期预警 <span class="moreForecast">更多</span></div>
+        <div id="divProductsOfRecent24H_qsyb">
+            <div id="1107866" class="active">12-18 10:00 兰州中心气象台发布
+                <img src="imgs/messageIcon.png"></div>
+        </div>
+        <div id="yjqs_divContent">
+            兰州中心气象台2017年12月18日10时00分发布预警潜势：预计9时-15时，张家川回族自治县、静宁县、庄浪县、秦安县等地将出现短时强降水。请注意防范。
+        </div>
+    </div>
+    <!--<div>-->
+        <!--<span id="divRead" title="已读">兰州中心 </span>-->
+        <!--<span id="divUnread" title="未读">兰州 嘉峪关 金昌 白银 天水 武威 张掖 平凉 酒泉 庆阳 定西 陇南 临夏 甘南 </span>-->
+    <!--</div>-->
+</div>`;
+    $("#menu_bd").html(html);
+  },
+  initEvent: function () {
+
+  }
+}

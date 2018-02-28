@@ -1,0 +1,357 @@
+@charset "UTF-8";
+#znzsPage {
+  width: 100%;
+  z-index: 99999;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-origin: 0 0; }
+  #znzsPage .topPanel {
+    overflow: hidden;
+    position: absolute;
+    padding-top: 10px;
+    color: #fbffff;
+    width: 1843px;
+    height: 40px;
+    background-color: #1a2227;
+    top: 4px;
+    left: 27px;
+    /*清除ie的默认选择框样式清除，隐藏下拉箭头*/ }
+    #znzsPage .topPanel .currentDate {
+      margin-left: 13px;
+      width: 148px;
+      border: 0;
+      background: #1a2227; }
+    #znzsPage .topPanel select {
+      /*Chrome和Firefox里面的边框是不一样的，所以复写了一下*/
+      border: none;
+      /*很关键：将默认的select选择框样式清除*/
+      appearance: none;
+      -moz-appearance: none;
+      -webkit-appearance: none;
+      /*为下拉小箭头留出一点位置，避免被文字覆盖*/
+      padding-right: 14px; }
+    #znzsPage .topPanel select::-ms-expand {
+      display: none; }
+    #znzsPage .topPanel select {
+      margin-right: 20px; }
+      #znzsPage .topPanel select:nth-of-type(1) {
+        background: url("../imgs/triangle.jpg") no-repeat 50px 8px;
+        background-color: rgba(26, 34, 39, 0.95); }
+      #znzsPage .topPanel select:nth-of-type(2) {
+        background: url("../imgs/triangle.jpg") no-repeat 33px 8px;
+        background-color: rgba(26, 34, 39, 0.95); }
+    #znzsPage .topPanel .playGrid {
+      cursor: pointer; }
+    #znzsPage .topPanel .progress {
+      width: 1420px;
+      position: absolute;
+      right: 70px;
+      top: 19px;
+      height: 3px; }
+      #znzsPage .topPanel .progress .progress-bar {
+        height: 3px; }
+    #znzsPage .topPanel .progressRuling {
+      width: 1560px;
+      position: absolute;
+      right: -70px;
+      top: 25px;
+      display: flex;
+      justify-content: flex-end; }
+      #znzsPage .topPanel .progressRuling span {
+        position: relative;
+        flex: 1;
+        font-size: 12px; }
+        #znzsPage .topPanel .progressRuling span i {
+          width: 5px;
+          height: 5px;
+          border-radius: 5px;
+          position: absolute;
+          background: red;
+          top: -7px; }
+        #znzsPage .topPanel .progressRuling span b {
+          font-weight: normal;
+          position: absolute;
+          left: -28px; }
+  #znzsPage .sunMsg {
+    width: 480px;
+    height: 196px;
+    background-color: rgba(26, 34, 39, 0.95);
+    position: absolute;
+    left: 27px;
+    top: 52px; }
+    #znzsPage .sunMsg .reason {
+      margin: 16px 44px 0 34px;
+      float: left; }
+      #znzsPage .sunMsg .reason .date {
+        color: #fbffff;
+        font-size: 15px;
+        text-align: center;
+        margin-top: 10px; }
+    #znzsPage .sunMsg .sunRun {
+      margin-top: 16px; }
+      #znzsPage .sunMsg .sunRun > p {
+        color: #3ac7ff;
+        font-size: 16px;
+        margin-bottom: 20px; }
+      #znzsPage .sunMsg .sunRun > div {
+        margin-top: 10px; }
+      #znzsPage .sunMsg .sunRun .iconfont {
+        width: 40px;
+        height: 40px;
+        font-size: 40px;
+        color: #2fc7f9; }
+      #znzsPage .sunMsg .sunRun span {
+        color: #fbffff;
+        font-size: 14px;
+        position: relative;
+        top: -8px; }
+  #znzsPage .actualWeather {
+    width: 480px;
+    height: 362px;
+    position: absolute;
+    background-color: rgba(26, 34, 39, 0.95);
+    top: 255px;
+    left: 27px; }
+    #znzsPage .actualWeather .weatherInfo {
+      height: 95%;
+      min-height: 292px;
+      margin: 2%;
+      padding: 2%; }
+      #znzsPage .actualWeather .weatherInfo .location {
+        color: #C69C6C; }
+      #znzsPage .actualWeather .weatherInfo .head {
+        display: flex;
+        justify-content: space-between; }
+        #znzsPage .actualWeather .weatherInfo .head .dataFrom {
+          color: #C69C6C;
+          text-align: center;
+          line-height: 32px; }
+      #znzsPage .actualWeather .weatherInfo .live {
+        display: flex;
+        height: 130px;
+        justify-content: space-between;
+        margin-bottom: 19px; }
+        #znzsPage .actualWeather .weatherInfo .live .curWeather {
+          width: 48%;
+          border: 1px solid #797979;
+          background-color: #1d282e; }
+          #znzsPage .actualWeather .weatherInfo .live .curWeather .live_temp {
+            color: #C69C6C;
+            height: 60%;
+            text-align: center; }
+            #znzsPage .actualWeather .weatherInfo .live .curWeather .live_temp i {
+              font-size: 3rem; }
+            #znzsPage .actualWeather .weatherInfo .live .curWeather .live_temp span {
+              font-size: 2rem; }
+          #znzsPage .actualWeather .weatherInfo .live .curWeather .liveOther {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            padding: 1%;
+            color: gainsboro; }
+            #znzsPage .actualWeather .weatherInfo .live .curWeather .liveOther div {
+              width: 50%; }
+              #znzsPage .actualWeather .weatherInfo .live .curWeather .liveOther div span {
+                font-size: 0.8rem; }
+        #znzsPage .actualWeather .weatherInfo .live .dayAndNight {
+          width: 23%;
+          border: 1px solid #797979;
+          background-color: #1d282e;
+          padding: 1px; }
+          #znzsPage .actualWeather .weatherInfo .live .dayAndNight div {
+            text-align: center; }
+          #znzsPage .actualWeather .weatherInfo .live .dayAndNight .p16 {
+            height: 16%;
+            font-size: 0.9rem; }
+          #znzsPage .actualWeather .weatherInfo .live .dayAndNight .p36 {
+            height: 36%; }
+          #znzsPage .actualWeather .weatherInfo .live .dayAndNight i {
+            font-size: 2.5rem;
+            color: #f8931d; }
+      #znzsPage .actualWeather .weatherInfo .cur_live {
+        height: 130px; }
+        #znzsPage .actualWeather .weatherInfo .cur_live .normal_row {
+          display: flex;
+          justify-content: space-between;
+          height: 15%; }
+          #znzsPage .actualWeather .weatherInfo .cur_live .normal_row span {
+            text-align: center;
+            font-size: 0.9rem; }
+        #znzsPage .actualWeather .weatherInfo .cur_live .live_chart {
+          height: 40%;
+          background-color: red; }
+  #znzsPage .todayLiveNum {
+    width: 480px;
+    height: 265px;
+    position: absolute;
+    background: rgba(26, 34, 39, 0.95);
+    top: 624px;
+    left: 27px; }
+    #znzsPage .todayLiveNum > span {
+      margin-left: 21px;
+      margin-top: 9px;
+      font-size: 14px;
+      color: #38ccff;
+      float: left; }
+    #znzsPage .todayLiveNum .liveNumInfo {
+      float: left; }
+      #znzsPage .todayLiveNum .liveNumInfo li {
+        width: 150px;
+        height: 67px;
+        float: left;
+        margin: 8px 0 0 8px;
+        background: url("../imgs/znzs/穿衣指数.png") no-repeat; }
+        #znzsPage .todayLiveNum .liveNumInfo li span {
+          float: left;
+          margin-top: 18px;
+          font-size: 24px;
+          margin-left: 82px; }
+        #znzsPage .todayLiveNum .liveNumInfo li:nth-of-type(1) {
+          background: url("../imgs/znzs/穿衣指数.png") no-repeat;
+          background-size: cover; }
+        #znzsPage .todayLiveNum .liveNumInfo li:nth-of-type(2) {
+          background: url("../imgs/znzs/旅游指数.png") no-repeat;
+          background-size: cover; }
+        #znzsPage .todayLiveNum .liveNumInfo li:nth-of-type(3) {
+          background: url("../imgs/znzs/运动指数.png") no-repeat;
+          background-size: cover; }
+        #znzsPage .todayLiveNum .liveNumInfo li:nth-of-type(4) {
+          background: url("../imgs/znzs/洗车指数.png") no-repeat;
+          background-size: cover; }
+        #znzsPage .todayLiveNum .liveNumInfo li:nth-of-type(5) {
+          background: url("../imgs/znzs/化妆指数.png") no-repeat;
+          background-size: cover; }
+        #znzsPage .todayLiveNum .liveNumInfo li:nth-of-type(6) {
+          background: url("../imgs/znzs/戴帽指数.png") no-repeat;
+          background-size: cover; }
+        #znzsPage .todayLiveNum .liveNumInfo li:nth-of-type(7) {
+          background: url("../imgs/znzs/紫外线指数.png") no-repeat;
+          background-size: cover; }
+        #znzsPage .todayLiveNum .liveNumInfo li:nth-of-type(8) {
+          background: url("../imgs/znzs/空气污染指数.png") no-repeat;
+          background-size: cover; }
+        #znzsPage .todayLiveNum .liveNumInfo li:nth-of-type(9) {
+          background: url("../imgs/znzs/过敏指数.png") no-repeat;
+          background-size: cover; }
+  #znzsPage .forewarning {
+    width: 566px;
+    height: 208px;
+    position: absolute;
+    background: rgba(26, 34, 39, 0.95);
+    top: 46px;
+    right: 50px;
+    padding-top: 14px; }
+    #znzsPage .forewarning .tit {
+      font-size: 22px;
+      color: #27d1ff;
+      margin-left: 11px; }
+    #znzsPage .forewarning .warningTime {
+      float: right;
+      color: #33caff;
+      margin-right: 28px;
+      margin-top: 8px; }
+    #znzsPage .forewarning .forewarningInfo {
+      width: 551px;
+      border: 1px solid #7e8188;
+      overflow: hidden;
+      margin-left: 8px;
+      margin-top: 7px; }
+      #znzsPage .forewarning .forewarningInfo li {
+        width: 100%;
+        float: left; }
+        #znzsPage .forewarning .forewarningInfo li:nth-last-of-type(1) {
+          margin-bottom: 20px; }
+        #znzsPage .forewarning .forewarningInfo li img {
+          margin: 14px 20px 0 14px;
+          width: 31px;
+          height: 26px;
+          float: left; }
+        #znzsPage .forewarning .forewarningInfo li span {
+          float: left;
+          margin-top: 16px; }
+          #znzsPage .forewarning .forewarningInfo li span:nth-of-type(2) {
+            float: right;
+            margin-right: 80px; }
+  #znzsPage .detailForecast {
+    width: 566px;
+    height: 378px;
+    background: rgba(26, 34, 39, 0.95);
+    position: absolute;
+    top: 259px;
+    right: 50px; }
+    #znzsPage .detailForecast p:nth-of-type(1) {
+      font-size: 22px;
+      color: #27d1ff;
+      margin-left: 11px;
+      float: left; }
+    #znzsPage .detailForecast .forecastEcharts {
+      width: 565px;
+      height: 150px;
+      float: left; }
+    #znzsPage .detailForecast .preTable, #znzsPage .detailForecast .nextTable {
+      float: left;
+      margin-top: 68px;
+      font-size: 30px; }
+    #znzsPage .detailForecast .forecast_tb {
+      width: 500px;
+      float: left; }
+      #znzsPage .detailForecast .forecast_tb tr td {
+        height: 22px;
+        text-align: center;
+        border: 1px solid #5f686d;
+        font-size: 8px; }
+      #znzsPage .detailForecast .forecast_tb tr .td1st {
+        width: 100px; }
+    #znzsPage .detailForecast .forecast_text {
+      float: left;
+      font-size: 12px;
+      margin-left: 8px;
+      margin-top: 14px;
+      padding-top: 8px; }
+      #znzsPage .detailForecast .forecast_text:nth-of-type(2) {
+        border-top: 1px solid #FFF; }
+  #znzsPage .riskForecast {
+    width: 566px;
+    height: 247px;
+    background: rgba(26, 34, 39, 0.95);
+    position: absolute;
+    right: 50px;
+    top: 642px; }
+    #znzsPage .riskForecast img {
+      border: 2px solid #444b51;
+      margin: 6px 0 0 6px;
+      width: 557px; }
+  #znzsPage .znzsPanelCrl {
+    width: 50px;
+    height: 850px;
+    background: #0f0f0f;
+    position: absolute;
+    top: 10px;
+    right: 0px; }
+    #znzsPage .znzsPanelCrl li {
+      float: left;
+      width: 50px;
+      height: 50px; }
+      #znzsPage .znzsPanelCrl li.gridEleList {
+        height: 550px;
+        border-top: 1px solid #b5b5b5;
+        border-bottom: 1px solid #b5b5b5;
+        position: relative;
+        overflow: hidden; }
+        #znzsPage .znzsPanelCrl li.gridEleList ul {
+          position: absolute;
+          top: 0; }
+      #znzsPage .znzsPanelCrl li i {
+        color: #b5b5b5;
+        font-size: 22px;
+        text-align: center;
+        width: 50px;
+        height: 50px;
+        line-height: 50px;
+        float: left; }
+        #znzsPage .znzsPanelCrl li i:hover, #znzsPage .znzsPanelCrl li i.active {
+          color: #31d0ff;
+          background: #1d282e; }
+
+/*# sourceMappingURL=znzs_page.css.map */

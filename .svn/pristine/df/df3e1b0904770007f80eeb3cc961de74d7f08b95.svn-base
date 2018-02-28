@@ -1,0 +1,328 @@
+﻿/*
+* 主程序
+* by zouwei, 2015-05-10
+* */
+var GDYB = {};
+//page类，负责页面公用js逻辑
+GDYB.Page = {
+    curPage:null,
+    //绑定页面事件
+    bindPageEvent:function(){
+        var t = this;
+        //给导航按钮绑定事件
+//        //实况资料按钮事件
+//        $("#skzl_btn").click(function(){
+//            if(!$(this).hasClass("active")){
+//                $(".navigation").find("button.active").removeClass("active");
+//                $(this).addClass("active");
+//                t.curPage&&t.curPage.destroy();
+//                t.curPage = GDYB.SKZLPage;
+//                GDYB.SKZLPage.active();
+//            }
+//        });
+//        //卫星雷达按钮事件
+//        $("#wxld_btn").click(function(){
+//            if(!$(this).hasClass("active")){
+//                $(".navigation").find("button.active").removeClass("active");
+//                $(this).addClass("active");
+//                t.curPage&&t.curPage.destroy();
+//                t.curPage = GDYB.WXLDPage;
+//                GDYB.WXLDPage.active();
+//            }
+//        });
+//        //数值模式按钮事件
+//        $("#szms_btn").click(function(){
+//            if(!$(this).hasClass("active")){
+//                $(".navigation").find("button.active").removeClass("active");
+//                $(this).addClass("active");
+//                t.curPage&&t.curPage.destroy();
+//                t.curPage = GDYB.SZMSPage;
+//                GDYB.SZMSPage.active();
+//            }
+//        });
+
+        //数据浏览按钮事件
+        $("#sjll_btn").click(function(){
+            if(!$(this).find("button").hasClass("active")){
+                location.search = "?sjll";
+                return;
+            }
+        });
+
+        //强对流按钮事件
+        $("#qdl_btn").click(function(){
+            if(!$(this).find("button").hasClass("active")){
+                location.search = "?qdl";
+                return;
+            }
+        });
+
+        //格点预报按钮事件
+        $("#gdyb_btn").click(function(){
+            if(!$(this).find("button").hasClass("active")){
+                location.search = "gdyb";
+                return;
+            }
+        });
+        //站点预报按钮事件
+        $("#cpzs_btn").click(function(){
+            if(!$(this).find("button").hasClass("active")){
+                location.search = "zdyb";
+                return;
+            }
+        });
+        //系统管理按钮事件
+        $("#xtgl_btn").click(function(){
+            if(!$(this).find("button").hasClass("active")){
+                location.search = "xtgl";
+                return;
+            }
+        });
+        //给左侧菜单按钮绑定事件
+        $("#displayBtn").click(function(){
+            $("#menu").css("left","").css("top","");
+            if($(this).attr("flag")=="show"){
+                $(this).attr("flag","hide").css("border-radius","5px 0px 0px 5px");
+                $("#menu").removeClass("menu_normal").addClass("menu_minimize").css("right","0px");
+                $("#menu_bd").css("display","none");
+                $(".menu_changeDiv").css("display","none");
+
+            }
+            else{
+                $(this).attr("flag","show").css("border-radius","");
+                $("#menu").removeClass("menu_minimize").addClass("menu_normal").css("right","");
+                $("#menu_bd").css("display","");
+                $(".menu_changeDiv").css("display","");
+
+            }
+        });
+
+        $("#displayShowType").click(function(){
+            $("#menu_showType").css("left","").css("top","");
+            if($(this).attr("flag")=="show"){
+                $(this).attr("flag","hide").css("border-radius","5px 0px 0px 5px");
+                $("#menu_showType").removeClass("menu_normal").addClass("menu_minimize").css("right","0px");
+                $("#menu_showType_bd").css("display","none");
+
+            }
+            else{
+                $(this).attr("flag","show").css("border-radius","");
+                $("#menu_showType").removeClass("menu_minimize").addClass("menu_normal").css("right","");
+                $("#menu_showType_bd").css("display","");
+
+            }
+        });
+    },
+    //入口方法
+    main:function(){
+    	var t = this;
+        this.bindPageEvent();
+
+        var userName = $.cookie("userName");
+        var password = $.cookie("password");
+        if (userName != null && password != null) {
+            GDYB.GridProductClass.currentUserName = userName;
+            if(typeof($("#span_user")[0]) != "undefined" && typeof($("#a_exit")[0]) != "undefined"){
+                $("#span_user")[0].innerHTML = $.cookie("showName");
+                $("#span_user").css("display","");
+                $("#a_exit").css("display","none");
+                $("#a_signout").css("display","block");
+            }
+        }
+        else{
+            if(typeof($("#a_exit")[0]) != "undefined"){
+                $("#a_exit").css("display","block");
+                $("#a_signout").css("display","none");
+            }
+        }
+        $("#menu").css("bottom","20px").css("width","340px");
+        $("#menu_bd").css("height","100%");
+
+        if(location.search == "?qdl"){
+            $(".navigation").find("button.active").removeClass("active");
+            $("#qdl_btn").find("button").addClass("active");
+            t.curPage&&t.curPage.destroy();
+            t.curPage = GDYB.QDLSKPage;
+            GDYB.QDLSKPage.active();
+            $(".logo").find("span").html("甘肃省省-市县强对流监测预警系统");
+            $(".navigation").find("div").css("display","none");
+
+            $("#nav_menu").html("<li id='qdl_sk' class='active'>"
+                    +"        <a data-index='3'>"
+                    +"                <span>综合监测</span>"
+                    +"            </a></li>"
+                    +"<li id='qdl_qsyb'>"
+                    +"        <a data-index='3'>"
+                    +"                <span>灾害预警</span>"
+                    +"                <div id='messageNum_qsyb' class='messageNum' style='margin: -60px 0px 0px 36px;'>2</div>"
+                    +"            </a></li>"
+                    +"<li id='qdl_ljyb'>"
+                    +"        <a data-index='3'>"
+                    +"                <span>临近预警</span>"
+                    +"                <div id='messageNum_ljyb' class='messageNum' style='margin: -60px 0px 0px 36px;'>3</div>"
+                    +"            </a></li>"
+                    +"<li id='qdl_yjxh'>"
+                    +"        <a data-index='3'>"
+                    +"                <span>预警监控</span>"
+                    +"            </a></li>"
+                    +"<li id='qdl_qxfx'>"
+                    +"        <a data-index='3'>"
+                    +"                <span>气象风险</span>"
+                    +"            </a></li>"
+                    +"<li id='qdl_gdjy'>"
+                    +"        <a data-index='3'>"
+                    +"                <span>检验评估</span>"
+                    +"            </a></li>"
+                    +"<li id='qdl_gnmx' style='display:none;'>"
+                    +"        <a data-index='3'>"
+                    +"                <span>概念模型</span>"
+                    +"            </a></li>"
+                    +"<li id='qdl_cssz'>"
+                    +"        <a data-index='3'>"
+                    +"                <span>参数配置</span>"
+                    +"            </a></li>"
+            );
+            GDYB.SideWrapper.setActive("qdl_sk");
+
+            $("#gridws").remove();
+            showMessageNum(["messageNum_qdl"]);
+        }
+        else if(location.search == "?gdyb"){
+            $(".navigation").find("button.active").removeClass("active");
+            $("#gdyb_btn").find("button").addClass("active");
+            t.curPage&&t.curPage.destroy();
+            t.curPage = GDYB.GDYBPage;
+            GDYB.GDYBPage.active();
+            $("#sideWrapper").css("display","none");
+
+            GDYB.SideWrapper.setActive("");
+            $("#menu").css("bottom","").css("width","");
+            $("#menu_bd").css("height","");
+            $("#menu_timePanel").css("display","");
+            $("#menu_showType").css("display","");
+
+            $("#gridws").remove();
+        }
+        else if(location.search == "?zdyb"){
+            $(".navigation").find("button.active").removeClass("active");
+            $("#cpzs_btn").find("button").addClass("active");
+            t.curPage&&t.curPage.destroy();
+            $("#nav_menu").html("<li id='zdyb' class='active'>"
+                +"<a data-index='1'>"
+                +"<span>站点预报</span>"
+                +"</a></li>"
+                +"<li id='gdjy' class=''>"
+                +"<a data-index='1'>"
+                +"<span>格点检验</span>"
+                +"</a></li>");
+            t.curPage = GDYB.ZDYBPage;
+            GDYB.ZDYBPage.active();
+            GDYB.SideWrapper.setActive("zdyb");
+            $("#gridws").remove();
+        }
+        else if(location.search == "?xtgl"){
+            $(".navigation").find("button.active").removeClass("active");
+            $("#xtgl_btn").find("button").addClass("active");
+            t.curPage&&t.curPage.destroy();
+            t.curPage = GDYB.ZDYBSZPageClass;
+            GDYB.ZDYBSZPageClass.active();
+            $("#nav_menu").html("<li id='zdybsz' class='active'>"
+                +"<a data-index='1'>"
+                +"        <span>站点预报</span>"
+                +"    </a></li>"
+                +"<li id='zddr'>"
+                +"<a data-index='1'>"
+                +"        <span>站点管理</span>"
+                +"    </a></li>");
+            GDYB.SideWrapper.setActive("qygl");
+
+            $("#gridws").remove();
+        }
+        else if(location.pathname.indexOf("display") != -1){
+            this.curPage = GDYB.DisplayPage;
+            GDYB.DisplayPage.active();
+        }
+        else{
+            this.curPage = GDYB.SZMSPage;
+            GDYB.SZMSPage.active();
+            GDYB.SideWrapper.setActive("menu_szms");
+        }
+        GDYB.SideWrapper.register();
+
+
+        if(GDYB.GridProductClass.currentUserDepart == null){
+            GDYB.GridProductClass.init();
+            setTimeout(function(){
+                getNewCalamityGridInfos();
+                pollingNewCalamityGridInfos();
+            },1000*1);
+        }
+    }
+};
+
+GDYB.SKZLPage = new SKZLPageClass();
+GDYB.WXLDPage = new WXLDPageClass();
+GDYB.SZMSPage = new SZMSPageClass();
+GDYB.GDYBPage = new GDYBPageClass();
+GDYB.ZDYBPage = new ZDYBPageClass();
+GDYB.XTGLPage = new XTGLPageClass();
+GDYB.ZDYBSZPageClass = new ZDYBSZPageClass();
+GDYB.ZDGLPage = new ZDGLPageClass();
+GDYB.GDZSPage = new GDZSPageClass();
+GDYB.QDLSKPage = new QDLSKPageClass();
+GDYB.QDLLDPage = new QDLLDPageClass();
+GDYB.QDLYTPage = new QDLYTPageClass();
+GDYB.ZHJCSKPage = new ZHJCSKPageClass();
+GDYB.ZHJCLDPage = new ZHJCLDPageClass();
+GDYB.ZHJCYTPage = new ZHJCYTPageClass();
+GDYB.QDLRHJCPage = new QDLRHJCPageClass();
+GDYB.QDLLJYBPage = new QDLLJYBPageClass();
+GDYB.QDLQSYBPage = new QDLQSYBPageClass();
+GDYB.QDLQXFXPage = new QDLQXFXPageClass();
+GDYB.QDLGNMXPage = new QDLGNMXPageClass();
+GDYB.DisplayPage = new DisplayPageClass();
+GDYB.GDJYPage = new GDJYPageClass();
+GDYB.YJXHPage = new YJXHPageClass();
+
+GDYB.Chat = new Chat(dealWithMessage);
+GDYB.Chat.initialize();
+
+GDYB.GridProductClass = new GridProductClass();
+GDYB.RadarDataClass = new RadarDataClass();
+GDYB.AWXDataClass = new AWXDataClass();
+GDYB.MicapsDataClass = new MicapsDataClass();
+GDYB.TextDataClass = new TextDataClass();
+
+GDYB.ChartClass = new ChartClass();
+GDYB.dMapTools = new dMapTools();
+
+GDYB.SideWrapper = new SideWrapper();
+
+GDYB.Legend = new Legend("div_legend_items");
+GDYB.Legend1 = new Legend("div_legend_items1");
+GDYB.Legend2 = new Legend("div_legend_items2");
+GDYB.Legend3 = new Legend("div_legend_items3");
+
+GDYB.CorrectAction = new CorrectAction();
+GDYB.MagicTool = new MagicTool();
+GDYB.FilterTool = new FilterTool();
+
+GDYB.Message = {nowcast:0,signal:0,pw:0};
+
+function alertModal(message){
+    $("#div_alert_content").html(message);
+    $("#div_alert").modal();
+}
+function confirmModal(message,callback,callback1){
+    $("#div_modal_confirm_content").html(message);
+    $("#div_modal_confirm").modal();
+    $("#div_modal_confirm").find("a").unbind();
+    $("#div_modal_confirm").find("a").click(function(){
+        if(typeof(this.id) != "undefined"){
+            if(this.id == "btn_ok"){callback&&callback();}
+            else if(this.id == "btn_canel"){callback1&&callback1();}
+            else{}
+        }
+    });
+}
+

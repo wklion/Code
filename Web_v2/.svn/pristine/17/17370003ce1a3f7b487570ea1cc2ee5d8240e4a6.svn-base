@@ -1,0 +1,78 @@
+﻿var GDYB = {
+  // 用户模块 FIXME demo
+  User: {
+    getName: function () {
+      return 'admin';
+    },
+    getDepart: function () {
+      return '62';
+    }
+  },
+  FeatureUtilityClass: new FeatureUtilityClass(),
+  Com: null,
+  mapUtil: null
+};
+GDYB.Page = {
+  curPage: null,
+  curModuleID: "home",
+  curModule: null, //当前模块
+  alertInfo: null,
+  initEvent: function () {
+    var t = this;
+    $(".nav-item").on("click", function () {
+      var $t = $(this);
+      var a = $t.find("a");
+      $t.addClass("active").siblings(".active").removeClass("active");
+      $(".brand .title").text(a.attr("title")).attr("href", a.attr("href"));
+      t.curModuleID = this.id;
+      t.main();
+
+    });
+  },
+  main: function () {
+    if (this.curModuleID === "home") {
+      var home = new Home();
+    } else if (this.curModuleID === "zhgc") {
+      GDYB.mapUtil = new MapUtil();
+      var zhjcmenu = new ZHJCMenuClass();
+      zhjcmenu.renderMenu();
+    } else if (this.curModuleID === "qdl") {
+      console.log("强对流预报!");
+      GDYB.mapUtil = new MapUtil();
+      var qdlPage = new QDLYBPageClass();
+      qdlPage.renderMenu();
+    } else if (this.curModuleID === "qxyj") {
+      console.log("气象预警!");
+      GDYB.mapUtil = new MapUtil();
+    } else if (this.curModuleID === "ybzz") {
+      GDYB.mapUtil = new MapUtil();
+      var ybzzPage = new YBZZPageClass();
+      ybzzPage.renderMenu();
+      ybzzPage.initEvent();
+      console.log("预报制作!");
+    } else if (this.curModuleID === "yjxh") {
+      GDYB.mapUtil = new MapUtil();
+      var YJXHPage = new YJXHPageClass();
+      YJXHPage.map = mapUtil.map;
+      YJXHPage.renderMenu();
+    } else if (this.curModuleID === "yqkb") {
+      console.log("雨情快报!");
+      var yqkbpage = new YQKBPageClass();
+      yqkbpage.renderMenu();
+
+    } else if (this.curModuleID === "jypg") {
+      console.log("检验评估!");
+    } else if (this.curModuleID === "znzs") {
+      console.log("智能展示!");
+      GDYB.mapUtil = new MapUtil();
+    } else if (this.curModuleID === "sjjk") {
+      var GMSMonitor = new GMSMonitorPageClass();
+      GMSMonitor.renderMenu();
+    }
+    GDYB.Page.alertInfo = new AlertInfo();
+    GDYB.Page.alertInfo.init();
+    GDYB.Com = new Common();
+  },
+
+
+}

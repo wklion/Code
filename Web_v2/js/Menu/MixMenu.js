@@ -1,0 +1,164 @@
+/**
+ * @author: wangkun
+ * @date:2017-12-17
+ * @description 融合监测菜单
+ */
+function MixMenu() {
+    this._init_();
+}
+MixMenu.prototype = {
+    constructor: MixMenu,
+    _init_: function () {
+        this.name = "融合监测菜单";
+    },
+    renderMenu:function () {
+      let html = `
+        <div id="rhjc_tab">
+          <div class="rhjc_df">
+              <button class="active">大风</button>
+              <img src="imgs/qdl/dafeng1.png" alt="" />
+              <span>17-25</span>
+              <img src="imgs/qdl/dafeng2.png" alt="" />
+              <span>25-30</span>
+              <img src="imgs/qdl/dafeng3.png" alt="" />
+              <span>&gt;30</span>
+            </div>
+            <div class="rhjc_dq">
+              <button class="active">短强</button>
+              <img src="imgs/qdl/duanqiang1.png" alt="" />
+              <span>20-30</span>
+              <img src="imgs/qdl/duanqiang2.png" alt="" />
+              <span>30-50</span>
+              <img src="imgs/qdl/duanqiang3.png" alt="" />
+              <span>&gt;50</span>
+            </div>
+            <div class="rhjc_yl">
+              <button class="active">雨量</button>
+              <img src="imgs/qdl/yuliang1.png" alt="" />
+              <span>0-10</span>
+              <img src="imgs/qdl/yuliang2.png" alt="" />
+              <span>10-25</span>
+              <img src="imgs/qdl/yuliang3.png" alt="" />
+              <span>25-50</span>
+              <img src="imgs/qdl/yuliang4.png" alt="" />
+              <span>&gt;50</span>
+            </div>
+            <div class="rhjc_bb">
+              <button class="active">冰雹</button>
+              <img src="imgs/bingbao.png" alt="" />
+              <button class="active">闪电</button>
+              <img src="imgs/shandian.png" alt="" />
+             
+            </div>
+          <div class="radar_option" id="rh_radar">
+            <button id="radar_mcr">35dbz回波</button>
+            <button id="radar_vil">液态含水量</button>
+            <button id="radar_titan">TITIAN</button>
+            <button id="radar_trec">TREC</button>
+            <button id="radar_mcs">MCS</button>
+          </div>
+           <div class="timeChoose">
+            <div>
+              <input class="timeRadio" type="radio"  checked="true" name="rhjcQueryRadio">
+              <label for="timeRadio ">实时</label>
+            </div>
+            <div>
+              <input class="hourRadio" type="radio" name="rhjcQueryRadio">
+              <label for="hourRadio">时段</label>
+              <div class='option_btn'>20min</div>
+              <div class='option_btn'>40min</div>
+              <div class='option_btn'>3H</div>
+              <div class='option_btn'>6H</div>
+            </div>
+            <div class="startTime">
+              <span>从:</span>
+              <input type="text" value="2017-12-08 10:00:00" />
+            </div>
+            <div class="endTime">
+              <span>到:</span>
+              <input type="text" value="2017-12-08 10:00:00" />
+            </div>
+          </div>
+
+          <div class="query_action">
+            <button class="option_btn">查询</button>
+            <button class="option_btn">动画</button>
+            <button class="option_btn">累加</button>
+            <select class="animationSelect">
+              <option>1</option>
+              <option>2</option>
+              <option>3</option>
+              <option>4</option>
+              <option>5</option>
+            </select>
+          </div>
+          <div class="timeListDiv">
+          </div>
+        </div>`;
+      $("#menu_bd").html(html);
+      var me = this;
+      initEvent();
+      function initEvent(){
+        $("#rhjc_tab button").on("click",function(){
+          var id = $(this)[0].id;
+          var name = $(this).text();
+          if(!$(this).hasClass("active")){
+            $(this).addClass("active");
+            if(id === "radar_mcr"){
+              me.getMCR35(id,name);
+            }
+          }
+          else{
+            $(this).removeClass("active");
+            var lmu = new LayerManagerUtil();
+            lmu.removeLayer(name);
+            GDYB.Legend.remove(name);
+          }
+        });
+      }
+    },
+    /**
+   * @author:wangkun
+   * @date:2017-12-17
+   * @modifyDate:
+   * @return:
+   * @description:获取35以上的回波
+   */
+    getMCR35:async function(id,name){
+      var me = this;
+      var com = new Common();
+      var result = await com.getRadarImgLastDate(id);
+      if(!result.isFind){
+        GDYB.Page.alertInfo.hide("没有该时段的数据!");
+        return;
+      }
+      me.displayMCR35(result.url,result.bounds);
+      GDYB.Legend.add(name,heatMap_RadarStyles);
+    },
+    /**
+   * @author:wangkun
+   * @date:2017-12-17
+   * @modifyDate:
+   * @return:
+   * @description:获取雷达图片产品
+   */
+  displayMCR35: function (url, bounds) {
+    var me = this;
+    var lmu = new LayerManagerUtil();
+    var layer = null;
+    let layername = "回波";
+    var layer = lmu.getLayer(layername);
+    if (layer == null) {
+      layer = lmu.addLayer(layername, "image", url, bounds);
+    }
+    else {
+      layer.url = url;
+      layer.name = layername;
+      layer.extent = bounds;
+      layer.maxExtent = bounds;
+      layer.orgImageData = null;
+      layer.memoryImg = null;
+      layer.redraw();
+    }
+  },
+}

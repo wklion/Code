@@ -1,0 +1,28 @@
+@import "color";
+@import "mixins";
+@import "global";
+@import "banner";
+@import "layout";
+@import "pages";
+
+.tempIcon{
+  @include iconfont("\e613");
+}
+.humidityIcon{
+  @include iconfont("\e615");
+}
+.windIcon{
+  @include iconfont("\e610");
+}
+.airIcon{
+  @include iconfont("\e611");
+}
+.carIcon{
+  @include iconfont("\e619");
+}
+.dayPhenomena{
+  @include iconfont("\e60d");
+}
+.nightPhenomena{
+  @include iconfont("\e616");
+}

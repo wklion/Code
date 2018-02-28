@@ -1,0 +1,17 @@
+/**
+ * @author: wangkun
+ * @date:2017-12-07
+ * @description 首页
+ */
+function Home() {
+    this._init_();
+}
+Home.prototype = {
+    constructor: Home,
+    _init_: function () {
+        this.name = "首页";
+        $("#content").html(`
+            <div class="home"></div>
+        `);
+    },
+}

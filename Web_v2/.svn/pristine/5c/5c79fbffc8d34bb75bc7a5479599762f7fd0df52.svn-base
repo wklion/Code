@@ -1,0 +1,136 @@
+/**
+ * @author: wangkun
+ * @date:2017-12-17
+ * @description 卫星菜单
+ */
+function SatMenu() {
+  this._init_();
+}
+
+SatMenu.prototype = {
+  constructor: SatMenu,
+  _init_: function () {
+    this.name = "卫星菜单";
+  },
+  renderMenu: function () {
+    let html = `
+       <div id="yuntu_tab">
+          <div class="satelliteDiv">
+            <div class="weixing">
+              <span>卫星</span>
+              <div id="sat_name">
+                <button id="FY2E">风云2E</button>
+                <button id='Himawari-8'>葵花</button>
+              </div>
+              
+            </div>
+            <div class="tongdao">
+              <span>通道</span>
+              <div id="sat_channel">
+                <button id='ir1'>红外</button>
+                <button id='ir3'>水汽</button>
+                <button id='vis'>可见光</button>
+                <button id='mcs'>MCS</button>
+              </div>
+            </div>
+            <div class="chanpin">
+              <span>产品</span>
+              <div id="sat_product">
+                <button>CLC</button>
+                <button>TPW</button>
+                <button>PRE_1</button>
+                <button>PRE_3</button>
+                <button>PRE_6</button>
+                <button>PRE_24</button>
+                <button>UTH</button>
+                <button>TBB</button>
+              </div>
+              
+            </div>
+          </div>
+          <div class="timeChoose ">
+            <div>
+              <input class="timeRadio" type="radio" checked="true" name="rhjcQueryRadio">
+              <label for="timeRadio ">实时</label>
+            </div>
+            <div>
+              <input class="hourRadio" type="radio" name="rhjcQueryRadio">
+              <label for="hourRadio ">时段</label>
+              <div class='option_btn'>20min</div>
+              <div class='option_btn'>40min</div>
+              <div class='option_btn'>3H</div>
+              <div class='option_btn'>6H</div>
+            </div>
+            <div class="startTime">
+              <span>从:</span>
+              <input type="text" value="2017-12-08 10:00:00" />
+            </div>
+            <div class="endTime">
+              <span>到:</span>
+              <input type="text" value="2017-12-08 10:00:00" />
+            </div>
+          </div>
+
+          <div class="query_action">
+            <button class="option_btn">查询</button>
+            <button class="option_btn">动画</button>
+            <select class="animationSelect">
+              <option>1</option>
+              <option>2</option>
+              <option>3</option>
+              <option>4</option>
+              <option>5</option>
+            </select>
+          </div>
+          <div class="timeListDiv">
+          </div>
+        </div>
+      `
+    $("#menu_bd").html(html);
+
+  },
+  /**
+   * @author:wangkun
+   * @date:2017-12-17
+   * @param:
+   * @return:
+   * @description:注册事件
+   */
+  initEvent: function () {
+    $("#sat_name button").on("click", function () {
+      var name = $(this).text();
+    });
+    $("#sat_channel button").on("click", function () {
+      console.log("卫星通道!");
+    });
+
+    $("#sat_name button").on("click", function () {
+      $(this).siblings().removeClass("active").end().addClass("active");
+      if (!$("#sat_channel button").is(".active")) {
+        $("#sat_channel button").first().addClass("active");
+      }
+      $("#sat_product button").removeClass("active");
+    });
+
+
+    $("#sat_channel button").on("click", function () {
+      $(this).siblings().removeClass("active").end().addClass("active");
+      if (!$("#sat_name button").is(".active")) {
+        $("#sat_name button").first().addClass("active");
+      }
+      $("#sat_product button").removeClass("active");
+    });
+
+
+    $("#sat_product button").on("click", function () {
+      $(this).siblings().removeClass("active").end().addClass("active");
+      if ($("#sat_name button").is(".active")) {
+        $("#sat_name button").removeClass("active");
+      }
+      if ($("#sat_channel button").is(".active")) {
+        $("#sat_channel button").removeClass("active");
+      }
+    })
+
+  }
+}

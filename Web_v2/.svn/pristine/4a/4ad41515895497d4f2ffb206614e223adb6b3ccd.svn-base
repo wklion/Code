@@ -1,0 +1,430 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  -webkit-text-size-adjust: none;
+  transform-origin: 0 0 0;
+}
+
+a {
+  text-decoration: none;
+  color: #fff;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+button {
+  border: 0;
+  outline: 0;
+}
+
+
+/*--------------头部----------------------*/
+
+#header {
+  width: 1920px;
+  height: 80px;
+  background: #1c272d;
+  overflow: hidden;
+  box-sizing: border-box;
+  padding: 15px 0 0 28px;
+}
+
+.logo {
+  width: 50px;
+  height: 50px;
+  /*margin: 15px 0 0 28px;
+     */
+  float: left;
+}
+
+.logo img {
+  width: 50px;
+  height: 50px;
+}
+
+.header_title {
+  /*overflow: hidden;
+     */
+  float: left;
+}
+
+.header_title_con {
+  float: left;
+  margin-left: 20px;
+}
+
+.header_title_con p {
+  color: #fff;
+  font-size: 24px;
+}
+
+.header_title_con span {
+  color: #30ccff;
+  font-size: 14px;
+  display: block;
+  /*transform: scale(0.88) translateX(-32px);
+     */
+}
+
+.header_title>p:nth-of-type(1) {
+  float: left;
+  font-size: 30px;
+  color: #b4b3b1;
+  margin-top: 5px;
+  margin-left: 30px;
+  /*transform: translateX(-35px);
+     */
+}
+
+.nav_icon {
+  float: left;
+  margin-left: 290px;
+  margin-top: 7px;
+}
+
+.nav_icon i {
+  float: left;
+  font-size: 35px;
+  color: #b3b1b2;
+  display: block;
+  margin-right: 50px;
+  cursor: pointer;
+}
+
+.nav_icon i:hover {
+  color: #32c9ff;
+}
+
+.login {
+  float: left;
+  color: #fff;
+  margin-top: 8px;
+}
+
+.login a {
+  font-size: 24px;
+  color: #fff;
+  float: left;
+}
+
+.login a i {
+  font-size: 33px;
+  color: #fff;
+  float: left;
+  margin-right: 8px;
+}
+
+
+/*---------------内容部分---------------------*/
+
+#main {
+  width: 1920px;
+  height: 1000px;
+  background: #333333;
+  overflow: hidden;
+}
+
+
+/*------------------主体结构部分--------------------*/
+
+#main_left {
+  width: 425px;
+  height: 969px;
+  background: #1c272d;
+  //margin: 15px 0 0 12px;
+  box-sizing: border-box;
+  float: left;
+  padding: 12px 0 0 12px;
+}
+
+#main_middle {
+  width: 960px;
+  height: 969px;
+  background: #1c272d;
+  //margin: 15px 0 0 24px;
+  box-sizing: border-box;
+  float: left;
+}
+
+#main_right {
+  box-sizing: border-box;
+  width: 425px;
+  height: 969px;
+  background: #1c272d;
+  //margin: 15px 0 0 26px;
+  float: left;
+}
+
+
+/*-------------左侧部分样式---------------*/
+
+.today_work {
+  width: 401px;
+  height: 415px;
+  /*background: greenyellow;
+     */
+  margin-bottom: 16px;
+}
+
+.today_work>p {
+  font-size: 22px;
+  color: #33caff;
+  text-indent: 7px;
+  margin-bottom: 14px;
+}
+
+.today_work ul {
+  width: 399px;
+  height: 376px;
+  /*background: deepskyblue;
+     */
+  border: 1px solid #808080;
+  border-top: 2px solid #515556;
+}
+
+.work_title {
+  font-size: 17px;
+  margin-top: 13px;
+  margin-bottom: 8px;
+  color: #bcc0c3;
+}
+
+#otday_work_list ul {
+  //padding: ;
+}
+
+#today_work_list ul li {
+  height: 74px;
+  box-sizing: border-box;
+  overflow: hidden;
+  margin: 0 15px;
+  border-bottom: 1px solid #4c5457;
+}
+
+#today_work_list ul li:nth-last-of-type(1) {
+  border: 0;
+}
+
+#today_work_list ul li span {
+  margin-right: 18px;
+  font-size: 15px;
+  color: #9ea2a3;
+}
+
+#today_work_list ul li span i {
+  color: #30caff;
+  font-size: 20px;
+}
+
+#today_work_list ul li .isComplete i {
+  color: #e5464a;
+  margin-top: 10px;
+}
+
+.history_msg {
+  width: 401px;
+  height: 506px;
+  box-sizing: border-box;
+  /*background: deeppink;
+     */
+  border: 1px solid #808080;
+  border-top: 2px solid #515556;
+  padding: 0 27px 0 17px;
+}
+
+.history_msg dl dt {
+  color: #2fcbfe;
+  font-size: 17px;
+  font-weight: bold;
+  margin-top: 16px;
+  margin-bottom: 22px;
+}
+
+.history_msg dl dd {
+  margin-bottom: 19px;
+}
+
+.history_msg dl dd span {
+  color: #fff;
+  font-size: 16px;
+}
+
+.history_msg dl dd a {
+  color: #2ca0c9;
+  text-decoration: underline;
+  float: right;
+}
+
+
+/*-----------------------页面中间部分------------------*/
+
+#main_middle {
+  padding: 56px 48px 71px 55px;
+}
+
+.summarize_content {
+  width: 884px;
+  height: 850px;
+  /*background: deepskyblue;
+     */
+  border: 2px solid #4f5457;
+  border-top: 1px solid #808080;
+}
+
+.submit_exportDoc {
+  width: 888px;
+  height: 63px;
+  /*background: yellowgreen;
+     */
+}
+
+.summarize_content {
+  box-sizing: border-box;
+  padding: 17px 83px 0 77px;
+}
+
+.sumarize_header>p:nth-of-type(1) {
+  color: #00feff;
+  text-align: center;
+  font-size: 24px;
+}
+
+.sumarize_header>p:nth-of-type(2) {
+  color: #00FEFF;
+  font-size: 13px;
+  text-align: center;
+}
+
+.summarize_body h5 {
+  color: #00feff;
+  font-size: 22px;
+}
+
+.summarize_body p {
+  margin: 16px 0;
+  color: #fff;
+  font-size: 17px;
+  /*overflow: hidden;*/
+}
+
+.summarize_body input {
+  border: 0;
+  background: #1c272d;
+  color: #fff;
+  width: 100%;
+  font-size: 13px;
+  margin: 16px 0;
+}
+
+.summarize_sign {
+  float: right;
+  text-align: right;
+}
+
+.summarize_sign_time {
+  margin: 0!important;
+}
+
+.submit_exportDoc button {
+  width: 220px;
+  height: 40px;
+  background: #01ffff;
+  color: #000;
+  font-size: 18px;
+  border-radius: 5px;
+  margin-top: 23px;
+  cursor: pointer;
+}
+
+.submit_exportDoc .submit {
+  margin-left: 121px;
+}
+
+.submit_exportDoc .exportDoc {
+  margin-left: 45px;
+}
+
+
+/*------------------页面右侧部分-------------*/
+
+#main_right {
+  padding: 13px 9px 0 10px;
+}
+
+#main_right>dt {
+  color: #30cafe;
+  font-size: 22px;
+  margin-bottom: 10px;
+}
+
+#main_right>dd {
+  width: 404px;
+  min-height: 910px;
+  /*background: yellowgreen;
+     */
+  border: 1px solid #808080;
+  border-bottom: 2px solid #4f5457;
+}
+
+#wordsList dl {
+  float: left;
+  margin-left: 40px;
+}
+
+#wordsList dt {
+  color: #fff;
+  font-size: 16px;
+}
+
+#wordsList dd button {
+  background: #1c272d;
+  font-size: 16px;
+  cursor: pointer;
+
+}
+
+#wordsList dd:hover button {
+  text-decoration: underline;
+}
+
+#wordsList {
+  -moz-column-count: 2;
+  /* Firefox */
+  -webkit-column-count: 2;
+  /* Safari and Chrome */
+  column-count: 2;
+}
+
+#wordsList .changyongyu dd button {
+  color: #b91f29;
+}
+
+#wordsList .tianqi dd button {
+  color: #01ff00;
+}
+
+#wordsList .wu dd button {
+  color: #29aae3;
+}
+
+#wordsList .fangwei dd button {
+  color: #f9b139;
+}
+
+#wordsList .shanqu dd button {
+  color: #ed5b22;
+}
+
+#wordsList .shiduan dd button {
+  color: #09cac9;
+}
+
+#wordsList .yu dd button {
+  color: #ff00ff;
+}

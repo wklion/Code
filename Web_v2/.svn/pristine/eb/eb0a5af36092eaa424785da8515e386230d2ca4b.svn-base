@@ -1,0 +1,123 @@
+function BackgroundFieldMenu() {
+    this._init_();
+}
+
+BackgroundFieldMenu.prototype = {
+    constructor: BackgroundFieldMenu,
+    _init_: function () {
+        this.name = "背景场";
+        this.urlXX = "192.168.2.114:8081/WMDataService/services/MicapsService/getContour";
+    },
+    renderMenu: function () {
+        let html = `<div class="BackgroundFiled"> 
+                  <p>物理量:</p>
+                  <dl id="physics">  
+                    <dt>模式选择:</dt>
+                    <dd id="model"> 
+                      <button>NECP</button><button>GRAPES</button><button>WARMS</button>
+                    </dd>
+                    <dt>水汽:</dt>
+                    <dd id="moisture" class="element"> 
+                      <button>Q</button><button>RH</button><button>FH</button><button>IFVQ</button><button>PW</button>
+                    </dd>
+                    <dt>能量:</dt>
+                    <dd id="energy" class="element"> 
+                      <button>A</button><button>K</button><button>LI</button><button>CIN</button><button>T700-300</button><button>T700-500</button><button>CAPE</button><button>THETSE</button>
+                    </dd>
+                    <dt>动力:</dt>
+                    <dd id="power" class="element"> 
+                      <button>VOR</button><button>DIV</button>
+                    </dd>
+                    <dt>特殊层:</dt>
+                    <dd id="specialLayer" class="element"> 
+                      <button>-20℃</button><button>0℃</button>
+                    </dd>
+                    <dt>层次:</dt>
+                    <dd id="level"> 
+                      <button>850</button><button>700</button><button>500</button><button>200</button>
+                    </dd>
+                  </dl>
+                  <dl> 
+                   <dt>GRAPES:</dt>
+                    <dd> 
+                      <button>1h降水</button><button>3h降水</button><button>反射率预报</button>
+                    </dd>
+                    <dt>概率预报:</dt>
+                    <dd><button>短时强降水</button><button>雷暴大风或冰雹</button></dd>
+                    <dt>客观预报:</dt>
+                    <dd><button>短时强降水</button><button>雷暴大风或冰雹</button></dd>
+                    <dt>时间:</dt>
+                    <dd><input id="dateTime" type="datetime-local" value="2018-01-28T20:00:00" ></dd>
+                  </dl>
+                  <div id="hourSpan" class="hourSpan"> 
+                       
+                  </div>
+                </div>`;
+        $("#menu_bd").html(html);
+    },
+    initEvent: function () {
+        let me = this;
+        //设置默认值
+        $("dd").each(function () {
+            $(this).find("button").first().addClass("active");
+        });
+        $("dd button").click(function () {
+            $(this).addClass("active").siblings().removeClass("active");
+        });
+        let html = ``;
+        for (let i = 0; i <= 24; i++) {
+            html += `<button>${i * 3}</button>`
+        }
+        $("#hourSpan").html(html);
+        $("#hourSpan").find("button").first().addClass("active");
+
+        $("#level button").on("click", function () {
+            me.requestAllData();
+        });
+        $("#hourSpan button").on("click", function () {
+            me.requestAllData();
+        });
+        $(".element button").click(function () {
+            me.requestSingleData(this);
+        })
+
+    },
+    requestAllData() {
+        let me = this;
+        $(".element").find("button.active").each(function () {
+            let param = {
+                element: "physic_" + $(this).html(),
+                level: $("#level .active").html(),
+                hourspan: $("#hourSpan .active").html() - 0,
+                datetime: $("#dateTime")[0].value.replace("T", " "),
+            };
+            console.log(param);
+            request("POST", me.url).then(function (data) {
+                console.log(data)
+            })
+        }, function (data) {
+            console.log("请求失败")
+        });
+    },
+    requestSingleData(element) {
+        let me = this;
+        let param = {
+            element: "physic_" + $(element).html(),
+            level: $("#level .active").html(),
+            hourspan: $("#hourSpan .active").html() - 0,
+            datetime: $("#dateTime")[0].value.replace("T", " "),
+        };
+        console.log(param);
+        $.ajax({
+            url:me.urlXX,
+            method:"POST",
+            data:param,
+            success(data){
+                console.log(data)
+            },
+            error(err){
+                console.log(err)
+            }
+        })
+    }
+}

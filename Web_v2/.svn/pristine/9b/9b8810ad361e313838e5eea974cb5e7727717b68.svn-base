@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="cn">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <title>甘肃省-市县预报业务一体化业务平台</title>
+  <link rel="shortcut icon" href="favicon.ico">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <!-- IE9 不做兼容 -->
+  <!--[if lt IE 9]>
+    <script>window.location = 'assets/ie.html';</script>
+  <![endif]-->
+  <!-- vendors -->
+  <link rel="stylesheet" href="css/bootstrap.css">
+  <!-- iconfont -->
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_496996_cg3qj69wleuerk9.css">
+  <link rel="stylesheet" href="css/main.css">
+  <script type="text/javascript" src="js/jquery.min.js"></script>
+  <script type="text/javascript" src="js/main.js"></script>
+</head>
+
+<body>
+  <div class="body">
+    <div class="banner">
+      <div class="brand">
+        <a class="logo" href="./nativ.html"></a>
+        <a class="title" href="#home">主页</a>
+      </div>
+      <div class="navbar">
+        <ul class="nav">
+          <li id="home" class="nav-item active"><a href="#home" title="主页"><i class="iconfont icon-shouye"></i></a></li>
+          <li id="zhgc" class="nav-item"><a href="#zhgc" title="综合观测"><i class="iconfont icon-zonghejiance"></i></a></li>
+          <li id="qdl" class="nav-item"><a href="#qdl" title="强对流"><i class="iconfont icon-qiangduiliu"></i></a></li>
+          <li id="qxyj" class="nav-item"><a href="#qxyj" title="气象预警"><i class="iconfont icon-qixiangyujing"></i></a></li>
+          <li id="ybzz" class="nav-item"><a href="#ybzz" title="预报制作"><i class="iconfont icon-yubaozhizuo"></i></a></li>
+          <li id="yqkb" class="nav-item"><a href="#yqkb" title="雨情快报"><i class="iconfont icon-yuqingkuaibao"></i></a></li>
+          <li id="jypg" class="nav-item"><a href="#jypg" title="检验评估"><i class="iconfont icon-jianyanpinggu"></i></a></li>
+          <li id="znzs" class="nav-item"><a href="#znzs" title="智能展示"><i class="iconfont icon-zhinengzhanshi"></i></a></li>
+        </ul>
+      </div>
+      <!-- logged标记已登录 -->
+      <div class="user-wrapper logged">
+        <a class="login" href="javascript:;">登录</a>
+        <a class="user" href="javascript:;">用户</a>
+        <a class="logout" href="javascript:;"></a>
+      </div>
+    </div>
+    <div class="content">
+    </div>
+  </div>
+</body>
+<script type="text/javascript">
+  $(document).ready(function () {
+    window.GDYB && GDYB.Page.initEvent();
+    window.GDYB && GDYB.Page.main();
+  });
+</script>
+</html>

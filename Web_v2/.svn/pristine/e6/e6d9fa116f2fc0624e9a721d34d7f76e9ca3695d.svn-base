@@ -1,0 +1,497 @@
+function ZHJCMenuClass() {
+  this.renderMenu = function () {
+    var html = `<div id="menu">
+      <a href="" id="displayBtn"></a>
+      <div id="menu_changeDiv">
+        <a class="menu_change active">强天气</a>
+        <a class="menu_change">雷达</a>
+        <a class="menu_change">云图</a>
+        <a class="menu_change">融合检测</a>
+      </div>
+      <div id="menu_bd">
+        <div id="qtq_tab" class="tab-pane">
+          <div class="sk-alerm-title">
+            <i class=""></i>综合填图
+          </div>
+          <div id="stationType">
+            <div id="quyz" class="option_btn">区域站</div>
+            <div id="benz" class="option_btn">本站</div>
+          </div>
+          <div id="timeType">
+            <div id="time5min" class="option_btn">5分钟</div>
+            <div id="timeHour" class="option_btn">小时</div>
+          </div>
+          <div id="ysElement">
+            <div id="ys_jiangs" class="option_btn">降水</div>
+            <div id="ys_qiw" class="option_btn">气温</div>
+            <div id="ys_gaow" class="option_btn">高温</div>
+            <div id="ys_diw" class="option_btn">低温</div>
+            <div id="ys_feng" class="option_btn">风</div>
+            <div id="ys_jdfeng" class="option_btn">极大风</div>
+            <div id="ys_shid" class="option_btn">湿度</div>
+            <div id="ys_qiy" class="option_btn">气压</div>
+          </div>
+          <div id="skElement_copy">
+            <div>
+              <div class="option_btn">
+                <img src="imgs/zhjc/wu.png">雾
+              </div>
+              <div id="rhjc_shuangd" class="option_btn ">
+                <img src="imgs/zhjc/shuangd.png">霜冻
+              </div>
+              <div id="rhjc_yangs" class="option_btn ">
+                <img src="imgs/zhjc/yangs.png">扬沙
+              </div>
+              <div id="rhjc_fuc" class="option_btn ">
+                <img src="imgs/zhjc/fuc.png">浮尘
+              </div>
+            </div>
+            <div>
+              <div id="rhjc_hanc" class="option_btn">
+                <img src="imgs/zhjc/hanc.png">寒潮
+              </div>
+              <div id="rhjc_baox" class="option_btn ">
+                <img src="imgs/zhjc/baox.png">暴雪
+              </div>
+              <div id="rhjc_wum" class="option_btn ">
+                <img src="imgs/zhjc/mai.png">霾
+              </div>
+              <div id="rhjc_gaow" class="option_btn ">
+                <img src="imgs/zhjc/gaow.png">高温
+              </div>
+            </div>
+            <div>
+              <div id="rhjc_shacb" class="option_btn"> 沙尘暴</div>
+            </div>
+          </div>
+
+          <div id="skElement">
+            <div class="sk-alerm-title">
+              <i></i>灾害报警
+            </div>
+            <div class="rhjc_df">
+              <button>大风</button>
+              <img src="imgs/dafeng1.png" alt="" />
+              <span>17-25</span>
+              <img src="imgs/dafeng2.png" alt="" />
+              <span>25-30</span>
+              <img src="imgs/dafeng3.png" alt="" />
+              <span>&gt;30</span>
+            </div>
+            <div class="rhjc_dq">
+              <button>短强</button>
+              <img src="imgs/dafeng1.png" alt="" />
+              <span>17-25</span>
+              <img src="imgs/dafeng2.png" alt="" />
+              <span>25-30</span>
+              <img src="imgs/dafeng3.png" alt="" />
+              <span>&gt;30</span>
+            </div>
+            <div class="rhjc_yl">
+              <button>雨量</button>
+              <img src="imgs/dafeng1.png" alt="" />
+              <span>17-25</span>
+              <img src="imgs/dafeng2.png" alt="" />
+              <span>25-30</span>
+              <img src="imgs/dafeng3.png" alt="" />
+              <span>&gt;30</span>
+            </div>
+            <div class="rhjc_bb">
+              <button>冰雹</button>
+              <img src="imgs/dafeng1.png" alt="" />
+              <span>17-25</span>
+              <img src="imgs/dafeng2.png" alt="" />
+              <span>25-30</span>
+              <img src="imgs/dafeng3.png" alt="" />
+              <span>&gt;30</span>
+            </div>
+          </div>
+
+          <div class="timeChoose">
+            <div>
+              <input class="timeRadio" type="radio" checked="true" name="rhjcQueryRadio">
+              <label for="timeRadio">实时</label>
+            </div>
+            <div>
+              <input class="hourRadio" type="radio" checked="true" name="rhjcQueryRadio">
+              <label for="hourRadio">时段</label>
+              <div class='option_btn'>20min</div>
+              <div class='option_btn'>40min</div>
+              <div class='option_btn'>3H</div>
+              <div class='option_btn'>6H</div>
+            </div>
+
+            <div class="startTime">
+              <span>从:</span>
+              <input type="text" value="2017-12-08 10:00:00" />
+            </div>
+            <div class="endTime">
+              <span>到:</span>
+              <input type="text" value="2017-12-08 10:00:00" />
+            </div>
+          </div>
+
+          <div class="query_action">
+            <button class="option_btn">查询</button>
+            <button class="option_btn">动画</button>
+            <button class="option_btn">累加</button>
+            <select class="animationSelect">
+              <option value="">1</option>
+              <option value="">2</option>
+              <option value="">3</option>
+              <option value="">4</option>
+              <option value="">5</option>
+            </select>
+          </div>
+          <div class="timeListDiv">
+
+          </div>
+
+        </div>
+        <div id="leida_tab">
+          <div class="puzzle" id="puzzle">
+            <div class="title1">拼图</div>
+            <div class="pup">
+              <span>PUP:</span>
+              <div id="pup">
+                <button>CR</button>
+                <button>ET</button>
+                <button>VIL</button>
+                <button>OHP</button>
+              </div>
+            </div>
+            
+            <div class="swan">
+              <span>SWAN:</span>
+              <div id="swan">
+                <button>TITAN</button>
+                <button>TREC</button>
+              </div>
+            </div>
+            
+            <div class="cappi">
+              <span>CAPPI:</span>
+              <div id="cappi">
+                <button>0.5</button>
+                <button>1.0</button>
+                <button>1.5</button>
+                <button>2.0</button>
+                <button>2.5</button>
+                <button>3.0</button>
+                <button>3.5</button>
+              </div>
+            </div>
+          </div>
+          <div class="station" id="station">
+            <div class="station_ld">
+              <span>雷达站</span>
+              <div id="station_ld">
+                <button>兰州</button>
+                <button>天水</button>
+                <button>嘉峪关</button>
+                <button>固原</button>
+                <button>甘南</button>
+                <button>张掖</button>
+                <button>汉中</button>
+                <button>延安</button>
+                <button>武都</button>
+                <button>西峰</button>
+                <button>西宁</button>
+              </div>
+            </div>
+            <div class="station_cp">
+              <span>产品</span>
+              <div id="station_cp">
+                <button>基本反射率</button>
+                <button>径向速度</button>
+              </div>
+            </div>
+            <div class="station_yj">
+              <span>仰角</span>
+              <div id="station_yj">
+                <button>0.5</button>
+                <button>1.5</button>
+                <button>2.4</button>
+              </div>
+            </div>
+          </div>
+          <div class="timeChoose">
+            <div>
+              <input class="timeRadio" type="radio" checked="true" name="rhjcQueryRadio">
+              <label for="timeRadio">实时</label>
+            </div>
+            <div>
+              <input class="hourRadio" type="radio" checked="true" name="rhjcQueryRadio">
+              <label for="hourRadio">时段</label>
+              <div class='option_btn'>20min</div>
+              <div class='option_btn'>40min</div>
+              <div class='option_btn'>3H</div>
+              <div class='option_btn'>6H</div>
+            </div>
+            <div class="startTime">
+              <span>从:</span>
+              <input type="text" value="2017-12-08 10:00:00" />
+            </div>
+            <div class="endTime">
+              <span>到:</span>
+              <input type="text" value="2017-12-08 10:00:00" />
+            </div>
+          </div>
+
+          <div class="query_action">
+            <button class="option_btn">查询</button>
+            <button class="option_btn">动画</button>
+            <button class="option_btn">累加</button>
+            <select class="animationSelect">
+              <option>1</option>
+              <option>2</option>
+              <option>3</option>
+              <option>4</option>
+              <option>5</option>
+            </select>
+          </div>
+          <div class="timeListDiv">
+          </div>
+        </div>
+        <div id="yuntu_tab">
+          <div class="satelliteDiv">
+            <div class="weixing">
+              <span>卫星</span>
+              <div>
+                <button>风云2E</button>
+                <button>葵花</button>
+              </div>
+              
+            </div>
+            <div class="tongdao">
+              <span>通道</span>
+              <div>
+                <button>红外</button>
+                <button>水汽</button>
+                <button>可见光</button>
+                <button>MCS</button>
+              </div>
+            </div>
+            <div class="chanpin">
+              <span>产品</span>
+              <div>
+                <button>CLC</button>
+                <button>TPW</button>
+                <button>PRE_1</button>
+                <button>PRE_3</button>
+                <button>PRE_6</button>
+                <button>PRE_24</button>
+                <button>UTH</button>
+                <button>TBB</button>
+              </div>
+              
+            </div>
+          </div>
+          <div class="timeChoose ">
+            <div>
+              <input class="timeRadio" type="radio" checked="true" name="rhjcQueryRadio">
+              <label for="timeRadio ">实时</label>
+            </div>
+            <div>
+              <input class="hourRadio" type="radio" checked="true" name="rhjcQueryRadio">
+              <label for="hourRadio ">时段</label>
+              <div class='option_btn'>20min</div>
+              <div class='option_btn'>40min</div>
+              <div class='option_btn'>3H</div>
+              <div class='option_btn'>6H</div>
+            </div>
+            <div class="startTime">
+              <span>从:</span>
+              <input type="text" value="2017-12-08 10:00:00" />
+            </div>
+            <div class="endTime">
+              <span>到:</span>
+              <input type="text" value="2017-12-08 10:00:00" />
+            </div>
+          </div>
+
+          <div class="query_action">
+            <button class="option_btn">查询</button>
+            <button class="option_btn">动画</button>
+            <button class="option_btn">累加</button>
+            <select class="animationSelect">
+              <option>1</option>
+              <option>2</option>
+              <option>3</option>
+              <option>4</option>
+              <option>5</option>
+            </select>
+          </div>
+          <div class="timeListDiv">
+          </div>
+        </div>
+        <div id="rhjc_tab">
+          <div class="rhjc_df">
+            <button>大风</button>
+            <img src="imgs/dafeng1.png"/>
+            <span>17-25</span>
+            <img src="imgs/dafeng2.png"/>
+            <span>25-30</span>
+            <img src="imgs/dafeng3.png"/>
+            <span>&gt;30</span>
+          </div>
+          <div class="rhjc_dq">
+            <button>短强</button>
+            <img src="imgs/dafeng1.png"/>
+            <span>17-25</span>
+            <img src="imgs/dafeng2.png"/>
+            <span>25-30</span>
+            <img src="imgs/dafeng3.png"/>
+            <span>&gt;30</span>
+          </div>
+          <div class="rhjc_yl ">
+            <button>雨量</button>
+            <img src="imgs/dafeng1.png"/>
+            <span>17-25</span>
+            <img src="imgs/dafeng2.png"/>
+            <span>25-30</span>
+            <img src="imgs/dafeng3.png"/>
+            <span>&gt;30</span>
+          </div>
+          <div class="rhjc_bb ">
+            <button>冰雹</button>
+            <img src="imgs/dafeng1.png"/>
+            <span>17-25</span>
+            <img src="imgs/dafeng2.png"/>
+            <span>25-30</span>
+            <img src="imgs/dafeng3.png"/>
+            <span>&gt;30</span>
+          </div>
+          <div class="radar_option">
+            <button>35dbz回波</button>
+            <button>液态含水量</button>
+            <button>TITIAN</button>
+            <button>TREC</button>
+            <button>MCS</button>
+          </div>
+           <div class="timeChoose">
+            <div>
+              <input class="timeRadio" type="radio" checked="true" name="rhjcQueryRadio">
+              <label for="timeRadio ">实时</label>
+            </div>
+            <div>
+              <input class="hourRadio" type="radio" checked="true" name="rhjcQueryRadio">
+              <label for="hourRadio">时段</label>
+              <div class='option_btn'>20min</div>
+              <div class='option_btn'>40min</div>
+              <div class='option_btn'>3H</div>
+              <div class='option_btn'>6H</div>
+            </div>
+            <div class="startTime">
+              <span>从:</span>
+              <input type="text" value="2017-12-08 10:00:00" />
+            </div>
+            <div class="endTime">
+              <span>到:</span>
+              <input type="text" value="2017-12-08 10:00:00" />
+            </div>
+          </div>
+
+          <div class="query_action">
+            <button class="option_btn">查询</button>
+            <button class="option_btn">动画</button>
+            <button class="option_btn">累加</button>
+            <select class="animationSelect">
+              <option>1</option>
+              <option>2</option>
+              <option>3</option>
+              <option>4</option>
+              <option>5</option>
+            </select>
+          </div>
+          <div class="timeListDiv">
+          </div>
+        </div>
+      </div>
+    </div>`;
+    $(".map_div").append(html);
+
+    //tab切换
+    $("#menu_bd>div").hide().first().show();
+    $('#menu_changeDiv a').click(function (e) {
+      $(this).siblings().removeClass("active");
+      $(this).addClass('active');
+      $("#menu_bd>div").hide();
+      let index = $(this).index() + 1;
+      $("#menu_bd>div:nth-child(" + index + ")").show();
+    })
+
+    //拼图
+    $("#puzzle").find("button").click(function () {
+      $("#puzzle").find("button").removeClass("active");
+      $(this).addClass("active");
+      // console.log(this);
+      if ($(this).parent()[0].id == "pup") {
+        console.log("the id is pup");
+      }
+      else if ($(this).parent()[0].id == "swan") {
+        console.log("the id is swan");
+      }
+      else if ($(this).parent()[0].id == "cappi") {
+        console.log("the id is cappi");
+      }
+    });
+
+    let param = {};
+    param.station_ld = "";
+    param.station_cp = "默认参数1";
+    param.station_yj = "默认参数2";
+    $("#station").find("button").click(function () {
+
+
+      if ($(this).parent()[0].id == "station_ld") {//点击雷达站
+        $("#station_ld").find("button").removeClass("active");
+        $(this).addClass("active");
+        console.log("the id is 雷达站");
+        param.station_ld = $(this).html();
+        if (!$("#station_cp").find("button").is(".active"))
+          $("#station_cp").children().first().addClass("active");
+        if (!$("#station_yj").find("button").is(".active"))
+          $("#station_yj").children().first().addClass("active");
+      }
+
+
+      else if ($(this).parent()[0].id == "station_cp") {//点击产品
+        if (!$("#station_ld").find("button").is(".active")) {
+          console.log("请先选择站点-----------------");
+        }
+        else {
+          console.log("有站点了");
+          $(this).siblings().removeClass("active");
+          $(this).addClass("active");
+          param.station_cp = $(this).html();
+        }
+      }
+
+
+      else if ($(this).parent()[0].id == "station_yj") {//点击仰角
+        if (!$("#station_ld").find("button").is(".active")) {
+          console.log("请先选择站点");
+        }
+        else {
+          $(this).siblings().removeClass("active");
+          $(this).addClass("active");
+          param.station_yj = $(this).html();
+        }
+      }
+
+      if ($("#station_ld").find("button").is(".active")) {
+        /*$.post({
+        url: "",
+        data: param,
+        success: function (data) {
+          console.log(data);
+        }
+      })*/
+        console.log("发送请求,参数为:")
+        console.log(param);
+      }
+
+    })
+  }
+}

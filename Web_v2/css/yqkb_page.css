@@ -1,0 +1,103 @@
+.yqkb {
+  user-select: none;
+  width: 1215px;
+  height: 100%;
+  background: #21282e;
+  color: #808080;
+  font-size: 16px;
+  position: relative;
+  margin: 0 auto;
+  overflow: hidden;
+  overflow-y: auto; }
+  .yqkb button {
+    width: 135px;
+    height: 40.5px;
+    border: 1px solid #808080;
+    outline: 0;
+    margin: 4px 7px;
+    border-radius: 5px;
+    background: #1c272d;
+    color: #808080; }
+    .yqkb button.active, .yqkb button:hover {
+      background: #30cafe;
+      color: #000; }
+  .yqkb input[type=text],
+  .yqkb input[type=datetime-local] {
+    border: 1px solid #808080;
+    background: #1c272d; }
+  .yqkb input[type=checkbox] {
+    display: none; }
+    .yqkb input[type=checkbox] + label {
+      padding-right: 19px;
+      background: url(../imgs/input/checkbox_1.jpg) no-repeat center right; }
+  .yqkb input[type=radio] {
+    outline: 0;
+    vertical-align: middle;
+    margin-bottom: 6px;
+    *margin-bottom: 6px; }
+  .yqkb label {
+    margin-right: 10px;
+    font-weight: normal; }
+  .yqkb .yqkb_option {
+    width: 1164px;
+    height: 247px;
+    border: 1px solid #4f5457;
+    background: #1c272d;
+    margin: 10px 0 10px 18px;
+    padding: 10px 13px; }
+    .yqkb .yqkb_option .reminder {
+      color: #9a272c;
+      font-size: 16px; }
+    .yqkb .yqkb_option .time_option .time_start,
+    .yqkb .yqkb_option .time_option .time_end,
+    .yqkb .yqkb_option .time_option .station_option {
+      display: inline-block;
+      margin-right: 20px; }
+    .yqkb .yqkb_option > div {
+      margin-bottom: 2px; }
+  .yqkb .result_pic {
+    width: 1215px; }
+    .yqkb .result_pic img {
+      width: 96%;
+      height: 612px;
+      display: block;
+      margin: 0 0 0 18px; }
+  .yqkb #setLegendDiv {
+    display: none;
+    height: 100px;
+    width: 100%;
+    background-color: rgba(48, 202, 254, 0.2);
+    border-radius: 10px;
+    margin-bottom: 15px;
+    position: absolute; }
+  .yqkb .result_table {
+    display: none;
+    list-style: none;
+    width: 97%;
+    margin-left: 20px;
+    margin-top: 20px;
+    height: 500px;
+    overflow-y: auto; }
+    .yqkb .result_table .table_header {
+      height: 31px;
+      border: 1px solid #808080;
+      background: #343d4c; }
+      .yqkb .result_table .table_header span {
+        display: inline-block;
+        width: 16%;
+        text-align: center;
+        margin-top: 4px; }
+    .yqkb .result_table .table_con {
+      list-style: none;
+      padding: 0;
+      border: 2px solid #4f5457; }
+      .yqkb .result_table .table_con li:nth-of-type(2n) {
+        background: #343d4c; }
+      .yqkb .result_table .table_con li span {
+        display: inline-block;
+        width: 16%;
+        text-align: center; }
+        .yqkb .result_table .table_con li span:last-of-type {
+          cursor: pointer; }
+
+/*# sourceMappingURL=yqkb_page.css.map */
