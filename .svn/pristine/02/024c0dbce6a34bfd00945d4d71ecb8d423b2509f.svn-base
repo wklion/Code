@@ -1,4 +1,0 @@
-部署在tomcat中的文件要修改file.encoding的值，可以在tomcat的catalina.bat文件中set JAVA_OPTS=%JAVA_OPTS% %LOGGING_CONFIG%的后面加上 -Dfile.encoding="UTF-8"
-例如：set JAVA_OPTS=%JAVA_OPTS% %LOGGING_CONFIG% -Dfile.encoding="utf-8"
-
-MyEclipse中调试可能会崩溃，因为以上配置没有生效，只能直接运行tomcat才行
